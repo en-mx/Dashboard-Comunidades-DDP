@@ -208,20 +208,40 @@ const _fbApp = firebase.initializeApp({
   appId: "1:163333051938:web:fb6b62dff2283acdd35c7b"
 });
 const _fdb = firebase.firestore();
-const _panelDoc = _fdb.collection("panel").doc("seguimiento");
-
-window._fbPanelSave = async function(data){
+// Guardar un proyecto específico en su propio documento
+window._fbSaveProject = async function(pid, entries){
   try{
-    await _panelDoc.set(data);
-    console.log("Panel guardado en Firebase ✓");
+    await _fdb.collection("proyectos").doc(pid).set({
+      entries: JSON.stringify(entries),
+      updated: new Date().toISOString()
+    });
+    console.log("Proyecto "+pid+" guardado ✓");
   } catch(e){ console.error("Firebase save error:", e); }
 };
 
-window._fbPanelLoad = async function(){
+// Cargar un proyecto específico
+window._fbLoadProject = async function(pid){
   try{
-    const snap = await _panelDoc.get();
-    return snap.exists ? snap.data() : null;
-  } catch(e){ console.error("Firebase load error:", e); return null; }
+    const snap = await _fdb.collection("proyectos").doc(pid).get();
+    if(snap.exists){
+      const data = snap.data();
+      return data.entries ? JSON.parse(data.entries) : [];
+    }
+    return [];
+  } catch(e){ console.error("Firebase load error:", e); return []; }
+};
+
+// Cargar todos los proyectos
+window._fbLoadAll = async function(){
+  try{
+    const snap = await _fdb.collection("proyectos").get();
+    const result = {};
+    snap.forEach(doc => {
+      const data = doc.data();
+      result[doc.id] = data.entries ? JSON.parse(data.entries) : [];
+    });
+    return result;
+  } catch(e){ console.error("Firebase loadAll error:", e); return null; }
 };
 </script>
 </head>
@@ -438,16 +458,19 @@ let db = loadData(); // carga local primero
 async function syncFromFirebase(){
   showSyncStatus("Sincronizando...", "loading");
   try{
-    const remote = window._fbPanelLoad ? await window._fbPanelLoad() : null;
-    if(remote && remote.db){
-      const remoteDb = JSON.parse(remote.db);
-      // Usar Firebase si tiene datos o si local está vacío
-      if(Object.keys(remoteDb).length > 0){
-        db = remoteDb;
-        try{ localStorage.setItem(STORAGE, JSON.stringify(db)); }catch(e){}
-      }
+    const remote = window._fbLoadAll ? await window._fbLoadAll() : null;
+    if(remote && Object.keys(remote).length > 0){
+      // Merge: Firebase gana sobre localStorage por proyecto
+      Object.keys(remote).forEach(pid => {
+        if(remote[pid] && remote[pid].length > 0){
+          db[pid] = remote[pid];
+        }
+      });
+      try{ localStorage.setItem(STORAGE, JSON.stringify(db)); }catch(e){}
+      showSyncStatus("Sincronizado ✓", "ok");
+    } else {
+      showSyncStatus("Sincronizado ✓", "ok");
     }
-    showSyncStatus("Sincronizado ✓", "ok");
   } catch(e){
     showSyncStatus("Modo local", "warn");
   }
@@ -469,11 +492,15 @@ function showSyncStatus(msg, type){
 function persist(){
   // Guardar local como respaldo
   try{ localStorage.setItem(STORAGE,JSON.stringify(db)); }catch(e){}
-  // Guardar en Firebase (debounced)
+  // Guardar en Firebase proyecto por proyecto (debounced)
   clearTimeout(window._persistTimer);
   window._persistTimer = setTimeout(async ()=>{
-    if(window._fbPanelSave){
-      await window._fbPanelSave({db: JSON.stringify(db), updated: new Date().toISOString()});
+    if(window._fbSaveProject){
+      // Solo guardar proyectos que tienen datos
+      const saves = Object.keys(db).map(pid =>
+        db[pid] && db[pid].length > 0 ? window._fbSaveProject(pid, db[pid]) : Promise.resolve()
+      );
+      await Promise.all(saves);
     }
   }, 600);
 }
@@ -809,7 +836,10 @@ function doActivateLive(){
   localStorage.removeItem(STORAGE);
   db={};
   drafts={};
-  if(window._fbPanelSave) window._fbPanelSave({db:JSON.stringify({}), updated:new Date().toISOString()});
+  // Limpiar cada proyecto en Firebase
+  if(window._fbSaveProject){
+    ["agwa","upsf","jinetes","ut"].forEach(pid => window._fbSaveProject(pid, []));
+  }
   const banner=document.getElementById("demo-banner");
   if(banner) banner.remove();
   renderDashboard();
