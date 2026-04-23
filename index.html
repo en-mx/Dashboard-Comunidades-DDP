@@ -282,11 +282,12 @@ window._fbLoadAll = async function(){
 <script>
 (function(){
   var _P = "Wzp322@mdf";
-  var _K = "dp_panel_auth";
+  // Solo variable en memoria — cada refresh pide password de nuevo
+  window._authenticated = false;
   window.checkPwd = function(){
     var v = document.getElementById("pwd-input").value;
     if(v === _P){
-      sessionStorage.setItem(_K,"ok");
+      window._authenticated = true;
       document.getElementById("login-screen").style.display="none";
     } else {
       document.getElementById("pwd-error").style.display="block";
@@ -294,9 +295,7 @@ window._fbLoadAll = async function(){
       document.getElementById("pwd-input").focus();
     }
   };
-  if(sessionStorage.getItem(_K)==="ok"){
-    document.getElementById("login-screen").style.display="none";
-  }
+  // No auto-skip — siempre pide al cargar
 })();
 </script>
 <div class="app">
@@ -730,13 +729,18 @@ function renderProjectDetail(){
 
   const lat=getLatest(currentProject);
   // Init draft for this project only if not already in memory
-  // Siempre reiniciar el borrador desde el último registro guardado (o vacío si no hay)
+  // Al entrar: mostrar último registro. Al registrar nueva semana: se limpia desde goFromModal
   const chosenDate = window._pendingDate || today();
   delete window._pendingDate;
-  drafts[currentProject]=lat?JSON.parse(JSON.stringify(lat)):{vivencial:{},admin:{},comite:{},vivencial_score:0,admin_score:0,comite_score:0,notes:"",date:chosenDate};
-  drafts[currentProject].date=chosenDate;
+  if(!window._newWeek){
+    drafts[currentProject]=lat?JSON.parse(JSON.stringify(lat)):{vivencial:{},admin:{},comite:{},vivencial_score:0,admin_score:0,comite_score:0,notes:"",date:chosenDate};
+    drafts[currentProject].date=chosenDate;
+  }
+  const isNewWeek = !!window._newWeek;
+  delete window._newWeek;
 
-  document.getElementById("save-hint").textContent="Calificando semana del "+fmtDate(chosenDate);
+  const latRef = getLatest(currentProject);
+  document.getElementById("save-hint").textContent=isNewWeek?"Nueva semana — calificando "+fmtDate(chosenDate):lat?"Último registro: "+fmtDate(lat.date)+" — usa \"+ Registrar semana\" para nueva calificación":"Primer registro de este proyecto";
 
   renderProjCharts();
   renderScoreCards();
@@ -884,7 +888,11 @@ function closeModal(){ document.getElementById("modal").classList.add("hidden");
 function goFromModal(){
   const pid=document.getElementById("modal-project").value;
   const date=document.getElementById("modal-date").value;
-  closeModal(); showProject(pid, date);
+  closeModal();
+  // Nueva semana: limpiar draft a cero
+  drafts[pid]={vivencial:{},admin:{},comite:{},vivencial_score:0,admin_score:0,comite_score:0,notes:"",date:date};
+  window._newWeek=true;
+  showProject(pid, date);
 }
 document.getElementById("modal").addEventListener("click",e=>{ if(e.target.id==="modal") closeModal(); });
 
