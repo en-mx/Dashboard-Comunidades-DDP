@@ -648,7 +648,7 @@ function renderEvolutionChart(){
   const labels=allDates.map(fmtDate);
   const datasets=PROJ_KEYS.map(pid=>{
     const p=PROJECTS[pid];
-    const map=Object.fromEntries(getHistory(pid).map(e=>[e.date,overall(e)]));
+    const map=Object.fromEntries(getHistory(pid).map(e=>[e.date,overall(e,pid)]));
     return {label:p.name,data:allDates.map(d=>map[d]||null),borderColor:p.color,backgroundColor:p.color+"22",tension:.35,pointRadius:4,pointHoverRadius:6,fill:false,spanGaps:false};
   });
   charts["evolution"]=new Chart(ctx,{type:"line",data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"bottom",labels:{font:{family:"DM Sans",size:11},boxWidth:10,padding:14}}},scales:{y:{min:0,max:10,grid:{color:"rgba(0,0,0,.06)"},ticks:{font:{family:"DM Mono",size:11}}},x:{grid:{display:false},ticks:{font:{family:"DM Sans",size:11},maxRotation:0,maxTicksLimit:8}}}}});
@@ -712,7 +712,7 @@ function renderAlerts(){
 
 function updateSidebarScores(){
   PROJ_KEYS.forEach(pid=>{
-    const o=overall(getLatest(pid));
+    const o=overall(getLatest(pid), pid);
     const el=document.getElementById("ns-"+pid);
     if(el) el.textContent=o>0?o.toFixed(1):"—";
   });
