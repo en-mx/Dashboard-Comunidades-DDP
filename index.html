@@ -201,7 +201,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text-1);m
 .rentas-card .rc-label{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin-bottom:7px;font-weight:500}
 .rentas-card .rc-value{font-size:27px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;color:var(--text-1);margin-bottom:3px}
 .rentas-card .rc-sub{font-size:11px;color:var(--text-2)}
-.rentas-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.rentas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .rentas-mini{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:0.9rem 1.1rem}
 .rentas-mini .rm-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);margin-bottom:6px;font-weight:500;line-height:1.3;min-height:26px}
 .rentas-mini .rm-value{font-size:22px;font-weight:700;font-family:'DM Mono',monospace;color:var(--text-1);line-height:1}
@@ -217,6 +217,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text-1);m
 .rentas-input-group input:focus{border-color:var(--text-1);background:var(--surface)}
 .abs-positive{color:#4ADE80!important}
 .abs-negative{color:#F87171!important}
+
+.rentas-toggle{display:inline-flex;background:var(--surface-2);border-radius:9px;padding:3px;gap:2px}
+.rt-btn{padding:6px 14px;border:none;background:transparent;border-radius:7px;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:500;color:var(--text-2);cursor:pointer;transition:all .15s;white-space:nowrap}
+.rt-btn.active{background:var(--surface);color:var(--text-1);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.month-badge{display:inline-block;font-size:10px;background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-b);padding:2px 8px;border-radius:20px;font-weight:600;margin-left:8px}
 .rentas-empty{background:var(--surface-2);border:1px dashed var(--border-md);border-radius:var(--r-lg);padding:1.5rem;text-align:center;color:var(--text-3);font-size:13px}
 .rentas-delta{font-size:11px;margin-top:4px}
 @media(max-width:880px){.rentas-hero{grid-template-columns:1fr}.rentas-grid{grid-template-columns:repeat(2,1fr)}.rentas-inputs{grid-template-columns:1fr}}
@@ -259,8 +264,14 @@ window._fbSaveProject = async function(pid, entries){
 
 window._fbSavePillarConfig = async function(pid, cfg){
   try{
-    await _fdb.collection("config").doc(pid).set({pillarConfig: JSON.stringify(cfg)});
+    await _fdb.collection("config").doc(pid).set({pillarConfig: JSON.stringify(cfg)}, {merge:true});
   } catch(e){ console.error("Firebase config save error:", e); }
+};
+
+window._fbSaveMonthOverrides = async function(pid, overrides){
+  try{
+    await _fdb.collection("config").doc(pid).set({monthOverrides: JSON.stringify(overrides||{})}, {merge:true});
+  } catch(e){ console.error("Firebase month override save error:", e); }
 };
 
 window._fbLoadAllConfig = async function(){
@@ -269,7 +280,10 @@ window._fbLoadAllConfig = async function(){
     const result = {};
     snap.forEach(doc => {
       const data = doc.data();
-      if(data.pillarConfig) result[doc.id] = JSON.parse(data.pillarConfig);
+      result[doc.id] = {
+        pillarConfig: data.pillarConfig ? JSON.parse(data.pillarConfig) : null,
+        monthOverrides: data.monthOverrides ? JSON.parse(data.monthOverrides) : null
+      };
     });
     return result;
   } catch(e){ return {}; }
@@ -461,11 +475,19 @@ window._fbLoadAll = async function(){
 
     <!-- ── BLOQUE DE RENTAS / ABSORCIÓN ── -->
     <div class="rentas-section">
-      <div class="rentas-header">
-        <span class="rentas-icon">🏠</span>
-        <h3>Desempeño en rentas — semana</h3>
+      <div class="rentas-header" style="justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:9px">
+          <span class="rentas-icon">🏠</span>
+          <h3>Desempeño en rentas</h3>
+        </div>
+        <div class="rentas-toggle">
+          <button id="rt-semana" class="rt-btn active" onclick="switchRentaView('semana')">Semana</button>
+          <button id="rt-mes" class="rt-btn" onclick="switchRentaView('mes')">Acumulado del mes</button>
+        </div>
       </div>
 
+      <!-- ═══ VISTA SEMANA ═══ -->
+      <div id="rentas-view-semana">
       <!-- Captura de datos -->
       <div class="rentas-form">
         <div class="rentas-form-title">📥 Registro de la semana</div>
@@ -490,6 +512,10 @@ window._fbLoadAll = async function(){
             <label>Días promedio en lista <span class="hint">(de los deptos rentados)</span></label>
             <input type="number" id="r-dias" min="0" step="1" placeholder="0" oninput="onRentaInput()">
           </div>
+          <div class="rentas-input-group">
+            <label>Citas de la semana <span class="hint">(showings / visitas)</span></label>
+            <input type="number" id="r-citas" min="0" step="1" placeholder="0" oninput="onRentaInput()">
+          </div>
         </div>
       </div>
 
@@ -501,6 +527,55 @@ window._fbLoadAll = async function(){
         <div class="chart-card-title">💧 Cómo se construye la absorción — esta semana</div>
         <div class="chart-card-sub">De rentas nuevas, restamos salidas paso a paso hasta la absorción final</div>
         <div class="chart-wrap" style="height:240px"><canvas id="chart-waterfall"></canvas></div>
+      </div>
+      </div><!-- /rentas-view-semana -->
+
+      <!-- ═══ VISTA MES (ACUMULADO) ═══ -->
+      <div id="rentas-view-mes" style="display:none">
+        <div class="rentas-form" style="background:var(--surface-2)">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:6px">
+            <div class="rentas-form-title" style="margin-bottom:0">📅 Acumulado de <span id="mes-nombre" style="color:var(--green)">—</span></div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <select id="mes-selector" onchange="renderMonthlyRentas()" style="padding:6px 10px;border:1px solid var(--border-md);border-radius:8px;font-size:12px;font-family:DM Sans,sans-serif;background:var(--surface);color:var(--text-1);cursor:pointer"></select>
+            </div>
+          </div>
+          <p style="font-size:11.5px;color:var(--text-2);margin-top:8px">Suma automática de las semanas registradas. Edita un campo solo si necesitas ajustar el acumulado manualmente.</p>
+          <div class="rentas-inputs" style="margin-top:14px">
+            <div class="rentas-input-group">
+              <label>Rentas nuevas <span class="hint">(suma del mes)</span></label>
+              <input type="number" id="m-nuevas" min="0" step="1" oninput="onMonthEdit()">
+            </div>
+            <div class="rentas-input-group">
+              <label>Liberaciones por no renovación <span class="hint">(suma)</span></label>
+              <input type="number" id="m-noreno" min="0" step="1" oninput="onMonthEdit()">
+            </div>
+            <div class="rentas-input-group">
+              <label>Liberaciones por venta <span class="hint">(suma)</span></label>
+              <input type="number" id="m-venta" min="0" step="1" oninput="onMonthEdit()">
+            </div>
+            <div class="rentas-input-group">
+              <label>Incremento promedio % <span class="hint">(promedio del mes)</span></label>
+              <input type="number" id="m-incr" step="0.1" oninput="onMonthEdit()">
+            </div>
+            <div class="rentas-input-group">
+              <label>Días promedio en lista <span class="hint">(promedio)</span></label>
+              <input type="number" id="m-dias" min="0" step="1" oninput="onMonthEdit()">
+            </div>
+            <div class="rentas-input-group">
+              <label>Citas del mes <span class="hint">(suma de showings)</span></label>
+              <input type="number" id="m-citas" min="0" step="1" oninput="onMonthEdit()">
+            </div>
+            <div class="rentas-input-group" style="justify-content:flex-end">
+              <button onclick="resetMonthOverride()" id="m-reset" style="display:none;padding:8px 12px;border:1px solid var(--border-md);border-radius:8px;background:var(--surface);font-size:11.5px;font-family:DM Sans,sans-serif;color:var(--text-2);cursor:pointer">↺ Volver al cálculo automático</button>
+            </div>
+          </div>
+        </div>
+        <div id="rentas-month-results"></div>
+        <div class="chart-card" id="rentas-waterfall-month-card" style="margin-top:12px;display:none">
+          <div class="chart-card-title">💧 Absorción acumulada — <span id="mes-nombre-wf">—</span></div>
+          <div class="chart-card-sub">Cómo se construye la absorción del mes completo</div>
+          <div class="chart-wrap" style="height:240px"><canvas id="chart-waterfall-month"></canvas></div>
+        </div>
       </div>
     </div>
 
@@ -593,11 +668,22 @@ let db = loadData(); // carga local primero
 async function syncFromFirebase(){
   showSyncStatus("Sincronizando...", "loading");
   try{
-    // Cargar configuración de pilares
+    // Cargar configuración de pilares + overrides mensuales
     const remoteConfig = window._fbLoadAllConfig ? await window._fbLoadAllConfig() : {};
     if(remoteConfig && Object.keys(remoteConfig).length > 0){
       Object.keys(remoteConfig).forEach(pid => {
-        if(pillarConfig[pid]) pillarConfig[pid] = {...pillarConfig[pid], ...remoteConfig[pid]};
+        const cfg = remoteConfig[pid];
+        if(!cfg) return;
+        // Nuevo formato: {pillarConfig, monthOverrides}
+        if(cfg.pillarConfig && pillarConfig[pid]){
+          pillarConfig[pid] = {...pillarConfig[pid], ...cfg.pillarConfig};
+        } else if(cfg.vivencial!==undefined || cfg.admin!==undefined || cfg.comite!==undefined){
+          // Compatibilidad con formato viejo (config era directamente el pillarConfig)
+          if(pillarConfig[pid]) pillarConfig[pid] = {...pillarConfig[pid], ...cfg};
+        }
+        if(cfg.monthOverrides){
+          monthOverrides[pid] = cfg.monthOverrides;
+        }
       });
     }
     const remote = window._fbLoadAll ? await window._fbLoadAll() : null;
@@ -648,6 +734,7 @@ function persist(){
 
 let currentProject = null;
 let drafts = {}; // borrador por proyecto, independiente
+let monthOverrides = {}; // overrides manuales del acumulado mensual por proyecto/mes
 let charts = {};
 
 // ── HELPERS ──
@@ -768,6 +855,8 @@ function renderRentasDashboard(){
       <th style="text-align:center">No renovación</th>
       <th style="text-align:center">Ventas</th>
       <th style="text-align:center">Abs. total</th>
+      <th style="text-align:center">Citas</th>
+      <th style="text-align:center">Conv.</th>
       <th style="text-align:center">Incr. %</th>
       <th style="text-align:center">Días lista</th>
     </tr></thead><tbody>
@@ -778,7 +867,7 @@ function renderRentasDashboard(){
       if(!r){
         return `<tr>
           <td><span style="display:inline-flex;align-items:center;gap:8px"><span style="width:9px;height:9px;border-radius:50%;background:${PROJ_COLORS[pid]};display:inline-block"></span><strong>${p.name}</strong></span></td>
-          <td colspan="7" style="text-align:center;color:var(--text-3);font-size:12px">Sin datos de renta</td>
+          <td colspan="9" style="text-align:center;color:var(--text-3);font-size:12px">Sin datos de renta</td>
         </tr>`;
       }
       const absR=absNetaRenta(r), absT=absNetaTotal(r);
@@ -792,6 +881,8 @@ function renderRentasDashboard(){
         <td style="text-align:center;font-family:DM Mono,monospace;color:var(--text-2)">${+r.noreno||0}</td>
         <td style="text-align:center;font-family:DM Mono,monospace;color:var(--text-2)">${+r.venta||0}</td>
         <td style="text-align:center"><span style="${mono};color:${cT}">${absT>0?"+":""}${absT}</span></td>
+        <td style="text-align:center;font-family:DM Mono,monospace">${+r.citas||0}</td>
+        <td style="text-align:center;font-family:DM Mono,monospace;color:var(--blue);font-weight:700">${convRate(r)}%</td>
         <td style="text-align:center;font-family:DM Mono,monospace">${(+r.incr||0).toFixed(1)}%</td>
         <td style="text-align:center;font-family:DM Mono,monospace">${+r.dias||0}</td>
       </tr>`;
@@ -1037,6 +1128,62 @@ function setSubcat(key,sub,v){
 // ══════════════════════════════════
 // RENTAS / ABSORCIÓN
 // ══════════════════════════════════
+
+// ── ACUMULADO MENSUAL ──
+function monthKeyOf(date){ return date.substring(0,7); } // "2026-04"
+function monthName(ym){
+  const [y,m]=ym.split("-");
+  const mo=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+  return mo[+m-1]+" "+y;
+}
+
+// Suma conteos, promedia % y días — de todas las semanas del mes
+function aggregateMonth(pid, ym){
+  const weeks = getHistory(pid).filter(e => e.rentas && monthKeyOf(e.date)===ym);
+  if(weeks.length===0) return null;
+  let nuevas=0,noreno=0,venta=0,citas=0,incrSum=0,incrCount=0,diasSum=0,diasCount=0;
+  weeks.forEach(e=>{
+    const r=e.rentas;
+    nuevas+=+r.nuevas||0; noreno+=+r.noreno||0; venta+=+r.venta||0; citas+=+r.citas||0;
+    if(+r.incr){ incrSum+=+r.incr; incrCount++; }
+    if(+r.dias){ diasSum+=+r.dias; diasCount++; }
+  });
+  return {
+    nuevas, noreno, venta, citas,
+    incr: incrCount?+(incrSum/incrCount).toFixed(1):0,
+    dias: diasCount?Math.round(diasSum/diasCount):0,
+    semanas: weeks.length
+  };
+}
+
+// Acumulado mensual EFECTIVO: si hay override manual lo usa, si no usa el automático
+function monthEffective(pid, ym){
+  const auto = aggregateMonth(pid, ym);
+  if(!auto) return null;
+  const ov = (monthOverrides[pid] && monthOverrides[pid][ym]) ? monthOverrides[pid][ym] : null;
+  if(!ov) return {...auto, _edited:false};
+  // Merge: override solo los campos que el usuario tocó
+  return {
+    nuevas: ov.nuevas!==undefined?ov.nuevas:auto.nuevas,
+    noreno: ov.noreno!==undefined?ov.noreno:auto.noreno,
+    venta:  ov.venta!==undefined?ov.venta:auto.venta,
+    citas:  ov.citas!==undefined?ov.citas:auto.citas,
+    incr:   ov.incr!==undefined?ov.incr:auto.incr,
+    dias:   ov.dias!==undefined?ov.dias:auto.dias,
+    semanas: auto.semanas,
+    _edited:true
+  };
+}
+
+
+// Tasa de conversión: rentas nuevas / citas * 100
+function convRate(r){
+  if(!r) return "0";
+  const citas=+r.citas||0, nuevas=+r.nuevas||0;
+  if(citas===0) return nuevas>0?"∞":"0";
+  return (nuevas/citas*100).toFixed(0);
+}
+
 function rentaData(entry){
   if(!entry || !entry.rentas) return null;
   return entry.rentas;
@@ -1063,6 +1210,7 @@ function onRentaInput(){
   r.venta  = +document.getElementById("r-venta").value||0;
   r.incr   = +document.getElementById("r-incr").value||0;
   r.dias   = +document.getElementById("r-dias").value||0;
+  r.citas  = +document.getElementById("r-citas").value||0;
   renderRentasResults();
 }
 
@@ -1118,6 +1266,18 @@ function renderRentasResults(){
 
     <div class="rentas-grid">
       <div class="rentas-mini">
+        <div class="rm-label">Citas<br>de la semana</div>
+        <div class="rm-value">${+r.citas||0}</div>
+      </div>
+      <div class="rentas-mini" style="background:var(--blue-bg);border-color:var(--blue-b)">
+        <div class="rm-label" style="color:var(--blue)">Conversión<br>citas → rentas</div>
+        <div class="rm-value" style="color:var(--blue)">${convRate(r)}<span class="rm-unit">%</span></div>
+      </div>
+      <div class="rentas-mini">
+        <div class="rm-label">Días promedio<br>en lista</div>
+        <div class="rm-value">${+r.dias||0}<span class="rm-unit"> d</span></div>
+      </div>
+      <div class="rentas-mini">
         <div class="rm-label">Liberaciones<br>por no renovación</div>
         <div class="rm-value">${+r.noreno||0}</div>
       </div>
@@ -1129,14 +1289,168 @@ function renderRentasResults(){
         <div class="rm-label">Incremento<br>promedio</div>
         <div class="rm-value">${(+r.incr||0).toFixed(1)}<span class="rm-unit">%</span></div>
       </div>
-      <div class="rentas-mini">
-        <div class="rm-label">Días promedio<br>en lista</div>
-        <div class="rm-value">${+r.dias||0}<span class="rm-unit"> d</span></div>
-      </div>
     </div>`;
   renderWaterfall();
 }
 
+
+
+// ── TOGGLE SEMANA / MES ──
+
+function persistMonthOverrides(){
+  // Guardar local
+  try{ localStorage.setItem("dp_month_overrides", JSON.stringify(monthOverrides)); }catch(e){}
+  // Guardar en Firebase (debounced) por proyecto
+  clearTimeout(window._moTimer);
+  window._moTimer=setTimeout(()=>{
+    if(window._fbSaveMonthOverrides && currentProject){
+      window._fbSaveMonthOverrides(currentProject, monthOverrides[currentProject]||{});
+    }
+  }, 600);
+}
+
+function switchRentaView(view){
+  const sem=document.getElementById("rentas-view-semana");
+  const mes=document.getElementById("rentas-view-mes");
+  const bs=document.getElementById("rt-semana"), bm=document.getElementById("rt-mes");
+  if(view==="mes"){
+    sem.style.display="none"; mes.style.display="block";
+    bs.classList.remove("active"); bm.classList.add("active");
+    buildMonthSelector();
+    renderMonthlyRentas();
+  } else {
+    sem.style.display="block"; mes.style.display="none";
+    bm.classList.remove("active"); bs.classList.add("active");
+    destroyChart("waterfallmonth");
+  }
+}
+
+function buildMonthSelector(){
+  const sel=document.getElementById("mes-selector");
+  if(!sel) return;
+  // Meses únicos con datos de renta de este proyecto
+  const months=[...new Set(getHistory(currentProject).filter(e=>e.rentas).map(e=>monthKeyOf(e.date)))].sort().reverse();
+  if(months.length===0){ sel.innerHTML='<option>Sin datos</option>'; return; }
+  const prev=sel.value;
+  sel.innerHTML=months.map(ym=>`<option value="${ym}">${monthName(ym)}</option>`).join("");
+  if(prev && months.includes(prev)) sel.value=prev;
+}
+
+function onMonthEdit(){
+  const ym=document.getElementById("mes-selector").value;
+  if(!ym || ym==="Sin datos") return;
+  if(!monthOverrides[currentProject]) monthOverrides[currentProject]={};
+  const auto=aggregateMonth(currentProject, ym);
+  const ov={};
+  const get=(id)=>{ const v=document.getElementById(id).value; return v===""?undefined:+v; };
+  const fields={nuevas:"m-nuevas",noreno:"m-noreno",venta:"m-venta",incr:"m-incr",dias:"m-dias",citas:"m-citas"};
+  Object.keys(fields).forEach(k=>{
+    const v=get(fields[k]);
+    if(v!==undefined && auto && v!==auto[k]) ov[k]=v; // solo guardar si difiere del auto
+  });
+  if(Object.keys(ov).length>0){
+    monthOverrides[currentProject][ym]=ov;
+  } else {
+    delete monthOverrides[currentProject][ym];
+  }
+  persistMonthOverrides();
+  renderMonthlyRentas(true); // skip input refill para no interrumpir edición
+}
+
+function resetMonthOverride(){
+  const ym=document.getElementById("mes-selector").value;
+  if(monthOverrides[currentProject]) delete monthOverrides[currentProject][ym];
+  persistMonthOverrides();
+  renderMonthlyRentas();
+}
+
+function renderMonthlyRentas(skipInputs){
+  const ym=document.getElementById("mes-selector").value;
+  if(!ym || ym==="Sin datos"){
+    document.getElementById("rentas-month-results").innerHTML='<div class="rentas-empty">No hay semanas registradas para este mes todavía.</div>';
+    document.getElementById("rentas-waterfall-month-card").style.display="none";
+    return;
+  }
+  document.getElementById("mes-nombre").textContent=monthName(ym);
+  document.getElementById("mes-nombre-wf").textContent=monthName(ym);
+
+  const eff=monthEffective(currentProject, ym);
+  if(!eff){ document.getElementById("rentas-month-results").innerHTML='<div class="rentas-empty">Sin datos.</div>'; return; }
+
+  // Rellenar inputs (a menos que estemos en medio de edición)
+  if(!skipInputs){
+    const set=(id,v)=>{ const el=document.getElementById(id); if(el) el.value=v; };
+    set("m-nuevas",eff.nuevas); set("m-noreno",eff.noreno); set("m-venta",eff.venta);
+    set("m-incr",eff.incr); set("m-dias",eff.dias); set("m-citas",eff.citas);
+  }
+  document.getElementById("m-reset").style.display = eff._edited ? "block":"none";
+
+  const absR=eff.nuevas-eff.noreno;
+  const absT=eff.nuevas-eff.noreno-eff.venta;
+  const absRcls=absR>0?"abs-positive":absR<0?"abs-negative":"";
+  const absTcls=absT>0?"abs-positive":absT<0?"abs-negative":"";
+  const editBadge = eff._edited ? '<span class="month-badge">✏️ Ajustado manualmente</span>' : '';
+
+  document.getElementById("rentas-month-results").innerHTML=`
+    <div class="rentas-hero">
+      <div class="rentas-card hero">
+        <div class="rh-label">Absorción neta de renta · mes ${editBadge}</div>
+        <div class="rh-value ${absRcls}">${absR>0?"+":""}${absR}</div>
+        <div class="rh-sub">Acumulado de ${eff.semanas} semana${eff.semanas!==1?"s":""}.<br>Rentas nuevas − liberaciones por no renovación.</div>
+      </div>
+      <div class="rentas-card">
+        <div class="rc-label">Rentas nuevas · mes</div>
+        <div class="rc-value">${eff.nuevas}</div>
+        <div class="rc-sub">absorción bruta acumulada</div>
+      </div>
+      <div class="rentas-card">
+        <div class="rc-label">Absorción total · mes</div>
+        <div class="rc-value ${absTcls}">${absT>0?"+":""}${absT}</div>
+        <div class="rc-sub">incluyendo salidas por venta</div>
+      </div>
+    </div>
+    <div class="rentas-grid">
+      <div class="rentas-mini"><div class="rm-label">Citas<br>del mes</div><div class="rm-value">${eff.citas||0}</div></div>
+      <div class="rentas-mini" style="background:var(--blue-bg);border-color:var(--blue-b)"><div class="rm-label" style="color:var(--blue)">Conversión<br>citas → rentas</div><div class="rm-value" style="color:var(--blue)">${convRate(eff)}<span class="rm-unit">%</span></div></div>
+      <div class="rentas-mini"><div class="rm-label">Días promedio<br>en lista</div><div class="rm-value">${eff.dias}<span class="rm-unit"> d</span></div></div>
+      <div class="rentas-mini"><div class="rm-label">Liberaciones<br>por no renovación</div><div class="rm-value">${eff.noreno}</div></div>
+      <div class="rentas-mini"><div class="rm-label">Liberaciones<br>por venta</div><div class="rm-value">${eff.venta}</div></div>
+      <div class="rentas-mini"><div class="rm-label">Incremento<br>promedio</div><div class="rm-value">${(+eff.incr||0).toFixed(1)}<span class="rm-unit">%</span></div></div>
+    </div>`;
+
+  renderWaterfallMonth(eff);
+}
+
+function renderWaterfallMonth(eff){
+  const card=document.getElementById("rentas-waterfall-month-card");
+  if(!card) return;
+  if(!eff || (eff.nuevas+eff.noreno+eff.venta)===0){ card.style.display="none"; destroyChart("waterfallmonth"); return; }
+  card.style.display="block";
+  destroyChart("waterfallmonth");
+  const nuevas=eff.nuevas,noreno=eff.noreno,venta=eff.venta;
+  const absRenta=nuevas-noreno, absTotal=nuevas-noreno-venta;
+  const data=[[0,nuevas],[nuevas-noreno,nuevas],[0,absRenta],[absTotal,absRenta],[0,absTotal]];
+  const colors=["#20C997","#F87171",absRenta>=0?"#15803D":"#B91C1C","#FB923C",absTotal>=0?"#15803D":"#B91C1C"];
+  const labels=[["Rentas","nuevas"],["−","No reno."],["=","Abs. renta"],["−","Ventas"],["=","Abs. total"]];
+  const allVals=[0,nuevas,nuevas-noreno,absRenta,absTotal];
+  const minV=Math.min(...allVals,0),maxV=Math.max(...allVals,0);
+  const pad=Math.max(1,Math.round((maxV-minV)*0.15));
+  charts["waterfallmonth"]=new Chart(document.getElementById("chart-waterfall-month"),{
+    type:"bar",
+    data:{labels,datasets:[{data,backgroundColor:colors,borderRadius:5,barPercentage:0.65}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:(x)=>{
+        const i=x.dataIndex;
+        if(i===0)return "Rentas nuevas: +"+nuevas;
+        if(i===1)return "No renovación: −"+noreno;
+        if(i===2)return "Absorción de renta: "+(absRenta>0?"+":"")+absRenta;
+        if(i===3)return "Ventas: −"+venta;
+        return "Absorción total: "+(absTotal>0?"+":"")+absTotal;
+      }}}},
+      scales:{y:{min:minV-pad,max:maxV+pad,grid:{color:(x)=>x.tick.value===0?"rgba(0,0,0,.25)":"rgba(0,0,0,.06)"},ticks:{font:{family:"DM Mono",size:11},stepSize:Math.max(1,Math.round(maxV/5))}},x:{grid:{display:false},ticks:{font:{family:"DM Sans",size:10}}}}
+    }
+  });
+}
 
 function renderWaterfall(){
   const card=document.getElementById("rentas-waterfall-card");
@@ -1229,6 +1543,7 @@ function loadRentasInputs(){
   set("r-venta", r.venta);
   set("r-incr", r.incr);
   set("r-dias", r.dias);
+  set("r-citas", r.citas);
   renderRentasResults();
 }
 
