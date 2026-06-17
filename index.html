@@ -161,7 +161,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text-1);m
 .hist-table tr:last-child td{border-bottom:none}
 .hist-table tr:hover td{background:var(--surface-2)}
 .hist-notes{font-size:12px;color:var(--text-3);font-style:italic;max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.del-btn{background:none;border:none;cursor:pointer;color:var(--text-3);font-size:13px;padding:3px 7px;border-radius:4px;transition:all .12s}
+.del-btn{background:none;border:none;cursor:pointer;color:var(--text-3);font-size:13px;padding:3px 7px;border-radius:4px;transition:all .12s}.edit-btn{background:transparent;border:1px solid var(--border-md);color:var(--text-2);width:26px;height:26px;border-radius:6px;cursor:pointer;font-size:12px;margin-right:5px;transition:all .15s}.edit-btn:hover{background:var(--blue-bg);border-color:var(--blue-b);color:var(--blue)}
 .del-btn:hover{color:var(--red);background:var(--red-bg)}
 
 /* PROJECT HISTORY CHART */
@@ -1017,10 +1017,11 @@ function renderProjectDetail(){
 
   const lat=getLatest(currentProject);
   // Init draft for this project only if not already in memory
-  // Al entrar: mostrar último registro. Al registrar nueva semana: se limpia desde goFromModal
+  // Al entrar: mostrar último registro. Nueva semana: limpia. Edición: preserva draft cargado.
   const chosenDate = window._pendingDate || today();
   delete window._pendingDate;
-  if(!window._newWeek){
+  const isEditing = !!window._editingDate;
+  if(!window._newWeek && !isEditing){
     drafts[currentProject]=lat?JSON.parse(JSON.stringify(lat)):{vivencial:{},admin:{},comite:{},vivencial_score:0,admin_score:0,comite_score:0,notes:"",date:chosenDate};
     drafts[currentProject].date=chosenDate;
   }
@@ -1028,7 +1029,11 @@ function renderProjectDetail(){
   delete window._newWeek;
 
   const latRef = getLatest(currentProject);
-  document.getElementById("save-hint").textContent=isNewWeek?"Nueva semana — calificando "+fmtDate(chosenDate):lat?"Último registro: "+fmtDate(lat.date)+" — usa \"+ Registrar semana\" para nueva calificación":"Primer registro de este proyecto";
+  if(isEditing){
+    document.getElementById("save-hint").textContent="✏️ Editando registro del "+fmtDate(window._editingDate)+" — modifica y guarda para actualizar";
+  } else {
+    document.getElementById("save-hint").textContent=isNewWeek?"Nueva semana — calificando "+fmtDate(chosenDate):lat?"Último registro: "+fmtDate(lat.date)+" — usa \"+ Registrar semana\" para nueva calificación":"Primer registro de este proyecto";
+  }
 
   renderProjCharts();
   renderScoreCards();
@@ -1574,14 +1579,17 @@ function saveEntry(){
   const idx=db[currentProject].findIndex(e=>e.date===entry.date);
   if(idx>=0) db[currentProject][idx]=entry; else db[currentProject].push(entry);
   persist();
-  showToast("Registro guardado ✓");
+  const wasEditing = !!window._editingDate;
+  delete window._editingDate;
+  showToast(wasEditing ? "Registro actualizado ✓" : "Registro guardado ✓");
   // Asegurar que la vista de proyecto está activa antes de renderizar historial
   document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
   document.getElementById("view-project").classList.add("active");
   renderHistory(currentProject);
   updateSidebarScores();
-  document.getElementById("save-hint").textContent="Guardado el "+fmtDate(entry.date);
+  document.getElementById("save-hint").textContent=(wasEditing?"Actualizado el ":"Guardado el ")+fmtDate(entry.date);
   renderProjCharts();
+  renderDashboard();
 }
 
 function renderHistory(pid){
@@ -1601,9 +1609,34 @@ function renderHistory(pid){
       <td><span class="score-pill ${pillClass(o)}">${o>0?o.toFixed(1):"—"}</span></td>
       <td>${(()=>{const r=rentaData(e);if(!r)return '<span style="color:var(--text-3)">—</span>';const a=absNetaRenta(r);const col=a>0?'var(--green)':a<0?'var(--red)':'var(--text-3)';return `<strong style="font-family:DM Mono,monospace;color:${col}">${a>0?"+":""}${a}</strong>`;})()}</td>
       <td><span class="hist-notes">${e.notes||"—"}</span></td>
-      <td><button class="del-btn" onclick="deleteEntry('${pid}','${e.date}')">✕</button></td>
+      <td style="white-space:nowrap"><button class="edit-btn" onclick="editEntry('${pid}','${e.date}')" title="Editar este registro">✏️</button><button class="del-btn" onclick="deleteEntry('${pid}','${e.date}')" title="Eliminar">✕</button></td>
     </tr>`;
   }).join("")}</tbody></table>`;
+}
+
+
+function editEntry(pid, date){
+  // Cambiar al proyecto si es necesario
+  if(currentProject!==pid){ currentProject=pid; }
+  // Cargar el registro existente al draft
+  const entry=(db[pid]||[]).find(e=>e.date===date);
+  if(!entry){ showToast("Registro no encontrado"); return; }
+  drafts[pid]=JSON.parse(JSON.stringify(entry));
+  // Asegurar estructura de rentas
+  if(!drafts[pid].rentas) drafts[pid].rentas={};
+  // Marcar que estamos editando (no es semana nueva)
+  window._newWeek=false;
+  window._editingDate=date;
+  window._pendingDate=date;
+  // Ir a la vista del proyecto
+  showProject(pid, date);
+  // Scroll arriba para ver el formulario
+  setTimeout(()=>{
+    const el=document.getElementById("view-project");
+    if(el) el.scrollTop=0;
+    window.scrollTo({top:0,behavior:"smooth"});
+    showToast("Editando registro del "+fmtDate(date)+" — modifica y guarda");
+  }, 100);
 }
 
 function deleteEntry(pid,date){
@@ -1622,6 +1655,7 @@ function goFromModal(){
   closeModal();
   // Nueva semana: limpiar draft a cero
   drafts[pid]={vivencial:{},admin:{},comite:{},vivencial_score:0,admin_score:0,comite_score:0,notes:"",date:date,rentas:{}};
+  delete window._editingDate;
   window._newWeek=true;
   showProject(pid, date);
 }
