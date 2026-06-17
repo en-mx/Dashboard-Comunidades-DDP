@@ -516,6 +516,10 @@ window._fbLoadAll = async function(){
             <label>Citas de la semana <span class="hint">(showings / visitas)</span></label>
             <input type="number" id="r-citas" min="0" step="1" placeholder="0" oninput="onRentaInput()">
           </div>
+          <div class="rentas-input-group">
+            <label>Renovaciones <span class="hint">(contratos renovados, netean a 0 en absorción)</span></label>
+            <input type="number" id="r-renov" min="0" step="1" placeholder="0" oninput="onRentaInput()">
+          </div>
         </div>
       </div>
 
@@ -564,6 +568,10 @@ window._fbLoadAll = async function(){
             <div class="rentas-input-group">
               <label>Citas del mes <span class="hint">(suma de showings)</span></label>
               <input type="number" id="m-citas" min="0" step="1" oninput="onMonthEdit()">
+            </div>
+            <div class="rentas-input-group">
+              <label>Renovaciones del mes <span class="hint">(suma de contratos renovados)</span></label>
+              <input type="number" id="m-renov" min="0" step="1" oninput="onMonthEdit()">
             </div>
             <div class="rentas-input-group" style="justify-content:flex-end">
               <button onclick="resetMonthOverride()" id="m-reset" style="display:none;padding:8px 12px;border:1px solid var(--border-md);border-radius:8px;background:var(--surface);font-size:11.5px;font-family:DM Sans,sans-serif;color:var(--text-2);cursor:pointer">↺ Volver al cálculo automático</button>
@@ -852,6 +860,7 @@ function renderRentasDashboard(){
       <th>Proyecto</th>
       <th style="text-align:center">Abs. neta renta</th>
       <th style="text-align:center">Rentas nuevas</th>
+      <th style="text-align:center">Renovac.</th>
       <th style="text-align:center">No renovación</th>
       <th style="text-align:center">Ventas</th>
       <th style="text-align:center">Abs. total</th>
@@ -867,7 +876,7 @@ function renderRentasDashboard(){
       if(!r){
         return `<tr>
           <td><span style="display:inline-flex;align-items:center;gap:8px"><span style="width:9px;height:9px;border-radius:50%;background:${PROJ_COLORS[pid]};display:inline-block"></span><strong>${p.name}</strong></span></td>
-          <td colspan="9" style="text-align:center;color:var(--text-3);font-size:12px">Sin datos de renta</td>
+          <td colspan="10" style="text-align:center;color:var(--text-3);font-size:12px">Sin datos de renta</td>
         </tr>`;
       }
       const absR=absNetaRenta(r), absT=absNetaTotal(r);
@@ -878,6 +887,7 @@ function renderRentasDashboard(){
         <td><span style="display:inline-flex;align-items:center;gap:8px"><span style="width:9px;height:9px;border-radius:50%;background:${PROJ_COLORS[pid]};display:inline-block"></span><strong>${p.name}</strong></span></td>
         <td style="text-align:center"><span style="${mono};font-size:17px;color:${cR}">${absR>0?"+":""}${absR}</span></td>
         <td style="text-align:center;font-family:DM Mono,monospace">${+r.nuevas||0}</td>
+        <td style="text-align:center;font-family:DM Mono,monospace;color:var(--green)">${+r.renov||0}</td>
         <td style="text-align:center;font-family:DM Mono,monospace;color:var(--text-2)">${+r.noreno||0}</td>
         <td style="text-align:center;font-family:DM Mono,monospace;color:var(--text-2)">${+r.venta||0}</td>
         <td style="text-align:center"><span style="${mono};color:${cT}">${absT>0?"+":""}${absT}</span></td>
@@ -1141,15 +1151,15 @@ function monthName(ym){
 function aggregateMonth(pid, ym){
   const weeks = getHistory(pid).filter(e => e.rentas && monthKeyOf(e.date)===ym);
   if(weeks.length===0) return null;
-  let nuevas=0,noreno=0,venta=0,citas=0,incrSum=0,incrCount=0,diasSum=0,diasCount=0;
+  let nuevas=0,noreno=0,venta=0,citas=0,renov=0,incrSum=0,incrCount=0,diasSum=0,diasCount=0;
   weeks.forEach(e=>{
     const r=e.rentas;
-    nuevas+=+r.nuevas||0; noreno+=+r.noreno||0; venta+=+r.venta||0; citas+=+r.citas||0;
+    nuevas+=+r.nuevas||0; noreno+=+r.noreno||0; venta+=+r.venta||0; citas+=+r.citas||0; renov+=+r.renov||0;
     if(+r.incr){ incrSum+=+r.incr; incrCount++; }
     if(+r.dias){ diasSum+=+r.dias; diasCount++; }
   });
   return {
-    nuevas, noreno, venta, citas,
+    nuevas, noreno, venta, citas, renov,
     incr: incrCount?+(incrSum/incrCount).toFixed(1):0,
     dias: diasCount?Math.round(diasSum/diasCount):0,
     semanas: weeks.length
@@ -1168,6 +1178,7 @@ function monthEffective(pid, ym){
     noreno: ov.noreno!==undefined?ov.noreno:auto.noreno,
     venta:  ov.venta!==undefined?ov.venta:auto.venta,
     citas:  ov.citas!==undefined?ov.citas:auto.citas,
+    renov:  ov.renov!==undefined?ov.renov:auto.renov,
     incr:   ov.incr!==undefined?ov.incr:auto.incr,
     dias:   ov.dias!==undefined?ov.dias:auto.dias,
     semanas: auto.semanas,
@@ -1211,6 +1222,7 @@ function onRentaInput(){
   r.incr   = +document.getElementById("r-incr").value||0;
   r.dias   = +document.getElementById("r-dias").value||0;
   r.citas  = +document.getElementById("r-citas").value||0;
+  r.renov  = +document.getElementById("r-renov").value||0;
   renderRentasResults();
 }
 
@@ -1278,6 +1290,10 @@ function renderRentasResults(){
         <div class="rm-value">${+r.dias||0}<span class="rm-unit"> d</span></div>
       </div>
       <div class="rentas-mini">
+        <div class="rm-label">Renovaciones<br>de contratos</div>
+        <div class="rm-value">${+r.renov||0}</div>
+      </div>
+      <div class="rentas-mini">
         <div class="rm-label">Liberaciones<br>por no renovación</div>
         <div class="rm-value">${+r.noreno||0}</div>
       </div>
@@ -1343,7 +1359,7 @@ function onMonthEdit(){
   const auto=aggregateMonth(currentProject, ym);
   const ov={};
   const get=(id)=>{ const v=document.getElementById(id).value; return v===""?undefined:+v; };
-  const fields={nuevas:"m-nuevas",noreno:"m-noreno",venta:"m-venta",incr:"m-incr",dias:"m-dias",citas:"m-citas"};
+  const fields={nuevas:"m-nuevas",noreno:"m-noreno",venta:"m-venta",incr:"m-incr",dias:"m-dias",citas:"m-citas",renov:"m-renov"};
   Object.keys(fields).forEach(k=>{
     const v=get(fields[k]);
     if(v!==undefined && auto && v!==auto[k]) ov[k]=v; // solo guardar si difiere del auto
@@ -1381,7 +1397,7 @@ function renderMonthlyRentas(skipInputs){
   if(!skipInputs){
     const set=(id,v)=>{ const el=document.getElementById(id); if(el) el.value=v; };
     set("m-nuevas",eff.nuevas); set("m-noreno",eff.noreno); set("m-venta",eff.venta);
-    set("m-incr",eff.incr); set("m-dias",eff.dias); set("m-citas",eff.citas);
+    set("m-incr",eff.incr); set("m-dias",eff.dias); set("m-citas",eff.citas); set("m-renov",eff.renov);
   }
   document.getElementById("m-reset").style.display = eff._edited ? "block":"none";
 
@@ -1413,6 +1429,7 @@ function renderMonthlyRentas(skipInputs){
       <div class="rentas-mini"><div class="rm-label">Citas<br>del mes</div><div class="rm-value">${eff.citas||0}</div></div>
       <div class="rentas-mini" style="background:var(--blue-bg);border-color:var(--blue-b)"><div class="rm-label" style="color:var(--blue)">Conversión<br>citas → rentas</div><div class="rm-value" style="color:var(--blue)">${convRate(eff)}<span class="rm-unit">%</span></div></div>
       <div class="rentas-mini"><div class="rm-label">Días promedio<br>en lista</div><div class="rm-value">${eff.dias}<span class="rm-unit"> d</span></div></div>
+      <div class="rentas-mini"><div class="rm-label">Renovaciones<br>de contratos</div><div class="rm-value">${eff.renov||0}</div></div>
       <div class="rentas-mini"><div class="rm-label">Liberaciones<br>por no renovación</div><div class="rm-value">${eff.noreno}</div></div>
       <div class="rentas-mini"><div class="rm-label">Liberaciones<br>por venta</div><div class="rm-value">${eff.venta}</div></div>
       <div class="rentas-mini"><div class="rm-label">Incremento<br>promedio</div><div class="rm-value">${(+eff.incr||0).toFixed(1)}<span class="rm-unit">%</span></div></div>
@@ -1544,6 +1561,7 @@ function loadRentasInputs(){
   set("r-incr", r.incr);
   set("r-dias", r.dias);
   set("r-citas", r.citas);
+  set("r-renov", r.renov);
   renderRentasResults();
 }
 
