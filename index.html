@@ -186,6 +186,42 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text-1);m
 /* COLOR HELPERS */
 .c-green{color:var(--green)}.c-amber{color:var(--amber)}.c-red{color:var(--red)}.c-gray{color:var(--text-3)}
 
+/* ── RENTAS / ABSORCIÓN ── */
+.rentas-section{margin-bottom:1.5rem}
+.rentas-header{display:flex;align-items:center;gap:9px;margin-bottom:14px;margin-top:0.5rem}
+.rentas-header h3{font-size:15px;font-weight:600;color:var(--text-1)}
+.rentas-header .rentas-icon{font-size:18px}
+.rentas-hero{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:12px;margin-bottom:12px}
+.rentas-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:1.1rem 1.3rem}
+.rentas-card.hero{background:linear-gradient(135deg,#15302A 0%,#1A3D33 100%);border:none;color:#fff;position:relative;overflow:hidden}
+.rentas-card.hero::after{content:"";position:absolute;right:-30px;top:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.04)}
+.rh-label{font-size:11px;text-transform:uppercase;letter-spacing:.07em;opacity:.75;margin-bottom:6px;font-weight:500}
+.rh-value{font-size:38px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;margin-bottom:5px}
+.rh-sub{font-size:11.5px;opacity:.7;line-height:1.4}
+.rentas-card .rc-label{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin-bottom:7px;font-weight:500}
+.rentas-card .rc-value{font-size:27px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;color:var(--text-1);margin-bottom:3px}
+.rentas-card .rc-sub{font-size:11px;color:var(--text-2)}
+.rentas-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.rentas-mini{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:0.9rem 1.1rem}
+.rentas-mini .rm-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);margin-bottom:6px;font-weight:500;line-height:1.3;min-height:26px}
+.rentas-mini .rm-value{font-size:22px;font-weight:700;font-family:'DM Mono',monospace;color:var(--text-1);line-height:1}
+.rentas-mini .rm-unit{font-size:12px;color:var(--text-3);font-weight:400}
+/* Input form for rentas */
+.rentas-form{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:1.3rem 1.5rem;margin-bottom:12px}
+.rentas-form-title{font-size:13px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:7px;color:var(--text-1)}
+.rentas-inputs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 18px}
+.rentas-input-group{display:flex;flex-direction:column;gap:5px}
+.rentas-input-group label{font-size:11.5px;color:var(--text-2);font-weight:500;line-height:1.3}
+.rentas-input-group .hint{font-size:10px;color:var(--text-3);font-weight:400}
+.rentas-input-group input{padding:9px 12px;border:1px solid var(--border-md);border-radius:var(--r-md);font-size:14px;font-family:'DM Mono',monospace;color:var(--text-1);background:var(--surface-2);outline:none;transition:border-color .15s;width:100%;box-sizing:border-box}
+.rentas-input-group input:focus{border-color:var(--text-1);background:var(--surface)}
+.abs-positive{color:#4ADE80!important}
+.abs-negative{color:#F87171!important}
+.rentas-empty{background:var(--surface-2);border:1px dashed var(--border-md);border-radius:var(--r-lg);padding:1.5rem;text-align:center;color:var(--text-3);font-size:13px}
+.rentas-delta{font-size:11px;margin-top:4px}
+@media(max-width:880px){.rentas-hero{grid-template-columns:1fr}.rentas-grid{grid-template-columns:repeat(2,1fr)}.rentas-inputs{grid-template-columns:1fr}}
+
+
 @media(max-width:900px){
   .dash-top-row{grid-template-columns:1fr}
   .dash-mid-row{grid-template-columns:1fr 1fr}
@@ -374,6 +410,19 @@ window._fbLoadAll = async function(){
       </div>
     </div>
 
+    <!-- Fila 2.5: Absorción de rentas -->
+    <div class="chart-card" style="margin-bottom:14px">
+      <div class="chart-card-title">🏠 Absorción de rentas — última semana</div>
+      <div class="chart-card-sub">Desempeño comercial de renta por proyecto. La absorción neta de renta = rentas nuevas − liberaciones por no renovación (sin contar ventas).</div>
+      <div style="display:grid;grid-template-columns:1fr 1.3fr;gap:18px;margin-top:1rem;align-items:start" id="rentas-dash-layout">
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:8px">💧 Absorción del portafolio</div>
+          <div class="chart-wrap" style="height:230px"><canvas id="chart-waterfall-dash"></canvas></div>
+        </div>
+        <div id="rentas-dash-wrap"></div>
+      </div>
+    </div>
+
     <!-- Fila 3: Alertas -->
     <div class="chart-card" style="margin-bottom:1.5rem">
       <div class="chart-card-title">⚡ Alertas y puntos de atención</div>
@@ -409,6 +458,51 @@ window._fbLoadAll = async function(){
     </div>
 
     <div class="detail-score-row" id="detail-score-row"></div>
+
+    <!-- ── BLOQUE DE RENTAS / ABSORCIÓN ── -->
+    <div class="rentas-section">
+      <div class="rentas-header">
+        <span class="rentas-icon">🏠</span>
+        <h3>Desempeño en rentas — semana</h3>
+      </div>
+
+      <!-- Captura de datos -->
+      <div class="rentas-form">
+        <div class="rentas-form-title">📥 Registro de la semana</div>
+        <div class="rentas-inputs">
+          <div class="rentas-input-group">
+            <label>Rentas nuevas <span class="hint">(deptos rentados esta semana)</span></label>
+            <input type="number" id="r-nuevas" min="0" step="1" placeholder="0" oninput="onRentaInput()">
+          </div>
+          <div class="rentas-input-group">
+            <label>Liberaciones por no renovación <span class="hint">(salidas naturales)</span></label>
+            <input type="number" id="r-noreno" min="0" step="1" placeholder="0" oninput="onRentaInput()">
+          </div>
+          <div class="rentas-input-group">
+            <label>Liberaciones por venta <span class="hint">(unidad sale a venta)</span></label>
+            <input type="number" id="r-venta" min="0" step="1" placeholder="0" oninput="onRentaInput()">
+          </div>
+          <div class="rentas-input-group">
+            <label>Incremento promedio % <span class="hint">(sobre contratos previos)</span></label>
+            <input type="number" id="r-incr" step="0.1" placeholder="0.0" oninput="onRentaInput()">
+          </div>
+          <div class="rentas-input-group">
+            <label>Días promedio en lista <span class="hint">(de los deptos rentados)</span></label>
+            <input type="number" id="r-dias" min="0" step="1" placeholder="0" oninput="onRentaInput()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Resultados visuales -->
+      <div id="rentas-results"></div>
+
+      <!-- Waterfall del proyecto -->
+      <div class="chart-card" id="rentas-waterfall-card" style="margin-top:12px;display:none">
+        <div class="chart-card-title">💧 Cómo se construye la absorción — esta semana</div>
+        <div class="chart-card-sub">De rentas nuevas, restamos salidas paso a paso hasta la absorción final</div>
+        <div class="chart-wrap" style="height:240px"><canvas id="chart-waterfall"></canvas></div>
+      </div>
+    </div>
 
     <div class="notes-card">
       <div class="notes-title">📝 Notas de la junta</div>
@@ -611,7 +705,98 @@ function renderDashboard(){
   renderRadarChart();
   renderBarsChart();
   renderAlerts();
+  renderRentasDashboard();
+  renderWaterfallDash();
   updateSidebarScores();
+}
+
+
+
+function renderWaterfallDash(){
+  const ctx=document.getElementById("chart-waterfall-dash");
+  if(!ctx) return;
+  destroyChart("waterfalldash");
+  // Sumar la última semana de cada proyecto
+  let nuevas=0,noreno=0,venta=0;
+  PROJ_KEYS.forEach(pid=>{
+    const lat=getLatest(pid); const r=lat?rentaData(lat):null;
+    if(r){ nuevas+=+r.nuevas||0; noreno+=+r.noreno||0; venta+=+r.venta||0; }
+  });
+  const layout=document.getElementById("rentas-dash-layout");
+  if(nuevas+noreno+venta===0){ if(layout) layout.style.gridTemplateColumns="1fr"; ctx.parentElement.parentElement.style.display="none"; return; }
+  ctx.parentElement.parentElement.style.display="block";
+
+  const absRenta=nuevas-noreno, absTotal=nuevas-noreno-venta;
+  const data=[[0,nuevas],[nuevas-noreno,nuevas],[0,absRenta],[absTotal,absRenta],[0,absTotal]];
+  const colors=["#20C997","#F87171",absRenta>=0?"#15803D":"#B91C1C","#FB923C",absTotal>=0?"#15803D":"#B91C1C"];
+  const labels=[["Rentas","nuevas"],["−","No reno."],["=","Abs. renta"],["−","Ventas"],["=","Abs. total"]];
+  const allVals=[0,nuevas,nuevas-noreno,absRenta,absTotal];
+  const minV=Math.min(...allVals,0),maxV=Math.max(...allVals,0);
+  const pad=Math.max(1,Math.round((maxV-minV)*0.15));
+
+  charts["waterfalldash"]=new Chart(ctx,{
+    type:"bar",
+    data:{labels,datasets:[{data,backgroundColor:colors,borderRadius:5,barPercentage:0.7}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:(c)=>{
+        const i=c.dataIndex;
+        if(i===0)return "Rentas nuevas: +"+nuevas;
+        if(i===1)return "No renovación: −"+noreno;
+        if(i===2)return "Absorción de renta: "+(absRenta>0?"+":"")+absRenta;
+        if(i===3)return "Ventas: −"+venta;
+        return "Absorción total: "+(absTotal>0?"+":"")+absTotal;
+      }}}},
+      scales:{y:{min:minV-pad,max:maxV+pad,grid:{color:(x)=>x.tick.value===0?"rgba(0,0,0,.25)":"rgba(0,0,0,.06)"},ticks:{font:{family:"DM Mono",size:11},stepSize:Math.max(1,Math.round(maxV/5))}},x:{grid:{display:false},ticks:{font:{family:"DM Sans",size:10}}}}
+    }
+  });
+}
+
+function renderRentasDashboard(){
+  const wrap=document.getElementById("rentas-dash-wrap");
+  if(!wrap) return;
+  const PROJ_COLORS={agwa:"#5C7CFA",upsf:"#20C997",jinetes:"#F59F00",ut:"#E64980"};
+  const anyData = PROJ_KEYS.some(pid=>{ const l=getLatest(pid); return l && rentaData(l); });
+  if(!anyData){
+    wrap.innerHTML='<div class="rentas-empty">Aún no hay datos de rentas registrados. Entra a cada proyecto y captura el desempeño de renta de la semana.</div>';
+    return;
+  }
+  wrap.innerHTML=`<table class="semaforo-table">
+    <thead><tr>
+      <th>Proyecto</th>
+      <th style="text-align:center">Abs. neta renta</th>
+      <th style="text-align:center">Rentas nuevas</th>
+      <th style="text-align:center">No renovación</th>
+      <th style="text-align:center">Ventas</th>
+      <th style="text-align:center">Abs. total</th>
+      <th style="text-align:center">Incr. %</th>
+      <th style="text-align:center">Días lista</th>
+    </tr></thead><tbody>
+    ${PROJ_KEYS.map(pid=>{
+      const p=PROJECTS[pid];
+      const lat=getLatest(pid);
+      const r=lat?rentaData(lat):null;
+      if(!r){
+        return `<tr>
+          <td><span style="display:inline-flex;align-items:center;gap:8px"><span style="width:9px;height:9px;border-radius:50%;background:${PROJ_COLORS[pid]};display:inline-block"></span><strong>${p.name}</strong></span></td>
+          <td colspan="7" style="text-align:center;color:var(--text-3);font-size:12px">Sin datos de renta</td>
+        </tr>`;
+      }
+      const absR=absNetaRenta(r), absT=absNetaTotal(r);
+      const cR=absR>0?"var(--green)":absR<0?"var(--red)":"var(--text-3)";
+      const cT=absT>0?"var(--green)":absT<0?"var(--red)":"var(--text-3)";
+      const mono="font-family:DM Mono,monospace;font-weight:700";
+      return `<tr>
+        <td><span style="display:inline-flex;align-items:center;gap:8px"><span style="width:9px;height:9px;border-radius:50%;background:${PROJ_COLORS[pid]};display:inline-block"></span><strong>${p.name}</strong></span></td>
+        <td style="text-align:center"><span style="${mono};font-size:17px;color:${cR}">${absR>0?"+":""}${absR}</span></td>
+        <td style="text-align:center;font-family:DM Mono,monospace">${+r.nuevas||0}</td>
+        <td style="text-align:center;font-family:DM Mono,monospace;color:var(--text-2)">${+r.noreno||0}</td>
+        <td style="text-align:center;font-family:DM Mono,monospace;color:var(--text-2)">${+r.venta||0}</td>
+        <td style="text-align:center"><span style="${mono};color:${cT}">${absT>0?"+":""}${absT}</span></td>
+        <td style="text-align:center;font-family:DM Mono,monospace">${(+r.incr||0).toFixed(1)}%</td>
+        <td style="text-align:center;font-family:DM Mono,monospace">${+r.dias||0}</td>
+      </tr>`;
+    }).join("")}
+  </tbody></table>`;
 }
 
 function renderKPIs(){
@@ -748,6 +933,7 @@ function renderProjectDetail(){
   renderScoreCards();
   document.getElementById("detail-notes").value=drafts[currentProject].notes||"";
   document.getElementById("detail-notes").oninput=e=>{drafts[currentProject].notes=e.target.value;};
+  loadRentasInputs();
   renderHistory(currentProject);
 }
 
@@ -847,6 +1033,205 @@ function setSubcat(key,sub,v){
   [1,2,3,4,5].forEach(d=>{ const el=document.getElementById(`sd-${key}-${sub}-${d}`); if(el) el.classList.toggle("on",d<=v); });
 }
 
+
+// ══════════════════════════════════
+// RENTAS / ABSORCIÓN
+// ══════════════════════════════════
+function rentaData(entry){
+  if(!entry || !entry.rentas) return null;
+  return entry.rentas;
+}
+
+// Absorción neta de RENTA (sana) = rentas nuevas - liberaciones por no renovación
+// (las ventas NO restan porque son evento de capital, no de demanda de renta)
+function absNetaRenta(r){
+  if(!r) return 0;
+  return (+r.nuevas||0) - (+r.noreno||0);
+}
+// Absorción neta TOTAL = rentas nuevas - todas las liberaciones (incluye ventas)
+function absNetaTotal(r){
+  if(!r) return 0;
+  return (+r.nuevas||0) - (+r.noreno||0) - (+r.venta||0);
+}
+
+function onRentaInput(){
+  if(!currentProject) return;
+  if(!drafts[currentProject].rentas) drafts[currentProject].rentas={};
+  const r=drafts[currentProject].rentas;
+  r.nuevas = +document.getElementById("r-nuevas").value||0;
+  r.noreno = +document.getElementById("r-noreno").value||0;
+  r.venta  = +document.getElementById("r-venta").value||0;
+  r.incr   = +document.getElementById("r-incr").value||0;
+  r.dias   = +document.getElementById("r-dias").value||0;
+  renderRentasResults();
+}
+
+function renderRentasResults(){
+  const cont=document.getElementById("rentas-results");
+  if(!cont) return;
+  const r = drafts[currentProject] && drafts[currentProject].rentas ? drafts[currentProject].rentas : null;
+  const prev = getPrev(currentProject);
+  const prevR = prev ? rentaData(prev) : null;
+
+  const hasData = r && ((+r.nuevas||0)+(+r.noreno||0)+(+r.venta||0)+(+r.incr||0)+(+r.dias||0) > 0);
+  if(!hasData){
+    cont.innerHTML='<div class="rentas-empty">Captura los datos de la semana arriba para ver la absorción y métricas de renta.</div>';
+    renderWaterfall();
+    return;
+  }
+
+  const absR = absNetaRenta(r);
+  const absT = absNetaTotal(r);
+  const absRprev = prevR ? absNetaRenta(prevR) : null;
+
+  // Delta de absorción sana vs semana anterior
+  let deltaHtml="";
+  if(absRprev!==null){
+    const d=absR-absRprev;
+    const cls=d>0?"abs-positive":d<0?"abs-negative":"";
+    const arrow=d>0?"▲":d<0?"▼":"=";
+    deltaHtml=`<div class="rh-sub"><span style="opacity:.9">${arrow} ${d>0?"+":""}${d} vs semana anterior</span></div>`;
+  }
+
+  const absRcls = absR>0?"abs-positive":absR<0?"abs-negative":"";
+  const absTcls = absT>0?"abs-positive":absT<0?"abs-negative":"";
+
+  cont.innerHTML=`
+    <div class="rentas-hero">
+      <div class="rentas-card hero">
+        <div class="rh-label">Absorción neta de renta</div>
+        <div class="rh-value ${absRcls}">${absR>0?"+":""}${absR}</div>
+        <div class="rh-sub">Rentas nuevas − liberaciones por no renovación.<br>La señal pura de demanda de renta (las ventas no cuentan).</div>
+        ${deltaHtml}
+      </div>
+      <div class="rentas-card">
+        <div class="rc-label">Rentas nuevas</div>
+        <div class="rc-value">${+r.nuevas||0}</div>
+        <div class="rc-sub">absorción bruta del periodo</div>
+      </div>
+      <div class="rentas-card">
+        <div class="rc-label">Absorción neta total</div>
+        <div class="rc-value ${absTcls}">${absT>0?"+":""}${absT}</div>
+        <div class="rc-sub">incluyendo salidas por venta</div>
+      </div>
+    </div>
+
+    <div class="rentas-grid">
+      <div class="rentas-mini">
+        <div class="rm-label">Liberaciones<br>por no renovación</div>
+        <div class="rm-value">${+r.noreno||0}</div>
+      </div>
+      <div class="rentas-mini">
+        <div class="rm-label">Liberaciones<br>por venta</div>
+        <div class="rm-value">${+r.venta||0}</div>
+      </div>
+      <div class="rentas-mini">
+        <div class="rm-label">Incremento<br>promedio</div>
+        <div class="rm-value">${(+r.incr||0).toFixed(1)}<span class="rm-unit">%</span></div>
+      </div>
+      <div class="rentas-mini">
+        <div class="rm-label">Días promedio<br>en lista</div>
+        <div class="rm-value">${+r.dias||0}<span class="rm-unit"> d</span></div>
+      </div>
+    </div>`;
+  renderWaterfall();
+}
+
+
+function renderWaterfall(){
+  const card=document.getElementById("rentas-waterfall-card");
+  if(!card) return;
+  const r = drafts[currentProject] && drafts[currentProject].rentas ? drafts[currentProject].rentas : null;
+  const hasData = r && ((+r.nuevas||0)+(+r.noreno||0)+(+r.venta||0) > 0);
+  if(!hasData){ card.style.display="none"; destroyChart("waterfall"); return; }
+  card.style.display="block";
+  destroyChart("waterfall");
+
+  const nuevas=+r.nuevas||0, noreno=+r.noreno||0, venta=+r.venta||0;
+  const absRenta = nuevas - noreno;        // absorción sana
+  const absTotal = nuevas - noreno - venta; // absorción total
+
+  // Waterfall steps: cada barra es [base, top] (floating bar)
+  // 1. Rentas nuevas: 0 → nuevas (verde, sube)
+  // 2. No renovación: nuevas → (nuevas-noreno) (rojo, baja)
+  // 3. = Absorción de renta: marcador (barra completa desde 0)
+  // 4. Ventas: absRenta → absTotal (naranja, baja)
+  // 5. = Absorción total: marcador final
+  const step1=[0, nuevas];
+  const step2=[nuevas-noreno, nuevas];
+  const step3=[0, absRenta<0?0:absRenta];   // si negativo se ve abajo
+  const step4=[absTotal, absRenta];
+  const step5=[0, absTotal<0?0:absTotal];
+
+  const labels=["Rentas\nnuevas","− No\nrenovación","= Absorción\nde renta","− Ventas","= Absorción\ntotal"];
+  const data=[step1, step2, [0,absRenta], step4, [0,absTotal]];
+  const colors=[
+    "#20C997",  // verde rentas nuevas
+    "#F87171",  // rojo no renovación
+    absRenta>=0?"#15803D":"#B91C1C", // absorción renta (verde/rojo según signo)
+    "#FB923C",  // naranja ventas
+    absTotal>=0?"#15803D":"#B91C1C"  // absorción total
+  ];
+
+  // Para barras de absorción que pueden ser negativas, ajustar el rango
+  const allVals=[0, nuevas, nuevas-noreno, absRenta, absTotal];
+  const minV=Math.min(...allVals, 0);
+  const maxV=Math.max(...allVals, 0);
+  const pad=Math.max(1, Math.round((maxV-minV)*0.15));
+
+  const ctx=document.getElementById("chart-waterfall");
+  charts["waterfall"]=new Chart(ctx,{
+    type:"bar",
+    data:{
+      labels:labels.map(l=>l.split("\n")),
+      datasets:[{
+        data:data,
+        backgroundColor:colors,
+        borderColor:colors,
+        borderWidth:0,
+        borderRadius:5,
+        barPercentage:0.65
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:(ctx)=>{
+          const v=ctx.raw;
+          const diff=Math.abs(v[1]-v[0]);
+          const i=ctx.dataIndex;
+          if(i===0) return "Rentas nuevas: +"+nuevas;
+          if(i===1) return "No renovación: −"+noreno;
+          if(i===2) return "Absorción de renta: "+(absRenta>0?"+":"")+absRenta;
+          if(i===3) return "Ventas: −"+venta;
+          if(i===4) return "Absorción total: "+(absTotal>0?"+":"")+absTotal;
+          return diff;
+        }}}
+      },
+      scales:{
+        y:{
+          min:minV-pad, max:maxV+pad,
+          grid:{color:(ctx)=>ctx.tick.value===0?"rgba(0,0,0,.25)":"rgba(0,0,0,.06)"},
+          ticks:{font:{family:"DM Mono",size:11},stepSize:1}
+        },
+        x:{grid:{display:false},ticks:{font:{family:"DM Sans",size:10.5}}}
+      }
+    }
+  });
+}
+
+function loadRentasInputs(){
+  const r = drafts[currentProject] && drafts[currentProject].rentas ? drafts[currentProject].rentas : {};
+  const set=(id,v)=>{ const el=document.getElementById(id); if(el) el.value=(v!==undefined&&v!==0)?v:""; };
+  set("r-nuevas", r.nuevas);
+  set("r-noreno", r.noreno);
+  set("r-venta", r.venta);
+  set("r-incr", r.incr);
+  set("r-dias", r.dias);
+  renderRentasResults();
+}
+
 function saveEntry(){
   if(!currentProject) return;
   const entry=JSON.parse(JSON.stringify(drafts[currentProject]));
@@ -872,7 +1257,7 @@ function renderHistory(pid){
   const body=document.getElementById("history-body");
   if(!body) return; // elemento no existe en el DOM aún
   if(!hist.length){ body.innerHTML='<div class="hist-empty">Aún no hay registros — guarda el primer registro de este proyecto</div>'; return; }
-  body.innerHTML=`<table class="hist-table"><thead><tr><th>Semana</th><th>⭐ Vivencial</th><th>🏢 Admin.</th><th>👥 Comité</th><th>Promedio</th><th>Notas</th><th></th></tr></thead><tbody>
+  body.innerHTML=`<table class="hist-table"><thead><tr><th>Semana</th><th>⭐ Vivencial</th><th>🏢 Admin.</th><th>👥 Comité</th><th>Promedio</th><th>🏠 Abs. renta</th><th>Notas</th><th></th></tr></thead><tbody>
   ${hist.map((e,i)=>{
     const v=sc(e,"vivencial"),a=sc(e,"admin"),c=sc(e,"comite"),o=overall(e,currentProject);
     return `<tr>
@@ -881,6 +1266,7 @@ function renderHistory(pid){
       <td><span class="score-pill ${pillClass(a)}">${a>0?a.toFixed(1):"—"}</span></td>
       <td><span class="score-pill ${pillClass(c)}">${c>0?c.toFixed(1):"—"}</span></td>
       <td><span class="score-pill ${pillClass(o)}">${o>0?o.toFixed(1):"—"}</span></td>
+      <td>${(()=>{const r=rentaData(e);if(!r)return '<span style="color:var(--text-3)">—</span>';const a=absNetaRenta(r);const col=a>0?'var(--green)':a<0?'var(--red)':'var(--text-3)';return `<strong style="font-family:DM Mono,monospace;color:${col}">${a>0?"+":""}${a}</strong>`;})()}</td>
       <td><span class="hist-notes">${e.notes||"—"}</span></td>
       <td><button class="del-btn" onclick="deleteEntry('${pid}','${e.date}')">✕</button></td>
     </tr>`;
@@ -902,7 +1288,7 @@ function goFromModal(){
   const date=document.getElementById("modal-date").value;
   closeModal();
   // Nueva semana: limpiar draft a cero
-  drafts[pid]={vivencial:{},admin:{},comite:{},vivencial_score:0,admin_score:0,comite_score:0,notes:"",date:date};
+  drafts[pid]={vivencial:{},admin:{},comite:{},vivencial_score:0,admin_score:0,comite_score:0,notes:"",date:date,rentas:{}};
   window._newWeek=true;
   showProject(pid, date);
 }
