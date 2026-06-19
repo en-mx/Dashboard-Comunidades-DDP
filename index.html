@@ -222,6 +222,55 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text-1);m
 .rt-btn{padding:6px 14px;border:none;background:transparent;border-radius:7px;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:500;color:var(--text-2);cursor:pointer;transition:all .15s;white-space:nowrap}
 .rt-btn.active{background:var(--surface);color:var(--text-1);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.08)}
 .month-badge{display:inline-block;font-size:10px;background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-b);padding:2px 8px;border-radius:20px;font-weight:600;margin-left:8px}
+
+/* ── CAPTURA REFORMULADA ── */
+.rentas-capture-toggle{padding:8px 16px;border:1px solid var(--border-md);border-radius:10px;background:var(--text-1);color:#fff;font-size:12.5px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;transition:all .15s}
+.rentas-capture-toggle:hover{opacity:.88}
+.rentas-capture-toggle.active{background:var(--surface);color:var(--text-1)}
+.cap-block{margin-bottom:1.25rem}
+.cap-block:last-child{margin-bottom:0}
+.cap-block-title{font-size:12.5px;font-weight:600;color:var(--text-1);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.cap-inv-row{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px}
+.add-unit-btn{margin-top:10px;padding:8px 14px;border:1px dashed var(--border-strong);border-radius:9px;background:transparent;color:var(--text-2);font-size:12px;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;transition:all .15s;width:100%}
+.add-unit-btn:hover{border-color:var(--green-b);background:var(--green-bg);color:var(--green)}
+.unidad-row{display:grid;grid-template-columns:1.2fr 1.1fr 0.9fr 0.9fr 32px;gap:8px;align-items:center;margin-bottom:7px;padding:8px;background:var(--surface-2);border-radius:9px}
+.unidad-row input,.unidad-row select{padding:7px 9px;border:1px solid var(--border-md);border-radius:7px;font-size:12.5px;font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--text-1);outline:none;width:100%;box-sizing:border-box}
+.unidad-row input[type=number]{font-family:'DM Mono',monospace}
+.unidad-row .u-del{width:28px;height:28px;border:none;background:transparent;color:var(--text-3);cursor:pointer;border-radius:6px;font-size:14px}
+.unidad-row .u-del:hover{background:var(--red-bg);color:var(--red)}
+.unidad-head{display:grid;grid-template-columns:1.2fr 1.1fr 0.9fr 0.9fr 32px;gap:8px;padding:0 8px 4px;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);font-weight:600}
+.unidades-empty{padding:1rem;text-align:center;color:var(--text-3);font-size:12px;background:var(--surface-2);border-radius:9px}
+
+/* ── DASHBOARD VISUAL ── */
+.rd-section{margin-bottom:1rem}
+.rd-section-label{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--text-3);font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.rd-section-label::after{content:"";flex:1;height:1px;background:var(--border)}
+.rd-inv-grid{display:grid;grid-template-columns:auto 1fr 1fr 1fr;gap:12px;align-items:stretch}
+.rd-donut-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:1rem 1.25rem;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:150px}
+.rd-donut-wrap{position:relative;width:110px;height:110px}
+.rd-donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.rd-donut-pct{font-size:24px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;color:var(--text-1)}
+.rd-donut-lbl{font-size:9.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);margin-top:2px}
+.rd-stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:1rem 1.25rem;display:flex;flex-direction:column;justify-content:center}
+.rd-stat-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);margin-bottom:6px;font-weight:500}
+.rd-stat-val{font-size:30px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;color:var(--text-1)}
+.rd-stat-sub{font-size:11px;color:var(--text-2);margin-top:4px}
+.rd-stat.accent-green{background:linear-gradient(135deg,#15302A,#1A3D33);border:none}
+.rd-stat.accent-green .rd-stat-lbl{color:rgba(255,255,255,.7)}
+.rd-stat.accent-green .rd-stat-val{color:#fff}
+.rd-stat.accent-green .rd-stat-sub{color:rgba(255,255,255,.65)}
+.rd-flow-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rd-units-table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
+.rd-units-table th{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);font-weight:600;padding:9px 12px;text-align:left;background:var(--surface-2);border-bottom:1px solid var(--border)}
+.rd-units-table td{font-size:13px;padding:9px 12px;border-bottom:1px solid var(--border)}
+.rd-units-table tr:last-child td{border-bottom:none}
+.rd-tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px}
+.rd-tag.nueva{background:var(--green-bg);color:var(--green)}
+.rd-tag.renovacion{background:var(--blue-bg);color:var(--blue)}
+.rd-units-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+.rd-mes-banner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-lg);padding:10px 16px;margin-bottom:12px}
+@media(max-width:900px){.rd-inv-grid{grid-template-columns:1fr 1fr}.rd-flow-grid{grid-template-columns:1fr}.cap-inv-row{grid-template-columns:1fr}.unidad-row,.unidad-head{grid-template-columns:1fr 1fr 0.8fr 0.8fr 28px}}
+
 .rentas-empty{background:var(--surface-2);border:1px dashed var(--border-md);border-radius:var(--r-lg);padding:1.5rem;text-align:center;color:var(--text-3);font-size:13px}
 .rentas-delta{font-size:11px;margin-top:4px}
 @media(max-width:880px){.rentas-hero{grid-template-columns:1fr}.rentas-grid{grid-template-columns:repeat(2,1fr)}.rentas-inputs{grid-template-columns:1fr}}
@@ -274,6 +323,12 @@ window._fbSaveMonthOverrides = async function(pid, overrides){
   } catch(e){ console.error("Firebase month override save error:", e); }
 };
 
+window._fbSaveInvConfig = async function(pid, total){
+  try{
+    await _fdb.collection("config").doc(pid).set({invTotal: total}, {merge:true});
+  } catch(e){ console.error("Firebase inv config save error:", e); }
+};
+
 window._fbLoadAllConfig = async function(){
   try{
     const snap = await _fdb.collection("config").get();
@@ -282,7 +337,8 @@ window._fbLoadAllConfig = async function(){
       const data = doc.data();
       result[doc.id] = {
         pillarConfig: data.pillarConfig ? JSON.parse(data.pillarConfig) : null,
-        monthOverrides: data.monthOverrides ? JSON.parse(data.monthOverrides) : null
+        monthOverrides: data.monthOverrides ? JSON.parse(data.monthOverrides) : null,
+        invTotal: (data.invTotal!==undefined) ? data.invTotal : null
       };
     });
     return result;
@@ -473,118 +529,67 @@ window._fbLoadAll = async function(){
 
     <div class="detail-score-row" id="detail-score-row"></div>
 
-    <!-- ── BLOQUE DE RENTAS / ABSORCIÓN ── -->
+    <!-- ── DASHBOARD DE RENTAS ── -->
     <div class="rentas-section">
       <div class="rentas-header" style="justify-content:space-between">
         <div style="display:flex;align-items:center;gap:9px">
           <span class="rentas-icon">🏠</span>
-          <h3>Desempeño en rentas</h3>
+          <h3>Dashboard de rentas</h3>
         </div>
-        <div class="rentas-toggle">
-          <button id="rt-semana" class="rt-btn active" onclick="switchRentaView('semana')">Semana</button>
-          <button id="rt-mes" class="rt-btn" onclick="switchRentaView('mes')">Acumulado del mes</button>
+        <button class="rentas-capture-toggle" onclick="toggleCaptureForm()" id="capture-toggle-btn">📥 Registrar / editar semana</button>
+      </div>
+
+      <!-- ═══ FORMULARIO DE CAPTURA (colapsable) ═══ -->
+      <div id="rentas-capture" style="display:none">
+        <div class="rentas-form">
+          <!-- Inventario -->
+          <div class="cap-block">
+            <div class="cap-block-title">📦 Inventario de renta</div>
+            <div class="cap-inv-row">
+              <div class="rentas-input-group">
+                <label>Inventario total <span class="hint">(unidades en renta del proyecto)</span></label>
+                <input type="number" id="r-invtotal" min="0" step="1" placeholder="0" oninput="onInvTotalInput()">
+              </div>
+              <div class="rentas-input-group">
+                <label>Disponibles esta semana <span class="hint" id="disp-hint">(vacías por rentar)</span></label>
+                <div style="display:flex;gap:6px;align-items:center">
+                  <input type="number" id="r-disponible" min="0" step="1" placeholder="0" oninput="onDisponibleManual()" style="flex:1">
+                  <button id="disp-auto-btn" onclick="resetDisponibleAuto()" style="display:none;padding:8px 10px;border:1px solid var(--border-md);border-radius:8px;background:var(--surface);font-size:10.5px;font-family:DM Sans,sans-serif;color:var(--text-2);cursor:pointer;white-space:nowrap">↺ Auto</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Unidades cerradas -->
+          <div class="cap-block">
+            <div class="cap-block-title">🔑 Unidades cerradas esta semana <span style="font-weight:400;color:var(--text-3);font-size:11px">(rentas nuevas y renovaciones)</span></div>
+            <div id="unidades-list"></div>
+            <button class="add-unit-btn" onclick="addUnidad()">+ Agregar unidad cerrada</button>
+          </div>
+
+          <!-- Liberaciones y citas -->
+          <div class="cap-block">
+            <div class="cap-block-title">📤 Liberaciones y tráfico</div>
+            <div class="rentas-inputs">
+              <div class="rentas-input-group">
+                <label>Liberaciones por no renovación <span class="hint">(salidas naturales)</span></label>
+                <input type="number" id="r-noreno" min="0" step="1" placeholder="0" oninput="onRentaInput()">
+              </div>
+              <div class="rentas-input-group">
+                <label>Liberaciones por venta <span class="hint">(unidad sale a venta)</span></label>
+                <input type="number" id="r-venta" min="0" step="1" placeholder="0" oninput="onRentaInput()">
+              </div>
+              <div class="rentas-input-group">
+                <label>Citas de la semana <span class="hint">(showings / visitas)</span></label>
+                <input type="number" id="r-citas" min="0" step="1" placeholder="0" oninput="onRentaInput()">
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- ═══ VISTA SEMANA ═══ -->
-      <div id="rentas-view-semana">
-      <!-- Captura de datos -->
-      <div class="rentas-form">
-        <div class="rentas-form-title">📥 Registro de la semana</div>
-        <div class="rentas-inputs">
-          <div class="rentas-input-group">
-            <label>Rentas nuevas <span class="hint">(deptos rentados esta semana)</span></label>
-            <input type="number" id="r-nuevas" min="0" step="1" placeholder="0" oninput="onRentaInput()">
-          </div>
-          <div class="rentas-input-group">
-            <label>Liberaciones por no renovación <span class="hint">(salidas naturales)</span></label>
-            <input type="number" id="r-noreno" min="0" step="1" placeholder="0" oninput="onRentaInput()">
-          </div>
-          <div class="rentas-input-group">
-            <label>Liberaciones por venta <span class="hint">(unidad sale a venta)</span></label>
-            <input type="number" id="r-venta" min="0" step="1" placeholder="0" oninput="onRentaInput()">
-          </div>
-          <div class="rentas-input-group">
-            <label>Incremento promedio % <span class="hint">(sobre contratos previos)</span></label>
-            <input type="number" id="r-incr" step="0.1" placeholder="0.0" oninput="onRentaInput()">
-          </div>
-          <div class="rentas-input-group">
-            <label>Días promedio en lista <span class="hint">(de los deptos rentados)</span></label>
-            <input type="number" id="r-dias" min="0" step="1" placeholder="0" oninput="onRentaInput()">
-          </div>
-          <div class="rentas-input-group">
-            <label>Citas de la semana <span class="hint">(showings / visitas)</span></label>
-            <input type="number" id="r-citas" min="0" step="1" placeholder="0" oninput="onRentaInput()">
-          </div>
-          <div class="rentas-input-group">
-            <label>Renovaciones <span class="hint">(contratos renovados, netean a 0 en absorción)</span></label>
-            <input type="number" id="r-renov" min="0" step="1" placeholder="0" oninput="onRentaInput()">
-          </div>
-        </div>
-      </div>
-
-      <!-- Resultados visuales -->
-      <div id="rentas-results"></div>
-
-      <!-- Waterfall del proyecto -->
-      <div class="chart-card" id="rentas-waterfall-card" style="margin-top:12px;display:none">
-        <div class="chart-card-title">💧 Cómo se construye la absorción — esta semana</div>
-        <div class="chart-card-sub">De rentas nuevas, restamos salidas paso a paso hasta la absorción final</div>
-        <div class="chart-wrap" style="height:240px"><canvas id="chart-waterfall"></canvas></div>
-      </div>
-      </div><!-- /rentas-view-semana -->
-
-      <!-- ═══ VISTA MES (ACUMULADO) ═══ -->
-      <div id="rentas-view-mes" style="display:none">
-        <div class="rentas-form" style="background:var(--surface-2)">
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:6px">
-            <div class="rentas-form-title" style="margin-bottom:0">📅 Acumulado de <span id="mes-nombre" style="color:var(--green)">—</span></div>
-            <div style="display:flex;align-items:center;gap:8px">
-              <select id="mes-selector" onchange="renderMonthlyRentas()" style="padding:6px 10px;border:1px solid var(--border-md);border-radius:8px;font-size:12px;font-family:DM Sans,sans-serif;background:var(--surface);color:var(--text-1);cursor:pointer"></select>
-            </div>
-          </div>
-          <p style="font-size:11.5px;color:var(--text-2);margin-top:8px">Suma automática de las semanas registradas. Edita un campo solo si necesitas ajustar el acumulado manualmente.</p>
-          <div class="rentas-inputs" style="margin-top:14px">
-            <div class="rentas-input-group">
-              <label>Rentas nuevas <span class="hint">(suma del mes)</span></label>
-              <input type="number" id="m-nuevas" min="0" step="1" oninput="onMonthEdit()">
-            </div>
-            <div class="rentas-input-group">
-              <label>Liberaciones por no renovación <span class="hint">(suma)</span></label>
-              <input type="number" id="m-noreno" min="0" step="1" oninput="onMonthEdit()">
-            </div>
-            <div class="rentas-input-group">
-              <label>Liberaciones por venta <span class="hint">(suma)</span></label>
-              <input type="number" id="m-venta" min="0" step="1" oninput="onMonthEdit()">
-            </div>
-            <div class="rentas-input-group">
-              <label>Incremento promedio % <span class="hint">(promedio del mes)</span></label>
-              <input type="number" id="m-incr" step="0.1" oninput="onMonthEdit()">
-            </div>
-            <div class="rentas-input-group">
-              <label>Días promedio en lista <span class="hint">(promedio)</span></label>
-              <input type="number" id="m-dias" min="0" step="1" oninput="onMonthEdit()">
-            </div>
-            <div class="rentas-input-group">
-              <label>Citas del mes <span class="hint">(suma de showings)</span></label>
-              <input type="number" id="m-citas" min="0" step="1" oninput="onMonthEdit()">
-            </div>
-            <div class="rentas-input-group">
-              <label>Renovaciones del mes <span class="hint">(suma de contratos renovados)</span></label>
-              <input type="number" id="m-renov" min="0" step="1" oninput="onMonthEdit()">
-            </div>
-            <div class="rentas-input-group" style="justify-content:flex-end">
-              <button onclick="resetMonthOverride()" id="m-reset" style="display:none;padding:8px 12px;border:1px solid var(--border-md);border-radius:8px;background:var(--surface);font-size:11.5px;font-family:DM Sans,sans-serif;color:var(--text-2);cursor:pointer">↺ Volver al cálculo automático</button>
-            </div>
-          </div>
-        </div>
-        <div id="rentas-month-results"></div>
-        <div class="chart-card" id="rentas-waterfall-month-card" style="margin-top:12px;display:none">
-          <div class="chart-card-title">💧 Absorción acumulada — <span id="mes-nombre-wf">—</span></div>
-          <div class="chart-card-sub">Cómo se construye la absorción del mes completo</div>
-          <div class="chart-wrap" style="height:240px"><canvas id="chart-waterfall-month"></canvas></div>
-        </div>
-      </div>
+      <!-- ═══ DASHBOARD VISUAL ═══ -->
+      <div id="rentas-dashboard"></div>
     </div>
 
     <div class="notes-card">
@@ -692,8 +697,13 @@ async function syncFromFirebase(){
         if(cfg.monthOverrides){
           monthOverrides[pid] = cfg.monthOverrides;
         }
+        if(cfg.invTotal!==undefined && cfg.invTotal!==null){
+          invConfig[pid] = cfg.invTotal;
+        }
       });
     }
+    // Cargar invConfig de localStorage como respaldo
+    try{ const li=JSON.parse(localStorage.getItem("dp_inv_config")); if(li) Object.keys(li).forEach(k=>{ if(invConfig[k]===undefined) invConfig[k]=li[k]; }); }catch(e){}
     const remote = window._fbLoadAll ? await window._fbLoadAll() : null;
     if(remote && Object.keys(remote).length > 0){
       // Merge: Firebase gana sobre localStorage por proyecto
@@ -743,6 +753,17 @@ function persist(){
 let currentProject = null;
 let drafts = {}; // borrador por proyecto, independiente
 let monthOverrides = {}; // overrides manuales del acumulado mensual por proyecto/mes
+let invConfig = {}; // inventario total de renta por proyecto
+
+function persistInvConfig(){
+  try{ localStorage.setItem("dp_inv_config", JSON.stringify(invConfig)); }catch(e){}
+  clearTimeout(window._invTimer);
+  window._invTimer=setTimeout(()=>{
+    if(window._fbSaveInvConfig && currentProject){
+      window._fbSaveInvConfig(currentProject, invConfig[currentProject]||0);
+    }
+  }, 600);
+}
 let charts = {};
 
 // ── HELPERS ──
@@ -815,7 +836,7 @@ function renderWaterfallDash(){
   let nuevas=0,noreno=0,venta=0;
   PROJ_KEYS.forEach(pid=>{
     const lat=getLatest(pid); const r=lat?rentaData(lat):null;
-    if(r){ nuevas+=+r.nuevas||0; noreno+=+r.noreno||0; venta+=+r.venta||0; }
+    if(r){ nuevas+=rNuevas(r); noreno+=rNoreno(r); venta+=rVenta(r); }
   });
   const layout=document.getElementById("rentas-dash-layout");
   if(nuevas+noreno+venta===0){ if(layout) layout.style.gridTemplateColumns="1fr"; ctx.parentElement.parentElement.style.display="none"; return; }
@@ -886,15 +907,15 @@ function renderRentasDashboard(){
       return `<tr>
         <td><span style="display:inline-flex;align-items:center;gap:8px"><span style="width:9px;height:9px;border-radius:50%;background:${PROJ_COLORS[pid]};display:inline-block"></span><strong>${p.name}</strong></span></td>
         <td style="text-align:center"><span style="${mono};font-size:17px;color:${cR}">${absR>0?"+":""}${absR}</span></td>
-        <td style="text-align:center;font-family:DM Mono,monospace">${+r.nuevas||0}</td>
-        <td style="text-align:center;font-family:DM Mono,monospace;color:var(--green)">${+r.renov||0}</td>
-        <td style="text-align:center;font-family:DM Mono,monospace;color:var(--text-2)">${+r.noreno||0}</td>
-        <td style="text-align:center;font-family:DM Mono,monospace;color:var(--text-2)">${+r.venta||0}</td>
+        <td style="text-align:center;font-family:DM Mono,monospace">${rNuevas(r)}</td>
+        <td style="text-align:center;font-family:DM Mono,monospace;color:var(--green)">${rRenov(r)}</td>
+        <td style="text-align:center;font-family:DM Mono,monospace;color:var(--text-2)">${rNoreno(r)}</td>
+        <td style="text-align:center;font-family:DM Mono,monospace;color:var(--text-2)">${rVenta(r)}</td>
         <td style="text-align:center"><span style="${mono};color:${cT}">${absT>0?"+":""}${absT}</span></td>
-        <td style="text-align:center;font-family:DM Mono,monospace">${+r.citas||0}</td>
+        <td style="text-align:center;font-family:DM Mono,monospace">${rCitas(r)}</td>
         <td style="text-align:center;font-family:DM Mono,monospace;color:var(--blue);font-weight:700">${convRate(r)}%</td>
-        <td style="text-align:center;font-family:DM Mono,monospace">${(+r.incr||0).toFixed(1)}%</td>
-        <td style="text-align:center;font-family:DM Mono,monospace">${+r.dias||0}</td>
+        <td style="text-align:center;font-family:DM Mono,monospace">${rIncrProm(r).toFixed(1)}%</td>
+        <td style="text-align:center;font-family:DM Mono,monospace">${rDiasProm(r)}</td>
       </tr>`;
     }).join("")}
   </tbody></table>`;
@@ -1145,183 +1166,298 @@ function setSubcat(key,sub,v){
 // ══════════════════════════════════
 
 // ── ACUMULADO MENSUAL ──
-function monthKeyOf(date){ return date.substring(0,7); } // "2026-04"
-function monthName(ym){
-  const [y,m]=ym.split("-");
-  const mo=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-  return mo[+m-1]+" "+y;
+// ══════════════════════════════════════════
+// MÓDULO DE RENTAS — MODELO CON INVENTARIO Y UNIDADES
+// ══════════════════════════════════════════
+
+// ── HELPERS DE LECTURA (con compatibilidad con modelo viejo) ──
+function rentaData(entry){ if(!entry || !entry.rentas) return null; return entry.rentas; }
+
+// Cuenta unidades por tipo, o usa el conteo plano del modelo viejo
+function rNuevas(r){
+  if(!r) return 0;
+  if(Array.isArray(r.unidades)) return r.unidades.filter(u=>u.tipo==="nueva").length;
+  return +r.nuevas||0;
+}
+function rRenov(r){
+  if(!r) return 0;
+  if(Array.isArray(r.unidades)) return r.unidades.filter(u=>u.tipo==="renovacion").length;
+  return +r.renov||0;
+}
+function rNoreno(r){ return r?(+r.noreno||0):0; }
+function rVenta(r){ return r?(+r.venta||0):0; }
+function rCitas(r){ return r?(+r.citas||0):0; }
+
+// Días promedio en lista — solo de rentas nuevas (una renovación no estuvo en lista)
+function rDiasProm(r){
+  if(!r) return 0;
+  if(Array.isArray(r.unidades)){
+    const ns=r.unidades.filter(u=>u.tipo==="nueva" && +u.dias>0);
+    if(ns.length) return Math.round(ns.reduce((a,u)=>a+(+u.dias||0),0)/ns.length);
+    return 0;
+  }
+  return +r.dias||0;
+}
+// Incremento promedio — separado por tipo
+function rIncrNuevas(r){
+  if(!r) return 0;
+  if(Array.isArray(r.unidades)){
+    const ns=r.unidades.filter(u=>u.tipo==="nueva" && +u.incr!==0);
+    if(ns.length) return +(ns.reduce((a,u)=>a+(+u.incr||0),0)/ns.length).toFixed(1);
+    return 0;
+  }
+  return +r.incr||0;
+}
+function rIncrRenov(r){
+  if(!r) return 0;
+  if(Array.isArray(r.unidades)){
+    const rs=r.unidades.filter(u=>u.tipo==="renovacion" && +u.incr!==0);
+    if(rs.length) return +(rs.reduce((a,u)=>a+(+u.incr||0),0)/rs.length).toFixed(1);
+    return 0;
+  }
+  return +r.incr||0;
+}
+// Incremento promedio global (todas las unidades con incremento)
+function rIncrProm(r){
+  if(!r) return 0;
+  if(Array.isArray(r.unidades)){
+    const all=r.unidades.filter(u=>+u.incr!==0);
+    if(all.length) return +(all.reduce((a,u)=>a+(+u.incr||0),0)/all.length).toFixed(1);
+    return 0;
+  }
+  return +r.incr||0;
 }
 
-// Suma conteos, promedia % y días — de todas las semanas del mes
-function aggregateMonth(pid, ym){
-  const weeks = getHistory(pid).filter(e => e.rentas && monthKeyOf(e.date)===ym);
-  if(weeks.length===0) return null;
-  let nuevas=0,noreno=0,venta=0,citas=0,renov=0,incrSum=0,incrCount=0,diasSum=0,diasCount=0;
-  weeks.forEach(e=>{
-    const r=e.rentas;
-    nuevas+=+r.nuevas||0; noreno+=+r.noreno||0; venta+=+r.venta||0; citas+=+r.citas||0; renov+=+r.renov||0;
-    if(+r.incr){ incrSum+=+r.incr; incrCount++; }
-    if(+r.dias){ diasSum+=+r.dias; diasCount++; }
-  });
-  return {
-    nuevas, noreno, venta, citas, renov,
-    incr: incrCount?+(incrSum/incrCount).toFixed(1):0,
-    dias: diasCount?Math.round(diasSum/diasCount):0,
-    semanas: weeks.length
-  };
-}
+// ── ABSORCIÓN ──
+function absNetaRenta(r){ return rNuevas(r) - rNoreno(r); }        // sana (sin ventas)
+function absNetaTotal(r){ return rNuevas(r) - rNoreno(r) - rVenta(r); } // con ventas
 
-// Acumulado mensual EFECTIVO: si hay override manual lo usa, si no usa el automático
-function monthEffective(pid, ym){
-  const auto = aggregateMonth(pid, ym);
-  if(!auto) return null;
-  const ov = (monthOverrides[pid] && monthOverrides[pid][ym]) ? monthOverrides[pid][ym] : null;
-  if(!ov) return {...auto, _edited:false};
-  // Merge: override solo los campos que el usuario tocó
-  return {
-    nuevas: ov.nuevas!==undefined?ov.nuevas:auto.nuevas,
-    noreno: ov.noreno!==undefined?ov.noreno:auto.noreno,
-    venta:  ov.venta!==undefined?ov.venta:auto.venta,
-    citas:  ov.citas!==undefined?ov.citas:auto.citas,
-    renov:  ov.renov!==undefined?ov.renov:auto.renov,
-    incr:   ov.incr!==undefined?ov.incr:auto.incr,
-    dias:   ov.dias!==undefined?ov.dias:auto.dias,
-    semanas: auto.semanas,
-    _edited:true
-  };
-}
-
-
-// Tasa de conversión: rentas nuevas / citas * 100
+// ── CONVERSIÓN ──
 function convRate(r){
-  if(!r) return "0";
-  const citas=+r.citas||0, nuevas=+r.nuevas||0;
+  const citas=rCitas(r), nuevas=rNuevas(r);
   if(citas===0) return nuevas>0?"∞":"0";
   return (nuevas/citas*100).toFixed(0);
 }
 
-function rentaData(entry){
-  if(!entry || !entry.rentas) return null;
-  return entry.rentas;
+// ── INVENTARIO ──
+// Inventario total por proyecto (config)
+function getInvTotal(pid){ return (invConfig[pid]!==undefined)?invConfig[pid]:0; }
+
+// Disponible auto: disponible de la semana previa - rentas nuevas + liberaciones por no renovación
+function dispAuto(pid, currentDate){
+  const hist=getHistory(pid).filter(e=>e.rentas && e.date < currentDate).sort((a,b)=>a.date.localeCompare(b.date));
+  if(hist.length===0) return null; // primera semana: sin referencia
+  const prev=hist[hist.length-1].rentas;
+  const prevDisp = (prev.disponible!==undefined)?+prev.disponible:0;
+  return Math.max(0, prevDisp - rNuevas(prev) + rNoreno(prev));
+  // Nota: este auto representa el disponible de ARRANQUE de esta semana (resultado de la semana previa)
+}
+// Disponible efectivo de un entry
+function getDisp(r){ return r && r.disponible!==undefined ? +r.disponible : 0; }
+function getOcupadas(pid, r){ const t=getInvTotal(pid); const d=getDisp(r); return Math.max(0, t-d); }
+function ocupacionPct(pid, r){ const t=getInvTotal(pid); if(t===0) return 0; return Math.round(getOcupadas(pid,r)/t*100); }
+
+// ══════════════════════════════════════════
+// CAPTURA
+// ══════════════════════════════════════════
+function toggleCaptureForm(){
+  const cap=document.getElementById("rentas-capture");
+  const btn=document.getElementById("capture-toggle-btn");
+  if(cap.style.display==="none"){
+    cap.style.display="block"; btn.classList.add("active"); btn.textContent="✕ Cerrar captura";
+  } else {
+    cap.style.display="none"; btn.classList.remove("active"); btn.textContent="📥 Registrar / editar semana";
+  }
 }
 
-// Absorción neta de RENTA (sana) = rentas nuevas - liberaciones por no renovación
-// (las ventas NO restan porque son evento de capital, no de demanda de renta)
-function absNetaRenta(r){
-  if(!r) return 0;
-  return (+r.nuevas||0) - (+r.noreno||0);
+function onInvTotalInput(){
+  const v=+document.getElementById("r-invtotal").value||0;
+  invConfig[currentProject]=v;
+  persistInvConfig();
+  refreshCaptureDerived();
+  renderRentasDashboard2();
 }
-// Absorción neta TOTAL = rentas nuevas - todas las liberaciones (incluye ventas)
-function absNetaTotal(r){
-  if(!r) return 0;
-  return (+r.nuevas||0) - (+r.noreno||0) - (+r.venta||0);
+
+function onDisponibleManual(){
+  if(!drafts[currentProject].rentas) drafts[currentProject].rentas={};
+  const r=drafts[currentProject].rentas;
+  const v=document.getElementById("r-disponible").value;
+  if(v===""){ delete r.disponible; r.disponible_manual=false; }
+  else { r.disponible=+v; r.disponible_manual=true; }
+  document.getElementById("disp-auto-btn").style.display = r.disponible_manual ? "block":"none";
+  renderRentasDashboard2();
+}
+
+function resetDisponibleAuto(){
+  const r=drafts[currentProject].rentas;
+  const auto=dispAuto(currentProject, r.date||today());
+  r.disponible_manual=false;
+  if(auto!==null){ r.disponible=auto; }
+  else { delete r.disponible; }
+  document.getElementById("disp-auto-btn").style.display="none";
+  refreshCaptureDerived();
+  renderRentasDashboard2();
 }
 
 function onRentaInput(){
   if(!currentProject) return;
   if(!drafts[currentProject].rentas) drafts[currentProject].rentas={};
   const r=drafts[currentProject].rentas;
-  r.nuevas = +document.getElementById("r-nuevas").value||0;
   r.noreno = +document.getElementById("r-noreno").value||0;
   r.venta  = +document.getElementById("r-venta").value||0;
-  r.incr   = +document.getElementById("r-incr").value||0;
-  r.dias   = +document.getElementById("r-dias").value||0;
   r.citas  = +document.getElementById("r-citas").value||0;
-  r.renov  = +document.getElementById("r-renov").value||0;
-  renderRentasResults();
+  // Recalcular disponible auto si no está en override manual
+  recalcDispAuto();
+  renderRentasDashboard2();
 }
 
-function renderRentasResults(){
-  const cont=document.getElementById("rentas-results");
-  if(!cont) return;
-  const r = drafts[currentProject] && drafts[currentProject].rentas ? drafts[currentProject].rentas : null;
-  const prev = getPrev(currentProject);
-  const prevR = prev ? rentaData(prev) : null;
+// Recalcula disponible automático (si no hay override) en base a unidades + noreno
+function recalcDispAuto(){
+  const r=drafts[currentProject].rentas;
+  if(r.disponible_manual) return; // respetar override
+  const auto=dispAuto(currentProject, r.date||today());
+  if(auto!==null){
+    // disponible de cierre = disponible arranque - nuevas + noreno
+    r.disponible = Math.max(0, auto - rNuevas(r) + rNoreno(r));
+  }
+  const el=document.getElementById("r-disponible");
+  if(el && !r.disponible_manual) el.value = r.disponible!==undefined ? r.disponible : "";
+}
 
-  const hasData = r && ((+r.nuevas||0)+(+r.noreno||0)+(+r.venta||0)+(+r.incr||0)+(+r.dias||0) > 0);
-  if(!hasData){
-    cont.innerHTML='<div class="rentas-empty">Captura los datos de la semana arriba para ver la absorción y métricas de renta.</div>';
-    renderWaterfall();
+function refreshCaptureDerived(){
+  const r=drafts[currentProject] ? drafts[currentProject].rentas : null;
+  const hint=document.getElementById("disp-hint");
+  if(hint){
+    const total=getInvTotal(currentProject);
+    const disp=getDisp(r);
+    const occ=total>0?Math.round((total-disp)/total*100):0;
+    hint.textContent = total>0 ? `(${total-disp} ocupadas · ${occ}% ocupación)` : "(vacías por rentar)";
+  }
+}
+
+// ── UNIDADES CERRADAS ──
+function addUnidad(){
+  if(!drafts[currentProject].rentas) drafts[currentProject].rentas={};
+  const r=drafts[currentProject].rentas;
+  if(!Array.isArray(r.unidades)) r.unidades=[];
+  r.unidades.push({id:"", tipo:"nueva", dias:0, incr:0});
+  renderUnidadesList();
+  recalcDispAuto();
+  renderRentasDashboard2();
+}
+
+function removeUnidad(i){
+  const r=drafts[currentProject].rentas;
+  r.unidades.splice(i,1);
+  renderUnidadesList();
+  recalcDispAuto();
+  renderRentasDashboard2();
+}
+
+function updateUnidad(i, field, val){
+  const r=drafts[currentProject].rentas;
+  if(field==="id") r.unidades[i].id=val;
+  else if(field==="tipo") r.unidades[i].tipo=val;
+  else r.unidades[i][field]=+val||0;
+  recalcDispAuto();
+  renderRentasDashboard2();
+}
+
+function renderUnidadesList(){
+  const cont=document.getElementById("unidades-list");
+  if(!cont) return;
+  const r=drafts[currentProject] ? drafts[currentProject].rentas : null;
+  const units=(r && Array.isArray(r.unidades))?r.unidades:[];
+  if(units.length===0){
+    cont.innerHTML='<div class="unidades-empty">Sin unidades cerradas aún. Agrega cada departamento rentado o renovado esta semana.</div>';
     return;
   }
-
-  const absR = absNetaRenta(r);
-  const absT = absNetaTotal(r);
-  const absRprev = prevR ? absNetaRenta(prevR) : null;
-
-  // Delta de absorción sana vs semana anterior
-  let deltaHtml="";
-  if(absRprev!==null){
-    const d=absR-absRprev;
-    const cls=d>0?"abs-positive":d<0?"abs-negative":"";
-    const arrow=d>0?"▲":d<0?"▼":"=";
-    deltaHtml=`<div class="rh-sub"><span style="opacity:.9">${arrow} ${d>0?"+":""}${d} vs semana anterior</span></div>`;
-  }
-
-  const absRcls = absR>0?"abs-positive":absR<0?"abs-negative":"";
-  const absTcls = absT>0?"abs-positive":absT<0?"abs-negative":"";
-
-  cont.innerHTML=`
-    <div class="rentas-hero">
-      <div class="rentas-card hero">
-        <div class="rh-label">Absorción neta de renta</div>
-        <div class="rh-value ${absRcls}">${absR>0?"+":""}${absR}</div>
-        <div class="rh-sub">Rentas nuevas − liberaciones por no renovación.<br>La señal pura de demanda de renta (las ventas no cuentan).</div>
-        ${deltaHtml}
-      </div>
-      <div class="rentas-card">
-        <div class="rc-label">Rentas nuevas</div>
-        <div class="rc-value">${+r.nuevas||0}</div>
-        <div class="rc-sub">absorción bruta del periodo</div>
-      </div>
-      <div class="rentas-card">
-        <div class="rc-label">Absorción neta total</div>
-        <div class="rc-value ${absTcls}">${absT>0?"+":""}${absT}</div>
-        <div class="rc-sub">incluyendo salidas por venta</div>
-      </div>
-    </div>
-
-    <div class="rentas-grid">
-      <div class="rentas-mini">
-        <div class="rm-label">Citas<br>de la semana</div>
-        <div class="rm-value">${+r.citas||0}</div>
-      </div>
-      <div class="rentas-mini" style="background:var(--blue-bg);border-color:var(--blue-b)">
-        <div class="rm-label" style="color:var(--blue)">Conversión<br>citas → rentas</div>
-        <div class="rm-value" style="color:var(--blue)">${convRate(r)}<span class="rm-unit">%</span></div>
-      </div>
-      <div class="rentas-mini">
-        <div class="rm-label">Días promedio<br>en lista</div>
-        <div class="rm-value">${+r.dias||0}<span class="rm-unit"> d</span></div>
-      </div>
-      <div class="rentas-mini">
-        <div class="rm-label">Renovaciones<br>de contratos</div>
-        <div class="rm-value">${+r.renov||0}</div>
-      </div>
-      <div class="rentas-mini">
-        <div class="rm-label">Liberaciones<br>por no renovación</div>
-        <div class="rm-value">${+r.noreno||0}</div>
-      </div>
-      <div class="rentas-mini">
-        <div class="rm-label">Liberaciones<br>por venta</div>
-        <div class="rm-value">${+r.venta||0}</div>
-      </div>
-      <div class="rentas-mini">
-        <div class="rm-label">Incremento<br>promedio</div>
-        <div class="rm-value">${(+r.incr||0).toFixed(1)}<span class="rm-unit">%</span></div>
-      </div>
-    </div>`;
-  renderWaterfall();
+  cont.innerHTML=`<div class="unidad-head"><span>ID / Depto</span><span>Tipo</span><span>Días en lista</span><span>Incremento %</span><span></span></div>`+
+    units.map((u,i)=>`<div class="unidad-row">
+      <input type="text" value="${(u.id||"").replace(/"/g,'&quot;')}" placeholder="Ej. 304" oninput="updateUnidad(${i},'id',this.value)">
+      <select onchange="updateUnidad(${i},'tipo',this.value)">
+        <option value="nueva" ${u.tipo==="nueva"?"selected":""}>Renta nueva</option>
+        <option value="renovacion" ${u.tipo==="renovacion"?"selected":""}>Renovación</option>
+      </select>
+      <input type="number" min="0" step="1" value="${u.dias||""}" placeholder="${u.tipo==="renovacion"?"N/A":"0"}" oninput="updateUnidad(${i},'dias',this.value)" ${u.tipo==="renovacion"?"disabled style='opacity:.4'":""}>
+      <input type="number" step="0.1" value="${u.incr||""}" placeholder="0.0" oninput="updateUnidad(${i},'incr',this.value)">
+      <button class="u-del" onclick="removeUnidad(${i})" title="Quitar">✕</button>
+    </div>`).join("");
 }
 
+function loadRentasInputs(){
+  const r = drafts[currentProject] && drafts[currentProject].rentas ? drafts[currentProject].rentas : {};
+  // Asegurar estructura
+  if(!Array.isArray(r.unidades)) r.unidades=[];
+  if(drafts[currentProject]) drafts[currentProject].rentas=r;
+  const set=(id,v)=>{ const el=document.getElementById(id); if(el) el.value=(v!==undefined&&v!==0&&v!=="")?v:""; };
+  set("r-invtotal", getInvTotal(currentProject));
+  set("r-disponible", r.disponible);
+  set("r-noreno", r.noreno);
+  set("r-venta", r.venta);
+  set("r-citas", r.citas);
+  document.getElementById("disp-auto-btn").style.display = r.disponible_manual ? "block":"none";
+  renderUnidadesList();
+  refreshCaptureDerived();
+  renderRentasDashboard2();
+}
 
+// ══════════════════════════════════════════
+// AGREGACIÓN MENSUAL
+// ══════════════════════════════════════════
+function monthKeyOf(date){ return date.substring(0,7); }
+function monthName(ym){
+  const [y,m]=ym.split("-");
+  const mo=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+  return mo[+m-1]+" "+y;
+}
 
-// ── TOGGLE SEMANA / MES ──
+// Acumulado del mes: suma conteos, promedia % y días, toma disponible de la última semana del mes
+function aggregateMonth(pid, ym){
+  const weeks=getHistory(pid).filter(e=>e.rentas && monthKeyOf(e.date)===ym).sort((a,b)=>a.date.localeCompare(b.date));
+  if(weeks.length===0) return null;
+  let nuevas=0,renov=0,noreno=0,venta=0,citas=0;
+  let diasArr=[], incrNArr=[], incrRArr=[];
+  weeks.forEach(e=>{
+    const r=e.rentas;
+    nuevas+=rNuevas(r); renov+=rRenov(r); noreno+=rNoreno(r); venta+=rVenta(r); citas+=rCitas(r);
+    // recolectar para promedios desde unidades si existen
+    if(Array.isArray(r.unidades)){
+      r.unidades.forEach(u=>{
+        if(u.tipo==="nueva" && +u.dias>0) diasArr.push(+u.dias);
+        if(u.tipo==="nueva" && +u.incr!==0) incrNArr.push(+u.incr);
+        if(u.tipo==="renovacion" && +u.incr!==0) incrRArr.push(+u.incr);
+      });
+    } else {
+      if(+r.dias>0) diasArr.push(+r.dias);
+      if(+r.incr!==0) incrNArr.push(+r.incr);
+    }
+  });
+  const avg=(arr)=>arr.length?+(arr.reduce((a,b)=>a+b,0)/arr.length).toFixed(1):0;
+  const lastWeek=weeks[weeks.length-1].rentas;
+  return {
+    nuevas, renov, noreno, venta, citas,
+    dias: diasArr.length?Math.round(diasArr.reduce((a,b)=>a+b,0)/diasArr.length):0,
+    incrNuevas: avg(incrNArr), incrRenov: avg(incrRArr),
+    incr: avg([...incrNArr,...incrRArr]),
+    disponible: getDisp(lastWeek),
+    semanas: weeks.length
+  };
+}
+
+function monthEffective(pid, ym){
+  const auto=aggregateMonth(pid, ym);
+  if(!auto) return null;
+  const ov=(monthOverrides[pid] && monthOverrides[pid][ym])?monthOverrides[pid][ym]:null;
+  if(!ov) return {...auto, _edited:false};
+  const merged={...auto};
+  Object.keys(ov).forEach(k=>{ if(ov[k]!==undefined) merged[k]=ov[k]; });
+  merged._edited=true;
+  return merged;
+}
 
 function persistMonthOverrides(){
-  // Guardar local
   try{ localStorage.setItem("dp_month_overrides", JSON.stringify(monthOverrides)); }catch(e){}
-  // Guardar en Firebase (debounced) por proyecto
   clearTimeout(window._moTimer);
   window._moTimer=setTimeout(()=>{
     if(window._fbSaveMonthOverrides && currentProject){
@@ -1330,245 +1466,251 @@ function persistMonthOverrides(){
   }, 600);
 }
 
-function switchRentaView(view){
-  const sem=document.getElementById("rentas-view-semana");
-  const mes=document.getElementById("rentas-view-mes");
-  const bs=document.getElementById("rt-semana"), bm=document.getElementById("rt-mes");
-  if(view==="mes"){
-    sem.style.display="none"; mes.style.display="block";
-    bs.classList.remove("active"); bm.classList.add("active");
-    buildMonthSelector();
-    renderMonthlyRentas();
-  } else {
-    sem.style.display="block"; mes.style.display="none";
-    bm.classList.remove("active"); bs.classList.add("active");
-    destroyChart("waterfallmonth");
-  }
-}
+// ══════════════════════════════════════════
+// DASHBOARD VISUAL (semana + mes en una vista)
+// ══════════════════════════════════════════
+function renderRentasDashboard2(){
+  const cont=document.getElementById("rentas-dashboard");
+  if(!cont || !currentProject) return;
+  const pid=currentProject;
+  const r = drafts[pid] && drafts[pid].rentas ? drafts[pid].rentas : null;
+  const total=getInvTotal(pid);
 
-function buildMonthSelector(){
-  const sel=document.getElementById("mes-selector");
-  if(!sel) return;
-  // Meses únicos con datos de renta de este proyecto
-  const months=[...new Set(getHistory(currentProject).filter(e=>e.rentas).map(e=>monthKeyOf(e.date)))].sort().reverse();
-  if(months.length===0){ sel.innerHTML='<option>Sin datos</option>'; return; }
-  const prev=sel.value;
-  sel.innerHTML=months.map(ym=>`<option value="${ym}">${monthName(ym)}</option>`).join("");
-  if(prev && months.includes(prev)) sel.value=prev;
-}
-
-function onMonthEdit(){
-  const ym=document.getElementById("mes-selector").value;
-  if(!ym || ym==="Sin datos") return;
-  if(!monthOverrides[currentProject]) monthOverrides[currentProject]={};
-  const auto=aggregateMonth(currentProject, ym);
-  const ov={};
-  const get=(id)=>{ const v=document.getElementById(id).value; return v===""?undefined:+v; };
-  const fields={nuevas:"m-nuevas",noreno:"m-noreno",venta:"m-venta",incr:"m-incr",dias:"m-dias",citas:"m-citas",renov:"m-renov"};
-  Object.keys(fields).forEach(k=>{
-    const v=get(fields[k]);
-    if(v!==undefined && auto && v!==auto[k]) ov[k]=v; // solo guardar si difiere del auto
-  });
-  if(Object.keys(ov).length>0){
-    monthOverrides[currentProject][ym]=ov;
-  } else {
-    delete monthOverrides[currentProject][ym];
-  }
-  persistMonthOverrides();
-  renderMonthlyRentas(true); // skip input refill para no interrumpir edición
-}
-
-function resetMonthOverride(){
-  const ym=document.getElementById("mes-selector").value;
-  if(monthOverrides[currentProject]) delete monthOverrides[currentProject][ym];
-  persistMonthOverrides();
-  renderMonthlyRentas();
-}
-
-function renderMonthlyRentas(skipInputs){
-  const ym=document.getElementById("mes-selector").value;
-  if(!ym || ym==="Sin datos"){
-    document.getElementById("rentas-month-results").innerHTML='<div class="rentas-empty">No hay semanas registradas para este mes todavía.</div>';
-    document.getElementById("rentas-waterfall-month-card").style.display="none";
+  // ¿Hay algo que mostrar?
+  const hasWeek = r && (rNuevas(r)+rRenov(r)+rNoreno(r)+rVenta(r)+getDisp(r) > 0);
+  if(!total && !hasWeek){
+    cont.innerHTML='<div class="rentas-empty">Configura el inventario total y registra la primera semana para ver el dashboard de absorción.</div>';
     return;
   }
-  document.getElementById("mes-nombre").textContent=monthName(ym);
-  document.getElementById("mes-nombre-wf").textContent=monthName(ym);
 
-  const eff=monthEffective(currentProject, ym);
-  if(!eff){ document.getElementById("rentas-month-results").innerHTML='<div class="rentas-empty">Sin datos.</div>'; return; }
-
-  // Rellenar inputs (a menos que estemos en medio de edición)
-  if(!skipInputs){
-    const set=(id,v)=>{ const el=document.getElementById(id); if(el) el.value=v; };
-    set("m-nuevas",eff.nuevas); set("m-noreno",eff.noreno); set("m-venta",eff.venta);
-    set("m-incr",eff.incr); set("m-dias",eff.dias); set("m-citas",eff.citas); set("m-renov",eff.renov);
-  }
-  document.getElementById("m-reset").style.display = eff._edited ? "block":"none";
-
-  const absR=eff.nuevas-eff.noreno;
-  const absT=eff.nuevas-eff.noreno-eff.venta;
+  const disp=getDisp(r), ocup=getOcupadas(pid,r), pct=ocupacionPct(pid,r);
+  const nuevas=rNuevas(r), renov=rRenov(r), noreno=rNoreno(r), venta=rVenta(r);
+  const absR=absNetaRenta(r), absT=absNetaTotal(r);
   const absRcls=absR>0?"abs-positive":absR<0?"abs-negative":"";
-  const absTcls=absT>0?"abs-positive":absT<0?"abs-negative":"";
-  const editBadge = eff._edited ? '<span class="month-badge">✏️ Ajustado manualmente</span>' : '';
 
-  document.getElementById("rentas-month-results").innerHTML=`
-    <div class="rentas-hero">
-      <div class="rentas-card hero">
-        <div class="rh-label">Absorción neta de renta · mes ${editBadge}</div>
-        <div class="rh-value ${absRcls}">${absR>0?"+":""}${absR}</div>
-        <div class="rh-sub">Acumulado de ${eff.semanas} semana${eff.semanas!==1?"s":""}.<br>Rentas nuevas − liberaciones por no renovación.</div>
+  // Mes actual del registro
+  const ym = r && r.date ? monthKeyOf(r.date) : (getLatest(pid)?monthKeyOf(getLatest(pid).date):null);
+
+  let html="";
+
+  // ── SECCIÓN 1: INVENTARIO ──
+  html+=`<div class="rd-section">
+    <div class="rd-section-label">📦 Inventario y ocupación</div>
+    <div class="rd-inv-grid">
+      <div class="rd-donut-card">
+        <div class="rd-donut-wrap">
+          <canvas id="donut-ocupacion"></canvas>
+          <div class="rd-donut-center"><span class="rd-donut-pct">${pct}%</span><span class="rd-donut-lbl">Ocupación</span></div>
+        </div>
       </div>
-      <div class="rentas-card">
-        <div class="rc-label">Rentas nuevas · mes</div>
-        <div class="rc-value">${eff.nuevas}</div>
-        <div class="rc-sub">absorción bruta acumulada</div>
+      <div class="rd-stat"><div class="rd-stat-lbl">Inventario total</div><div class="rd-stat-val">${total}</div><div class="rd-stat-sub">unidades en renta</div></div>
+      <div class="rd-stat"><div class="rd-stat-lbl">Ocupadas</div><div class="rd-stat-val">${ocup}</div><div class="rd-stat-sub">${pct}% del inventario</div></div>
+      <div class="rd-stat"><div class="rd-stat-lbl">Disponibles</div><div class="rd-stat-val">${disp}</div><div class="rd-stat-sub">vacías por rentar</div></div>
+    </div>
+  </div>`;
+
+  // ── SECCIÓN 2: FLUJO DE LA SEMANA ──
+  html+=`<div class="rd-section">
+    <div class="rd-section-label">💧 Flujo y absorción de la semana</div>
+    <div class="rd-flow-grid">
+      <div class="chart-card" style="margin:0">
+        <div class="chart-card-sub" style="margin-bottom:8px">Cómo se construye la absorción</div>
+        <div class="chart-wrap" style="height:210px"><canvas id="chart-waterfall"></canvas></div>
       </div>
-      <div class="rentas-card">
-        <div class="rc-label">Absorción total · mes</div>
-        <div class="rc-value ${absTcls}">${absT>0?"+":""}${absT}</div>
-        <div class="rc-sub">incluyendo salidas por venta</div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="rd-stat accent-green" style="flex:1">
+          <div class="rd-stat-lbl">Absorción neta de renta</div>
+          <div class="rd-stat-val ${absRcls}" style="font-size:36px">${absR>0?"+":""}${absR}</div>
+          <div class="rd-stat-sub">Rentas nuevas − no renovación (sin ventas)</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="rd-stat"><div class="rd-stat-lbl">Rentas nuevas</div><div class="rd-stat-val" style="font-size:24px">${nuevas}</div></div>
+          <div class="rd-stat"><div class="rd-stat-lbl">Renovaciones</div><div class="rd-stat-val" style="font-size:24px">${renov}</div></div>
+          <div class="rd-stat"><div class="rd-stat-lbl">No renovación</div><div class="rd-stat-val" style="font-size:24px;color:var(--red)">${noreno}</div></div>
+          <div class="rd-stat"><div class="rd-stat-lbl">Por venta</div><div class="rd-stat-val" style="font-size:24px;color:var(--amber)">${venta}</div></div>
+        </div>
       </div>
     </div>
-    <div class="rentas-grid">
-      <div class="rentas-mini"><div class="rm-label">Citas<br>del mes</div><div class="rm-value">${eff.citas||0}</div></div>
-      <div class="rentas-mini" style="background:var(--blue-bg);border-color:var(--blue-b)"><div class="rm-label" style="color:var(--blue)">Conversión<br>citas → rentas</div><div class="rm-value" style="color:var(--blue)">${convRate(eff)}<span class="rm-unit">%</span></div></div>
-      <div class="rentas-mini"><div class="rm-label">Días promedio<br>en lista</div><div class="rm-value">${eff.dias}<span class="rm-unit"> d</span></div></div>
-      <div class="rentas-mini"><div class="rm-label">Renovaciones<br>de contratos</div><div class="rm-value">${eff.renov||0}</div></div>
-      <div class="rentas-mini"><div class="rm-label">Liberaciones<br>por no renovación</div><div class="rm-value">${eff.noreno}</div></div>
-      <div class="rentas-mini"><div class="rm-label">Liberaciones<br>por venta</div><div class="rm-value">${eff.venta}</div></div>
-      <div class="rentas-mini"><div class="rm-label">Incremento<br>promedio</div><div class="rm-value">${(+eff.incr||0).toFixed(1)}<span class="rm-unit">%</span></div></div>
-    </div>`;
+  </div>`;
 
-  renderWaterfallMonth(eff);
+  // ── SECCIÓN 3: UNIDADES CERRADAS ──
+  const units=(r && Array.isArray(r.unidades))?r.unidades:[];
+  if(units.length>0){
+    const diasProm=rDiasProm(r), incrN=rIncrNuevas(r), incrR=rIncrRenov(r);
+    html+=`<div class="rd-section">
+      <div class="rd-section-label">🔑 Unidades cerradas · ${units.length}</div>
+      <table class="rd-units-table">
+        <thead><tr><th>Unidad</th><th>Tipo</th><th style="text-align:center">Días en lista</th><th style="text-align:center">Incremento</th></tr></thead>
+        <tbody>${units.map(u=>`<tr>
+          <td><strong>${u.id||"—"}</strong></td>
+          <td><span class="rd-tag ${u.tipo}">${u.tipo==="nueva"?"Renta nueva":"Renovación"}</span></td>
+          <td style="text-align:center;font-family:DM Mono,monospace">${u.tipo==="renovacion"?'<span style="color:var(--text-3)">—</span>':(+u.dias||0)+" d"}</td>
+          <td style="text-align:center;font-family:DM Mono,monospace;color:${+u.incr>0?'var(--green)':'var(--text-2)'}">${+u.incr?((+u.incr>0?"+":"")+(+u.incr).toFixed(1)+"%"):"—"}</td>
+        </tr>`).join("")}</tbody>
+      </table>
+      <div class="rd-units-summary">
+        <div class="rentas-mini"><div class="rm-label">Días promedio<br>en lista (nuevas)</div><div class="rm-value">${diasProm}<span class="rm-unit"> d</span></div></div>
+        <div class="rentas-mini" style="background:var(--green-bg);border-color:var(--green-b)"><div class="rm-label" style="color:var(--green)">Incremento prom.<br>rentas nuevas</div><div class="rm-value" style="color:var(--green)">${incrN>0?"+":""}${incrN.toFixed(1)}<span class="rm-unit">%</span></div></div>
+        <div class="rentas-mini" style="background:var(--blue-bg);border-color:var(--blue-b)"><div class="rm-label" style="color:var(--blue)">Incremento prom.<br>renovaciones</div><div class="rm-value" style="color:var(--blue)">${incrR>0?"+":""}${incrR.toFixed(1)}<span class="rm-unit">%</span></div></div>
+      </div>
+    </div>`;
+  }
+
+  // ── SECCIÓN 4: ACUMULADO DEL MES ──
+  if(ym){
+    const months=[...new Set(getHistory(pid).filter(e=>e.rentas).map(e=>monthKeyOf(e.date)))].sort().reverse();
+    const eff=monthEffective(pid, ym);
+    html+=`<div class="rd-section">
+      <div class="rd-section-label">📅 Acumulado del mes</div>
+      <div class="rd-mes-banner">
+        <div style="display:flex;align-items:center;gap:10px">
+          <select id="mes-selector" onchange="renderMonthlyInline()" style="padding:6px 10px;border:1px solid var(--border-md);border-radius:8px;font-size:12.5px;font-family:DM Sans,sans-serif;background:var(--surface);color:var(--text-1);cursor:pointer;font-weight:600">
+            ${months.map(m=>`<option value="${m}" ${m===ym?"selected":""}>${monthName(m)}</option>`).join("")}
+          </select>
+          <span id="mes-edited-badge"></span>
+        </div>
+        <button onclick="openMonthEdit()" id="mes-edit-btn" style="padding:6px 12px;border:1px solid var(--border-md);border-radius:8px;background:var(--surface);font-size:11.5px;font-family:DM Sans,sans-serif;color:var(--text-2);cursor:pointer">✏️ Ajustar acumulado</button>
+      </div>
+      <div id="mes-inline-results"></div>
+    </div>`;
+  }
+
+  cont.innerHTML=html;
+
+  // Render charts después de inyectar el DOM
+  renderDonutOcupacion(pid, r);
+  renderWaterfall();
+  if(ym) renderMonthlyInline();
 }
 
-function renderWaterfallMonth(eff){
-  const card=document.getElementById("rentas-waterfall-month-card");
-  if(!card) return;
-  if(!eff || (eff.nuevas+eff.noreno+eff.venta)===0){ card.style.display="none"; destroyChart("waterfallmonth"); return; }
-  card.style.display="block";
-  destroyChart("waterfallmonth");
-  const nuevas=eff.nuevas,noreno=eff.noreno,venta=eff.venta;
-  const absRenta=nuevas-noreno, absTotal=nuevas-noreno-venta;
-  const data=[[0,nuevas],[nuevas-noreno,nuevas],[0,absRenta],[absTotal,absRenta],[0,absTotal]];
-  const colors=["#20C997","#F87171",absRenta>=0?"#15803D":"#B91C1C","#FB923C",absTotal>=0?"#15803D":"#B91C1C"];
-  const labels=[["Rentas","nuevas"],["−","No reno."],["=","Abs. renta"],["−","Ventas"],["=","Abs. total"]];
-  const allVals=[0,nuevas,nuevas-noreno,absRenta,absTotal];
-  const minV=Math.min(...allVals,0),maxV=Math.max(...allVals,0);
-  const pad=Math.max(1,Math.round((maxV-minV)*0.15));
-  charts["waterfallmonth"]=new Chart(document.getElementById("chart-waterfall-month"),{
-    type:"bar",
-    data:{labels,datasets:[{data,backgroundColor:colors,borderRadius:5,barPercentage:0.65}]},
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:(x)=>{
-        const i=x.dataIndex;
-        if(i===0)return "Rentas nuevas: +"+nuevas;
-        if(i===1)return "No renovación: −"+noreno;
-        if(i===2)return "Absorción de renta: "+(absRenta>0?"+":"")+absRenta;
-        if(i===3)return "Ventas: −"+venta;
-        return "Absorción total: "+(absTotal>0?"+":"")+absTotal;
-      }}}},
-      scales:{y:{min:minV-pad,max:maxV+pad,grid:{color:(x)=>x.tick.value===0?"rgba(0,0,0,.25)":"rgba(0,0,0,.06)"},ticks:{font:{family:"DM Mono",size:11},stepSize:Math.max(1,Math.round(maxV/5))}},x:{grid:{display:false},ticks:{font:{family:"DM Sans",size:10}}}}
-    }
+function renderDonutOcupacion(pid, r){
+  const ctx=document.getElementById("donut-ocupacion");
+  if(!ctx) return;
+  destroyChart("donut");
+  const total=getInvTotal(pid);
+  const ocup=getOcupadas(pid,r), disp=getDisp(r);
+  const p=PROJECTS[pid];
+  charts["donut"]=new Chart(ctx,{
+    type:"doughnut",
+    data:{labels:["Ocupadas","Disponibles"],datasets:[{data:[ocup,disp||0.0001],backgroundColor:[p?p.color:"#20C997","#E5E4DE"],borderWidth:0}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:"72%",plugins:{legend:{display:false},tooltip:{callbacks:{label:(x)=>x.label+": "+(x.dataIndex===0?ocup:disp)}}}}
   });
 }
 
 function renderWaterfall(){
-  const card=document.getElementById("rentas-waterfall-card");
-  if(!card) return;
-  const r = drafts[currentProject] && drafts[currentProject].rentas ? drafts[currentProject].rentas : null;
-  const hasData = r && ((+r.nuevas||0)+(+r.noreno||0)+(+r.venta||0) > 0);
-  if(!hasData){ card.style.display="none"; destroyChart("waterfall"); return; }
-  card.style.display="block";
-  destroyChart("waterfall");
-
-  const nuevas=+r.nuevas||0, noreno=+r.noreno||0, venta=+r.venta||0;
-  const absRenta = nuevas - noreno;        // absorción sana
-  const absTotal = nuevas - noreno - venta; // absorción total
-
-  // Waterfall steps: cada barra es [base, top] (floating bar)
-  // 1. Rentas nuevas: 0 → nuevas (verde, sube)
-  // 2. No renovación: nuevas → (nuevas-noreno) (rojo, baja)
-  // 3. = Absorción de renta: marcador (barra completa desde 0)
-  // 4. Ventas: absRenta → absTotal (naranja, baja)
-  // 5. = Absorción total: marcador final
-  const step1=[0, nuevas];
-  const step2=[nuevas-noreno, nuevas];
-  const step3=[0, absRenta<0?0:absRenta];   // si negativo se ve abajo
-  const step4=[absTotal, absRenta];
-  const step5=[0, absTotal<0?0:absTotal];
-
-  const labels=["Rentas\nnuevas","− No\nrenovación","= Absorción\nde renta","− Ventas","= Absorción\ntotal"];
-  const data=[step1, step2, [0,absRenta], step4, [0,absTotal]];
-  const colors=[
-    "#20C997",  // verde rentas nuevas
-    "#F87171",  // rojo no renovación
-    absRenta>=0?"#15803D":"#B91C1C", // absorción renta (verde/rojo según signo)
-    "#FB923C",  // naranja ventas
-    absTotal>=0?"#15803D":"#B91C1C"  // absorción total
-  ];
-
-  // Para barras de absorción que pueden ser negativas, ajustar el rango
-  const allVals=[0, nuevas, nuevas-noreno, absRenta, absTotal];
-  const minV=Math.min(...allVals, 0);
-  const maxV=Math.max(...allVals, 0);
-  const pad=Math.max(1, Math.round((maxV-minV)*0.15));
-
   const ctx=document.getElementById("chart-waterfall");
-  charts["waterfall"]=new Chart(ctx,{
-    type:"bar",
-    data:{
-      labels:labels.map(l=>l.split("\n")),
-      datasets:[{
-        data:data,
-        backgroundColor:colors,
-        borderColor:colors,
-        borderWidth:0,
-        borderRadius:5,
-        barPercentage:0.65
-      }]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{
-        legend:{display:false},
-        tooltip:{callbacks:{label:(ctx)=>{
-          const v=ctx.raw;
-          const diff=Math.abs(v[1]-v[0]);
-          const i=ctx.dataIndex;
-          if(i===0) return "Rentas nuevas: +"+nuevas;
-          if(i===1) return "No renovación: −"+noreno;
-          if(i===2) return "Absorción de renta: "+(absRenta>0?"+":"")+absRenta;
-          if(i===3) return "Ventas: −"+venta;
-          if(i===4) return "Absorción total: "+(absTotal>0?"+":"")+absTotal;
-          return diff;
-        }}}
-      },
-      scales:{
-        y:{
-          min:minV-pad, max:maxV+pad,
-          grid:{color:(ctx)=>ctx.tick.value===0?"rgba(0,0,0,.25)":"rgba(0,0,0,.06)"},
-          ticks:{font:{family:"DM Mono",size:11},stepSize:1}
-        },
-        x:{grid:{display:false},ticks:{font:{family:"DM Sans",size:10.5}}}
-      }
+  if(!ctx) return;
+  const r = drafts[currentProject] && drafts[currentProject].rentas ? drafts[currentProject].rentas : null;
+  destroyChart("waterfall");
+  if(!r) return;
+  const nuevas=rNuevas(r), noreno=rNoreno(r), venta=rVenta(r);
+  if(nuevas+noreno+venta===0) return;
+  const absRenta=nuevas-noreno, absTotal=nuevas-noreno-venta;
+  const data=[[0,nuevas],[nuevas-noreno,nuevas],[0,absRenta],[absTotal,absRenta],[0,absTotal]];
+  const colors=["#20C997","#F87171",absRenta>=0?"#15803D":"#B91C1C","#FB923C",absTotal>=0?"#15803D":"#B91C1C"];
+  const labels=[["Rentas","nuevas"],["−","No reno."],["=","Abs.","renta"],["−","Ventas"],["=","Abs.","total"]];
+  const allVals=[0,nuevas,nuevas-noreno,absRenta,absTotal];
+  const minV=Math.min(...allVals,0),maxV=Math.max(...allVals,0),pad=Math.max(1,Math.round((maxV-minV)*0.15));
+  charts["waterfall"]=new Chart(ctx,{type:"bar",
+    data:{labels,datasets:[{data,backgroundColor:colors,borderRadius:5,barPercentage:0.68}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:(x)=>{const i=x.dataIndex;if(i===0)return "Rentas nuevas: +"+nuevas;if(i===1)return "No renovación: −"+noreno;if(i===2)return "Absorción de renta: "+(absRenta>0?"+":"")+absRenta;if(i===3)return "Ventas: −"+venta;return "Absorción total: "+(absTotal>0?"+":"")+absTotal;}}}},
+      scales:{y:{min:minV-pad,max:maxV+pad,grid:{color:(x)=>x.tick.value===0?"rgba(0,0,0,.25)":"rgba(0,0,0,.06)"},ticks:{font:{family:"DM Mono",size:10},stepSize:1}},x:{grid:{display:false},ticks:{font:{family:"DM Sans",size:9.5}}}}
     }
   });
 }
 
-function loadRentasInputs(){
-  const r = drafts[currentProject] && drafts[currentProject].rentas ? drafts[currentProject].rentas : {};
-  const set=(id,v)=>{ const el=document.getElementById(id); if(el) el.value=(v!==undefined&&v!==0)?v:""; };
-  set("r-nuevas", r.nuevas);
-  set("r-noreno", r.noreno);
-  set("r-venta", r.venta);
-  set("r-incr", r.incr);
-  set("r-dias", r.dias);
-  set("r-citas", r.citas);
-  set("r-renov", r.renov);
-  renderRentasResults();
+// ── ACUMULADO MENSUAL INLINE ──
+function renderMonthlyInline(){
+  const sel=document.getElementById("mes-selector");
+  if(!sel) return;
+  const ym=sel.value;
+  const cont=document.getElementById("mes-inline-results");
+  const eff=monthEffective(currentProject, ym);
+  const badge=document.getElementById("mes-edited-badge");
+  if(badge) badge.innerHTML = (eff&&eff._edited)?'<span class="month-badge">✏️ Ajustado</span>':'';
+  if(!eff){ cont.innerHTML='<div class="rentas-empty">Sin datos para este mes.</div>'; return; }
+  const absR=eff.nuevas-eff.noreno, absT=eff.nuevas-eff.noreno-eff.venta;
+  const absRcls=absR>0?"abs-positive":absR<0?"abs-negative":"";
+  const absTcls=absT>0?"abs-positive":absT<0?"abs-negative":"";
+  cont.innerHTML=`
+    <div class="rentas-hero">
+      <div class="rentas-card hero">
+        <div class="rh-label">Absorción neta de renta · mes</div>
+        <div class="rh-value ${absRcls}">${absR>0?"+":""}${absR}</div>
+        <div class="rh-sub">${eff.semanas} semana${eff.semanas!==1?"s":""} acumuladas · disponibles al cierre: ${eff.disponible}</div>
+      </div>
+      <div class="rentas-card"><div class="rc-label">Rentas nuevas · mes</div><div class="rc-value">${eff.nuevas}</div><div class="rc-sub">${eff.renov} renovaciones</div></div>
+      <div class="rentas-card"><div class="rc-label">Absorción total · mes</div><div class="rc-value ${absTcls}">${absT>0?"+":""}${absT}</div><div class="rc-sub">incl. ${eff.venta} ventas</div></div>
+    </div>
+    <div class="rentas-grid">
+      <div class="rentas-mini"><div class="rm-label">Citas<br>del mes</div><div class="rm-value">${eff.citas}</div></div>
+      <div class="rentas-mini" style="background:var(--blue-bg);border-color:var(--blue-b)"><div class="rm-label" style="color:var(--blue)">Conversión<br>citas→rentas</div><div class="rm-value" style="color:var(--blue)">${eff.citas>0?Math.round(eff.nuevas/eff.citas*100):0}<span class="rm-unit">%</span></div></div>
+      <div class="rentas-mini"><div class="rm-label">No renovación<br>del mes</div><div class="rm-value">${eff.noreno}</div></div>
+      <div class="rentas-mini"><div class="rm-label">Días prom.<br>en lista</div><div class="rm-value">${eff.dias}<span class="rm-unit"> d</span></div></div>
+      <div class="rentas-mini" style="background:var(--green-bg);border-color:var(--green-b)"><div class="rm-label" style="color:var(--green)">Incr. prom.<br>nuevas</div><div class="rm-value" style="color:var(--green)">${eff.incrNuevas>0?"+":""}${(+eff.incrNuevas||0).toFixed(1)}<span class="rm-unit">%</span></div></div>
+      <div class="rentas-mini" style="background:var(--blue-bg);border-color:var(--blue-b)"><div class="rm-label" style="color:var(--blue)">Incr. prom.<br>renovaciones</div><div class="rm-value" style="color:var(--blue)">${eff.incrRenov>0?"+":""}${(+eff.incrRenov||0).toFixed(1)}<span class="rm-unit">%</span></div></div>
+    </div>`;
 }
+
+// ── EDICIÓN DEL ACUMULADO MENSUAL (modal simple) ──
+function openMonthEdit(){
+  const ym=document.getElementById("mes-selector").value;
+  const eff=monthEffective(currentProject, ym);
+  if(!eff) return;
+  const fields=[
+    ["nuevas","Rentas nuevas"],["renov","Renovaciones"],["noreno","No renovación"],
+    ["venta","Ventas"],["citas","Citas"],["dias","Días prom."],
+    ["incrNuevas","Incr.% nuevas"],["incrRenov","Incr.% renovaciones"],["disponible","Disponibles al cierre"]
+  ];
+  const html=`<div style="position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:flex;align-items:center;justify-content:center;padding:1rem" id="month-edit-overlay" onclick="if(event.target.id==='month-edit-overlay')closeMonthEdit()">
+    <div style="background:var(--surface);border-radius:18px;padding:1.75rem;max-width:520px;width:100%;max-height:85vh;overflow:auto">
+      <div style="font-size:16px;font-weight:600;margin-bottom:4px">Ajustar acumulado — ${monthName(ym)}</div>
+      <p style="font-size:12px;color:var(--text-2);margin-bottom:1.25rem">Edita solo lo que necesites corregir. Lo demás se mantiene en cálculo automático.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        ${fields.map(([k,lbl])=>`<div class="rentas-input-group"><label>${lbl}</label><input type="number" step="0.1" id="me-${k}" value="${eff[k]!==undefined?eff[k]:0}"></div>`).join("")}
+      </div>
+      <div style="display:flex;gap:10px;justify-content:space-between;margin-top:1.5rem">
+        <button onclick="resetMonthOverride()" style="padding:9px 16px;border:1px solid var(--border-md);border-radius:10px;background:var(--surface);font-size:13px;font-family:DM Sans,sans-serif;color:var(--text-2);cursor:pointer">↺ Todo automático</button>
+        <div style="display:flex;gap:10px">
+          <button onclick="closeMonthEdit()" style="padding:9px 16px;border:1px solid var(--border-md);border-radius:10px;background:var(--surface);font-size:13px;font-family:DM Sans,sans-serif;cursor:pointer">Cancelar</button>
+          <button onclick="saveMonthEdit()" style="padding:9px 18px;border:none;border-radius:10px;background:var(--text-1);color:#fff;font-size:13px;font-family:DM Sans,sans-serif;font-weight:600;cursor:pointer">Guardar ajuste</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+  const div=document.createElement("div");
+  div.id="month-edit-container";
+  div.innerHTML=html;
+  document.body.appendChild(div);
+}
+function closeMonthEdit(){ const el=document.getElementById("month-edit-container"); if(el) el.remove(); }
+function saveMonthEdit(){
+  const ym=document.getElementById("mes-selector").value;
+  const auto=aggregateMonth(currentProject, ym);
+  if(!monthOverrides[currentProject]) monthOverrides[currentProject]={};
+  const keys=["nuevas","renov","noreno","venta","citas","dias","incrNuevas","incrRenov","disponible"];
+  const ov={};
+  keys.forEach(k=>{
+    const v=+document.getElementById("me-"+k).value||0;
+    if(auto && v!==auto[k]) ov[k]=v;
+  });
+  if(Object.keys(ov).length>0) monthOverrides[currentProject][ym]=ov;
+  else delete monthOverrides[currentProject][ym];
+  persistMonthOverrides();
+  closeMonthEdit();
+  renderMonthlyInline();
+  showToast("Acumulado ajustado ✓");
+}
+function resetMonthOverride(){
+  const ym=document.getElementById("mes-selector").value;
+  if(monthOverrides[currentProject]) delete monthOverrides[currentProject][ym];
+  persistMonthOverrides();
+  closeMonthEdit();
+  renderMonthlyInline();
+  showToast("Volvió al cálculo automático ✓");
+}
+
 
 function saveEntry(){
   if(!currentProject) return;
