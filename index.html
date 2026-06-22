@@ -340,12 +340,14 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .cap-inv-row{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px}
 .add-unit-btn{margin-top:10px;padding:8px 14px;border:1px dashed var(--border-strong);border-radius:9px;background:transparent;color:var(--text-2);font-size:12px;font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;font-weight:500;cursor:pointer;transition:all .15s;width:100%}
 .add-unit-btn:hover{border-color:var(--green-b);background:var(--green-bg);color:var(--green)}
-.unidad-row{display:grid;grid-template-columns:1.2fr 1.1fr 0.9fr 0.9fr 32px;gap:8px;align-items:center;margin-bottom:7px;padding:8px;background:var(--surface-2);border-radius:9px}
+.unidad-row{display:grid;gap:7px;align-items:center;margin-bottom:7px;padding:8px;background:var(--surface-2);border-radius:9px}
+.unidad-grid{grid-template-columns:1fr 1fr 0.75fr 0.75fr 1.15fr 1.3fr 30px}
+.unidad-row input[type=date]{font-size:11px;font-family:'DM Mono',monospace}
 .unidad-row input,.unidad-row select{padding:7px 9px;border:1px solid var(--border-md);border-radius:7px;font-size:12.5px;font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var(--surface);color:var(--text-1);outline:none;width:100%;box-sizing:border-box}
 .unidad-row input[type=number]{font-family:'DM Mono',monospace}
 .unidad-row .u-del{width:28px;height:28px;border:none;background:transparent;color:var(--text-3);cursor:pointer;border-radius:6px;font-size:14px}
 .unidad-row .u-del:hover{background:var(--red-bg);color:var(--red)}
-.unidad-head{display:grid;grid-template-columns:1.2fr 1.1fr 0.9fr 0.9fr 32px;gap:8px;padding:0 8px 4px;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);font-weight:700}
+.unidad-head{display:grid;gap:7px;padding:0 8px 4px;font-size:9.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-3);font-weight:700}
 .unidades-empty{padding:1rem;text-align:center;color:var(--text-3);font-size:12px;background:var(--surface-2);border-radius:9px}
 
 /* ── DASHBOARD VISUAL ── */
@@ -376,7 +378,7 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .rd-tag.renovacion{background:var(--blue-bg);color:var(--blue)}
 .rd-units-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
 .rd-mes-banner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-lg);padding:10px 16px;margin-bottom:12px}
-@media(max-width:900px){.rd-inv-grid{grid-template-columns:1fr 1fr}.rd-flow-grid{grid-template-columns:1fr}.cap-inv-row{grid-template-columns:1fr}.unidad-row,.unidad-head{grid-template-columns:1fr 1fr 0.8fr 0.8fr 28px}}
+@media(max-width:900px){.rd-inv-grid{grid-template-columns:1fr 1fr}.rd-flow-grid{grid-template-columns:1fr}.cap-inv-row{grid-template-columns:1fr}.unidad-grid{grid-template-columns:1fr 1fr;gap:6px}.unidad-head.unidad-grid{display:none}}
 
 .rentas-empty{background:var(--surface-2);border:1px dashed var(--border-md);border-radius:var(--r-lg);padding:1.5rem;text-align:center;color:var(--text-3);font-size:13px}
 .rentas-delta{font-size:11px;margin-top:4px}
@@ -1442,12 +1444,13 @@ function exportExcel(){
           Proyecto:p.name, Fecha:e.date,
           "Unidad":u.id||"", "Tipo":u.tipo==="nueva"?"Renta nueva":"Renovación",
           "Días en lista":u.tipo==="renovacion"?"":(+u.dias||0),
-          "Incremento %":+u.incr||0
+          "Incremento %":+u.incr||0,
+          "Inicio contrato":u.inicio||"", "Fin contrato":u.fin||""
         });
       });
     });
   });
-  const wsUnits=XLSX.utils.json_to_sheet(unitRows.length?unitRows:[{Proyecto:"",Fecha:"",Unidad:"",Tipo:"","Días en lista":"","Incremento %":""}]);
+  const wsUnits=XLSX.utils.json_to_sheet(unitRows.length?unitRows:[{Proyecto:"",Fecha:"",Unidad:"",Tipo:"","Días en lista":"","Incremento %":"","Inicio contrato":"","Fin contrato":""}]);
   XLSX.utils.book_append_sheet(wb,wsUnits,"Unidades cerradas");
 
   // ─ Hoja 4: AMENIDADES ─
@@ -2411,7 +2414,7 @@ function addUnidad(){
   if(!drafts[currentProject].rentas) drafts[currentProject].rentas={};
   const r=drafts[currentProject].rentas;
   if(!Array.isArray(r.unidades)) r.unidades=[];
-  r.unidades.push({id:"", tipo:"nueva", dias:0, incr:0});
+  r.unidades.push({id:"", tipo:"nueva", dias:0, incr:0, inicio:"", fin:""});
   renderUnidadesList();
   recalcDispAuto();
   renderRentasDashboard2();
@@ -2427,10 +2430,23 @@ function removeUnidad(i){
 
 function updateUnidad(i, field, val){
   const r=drafts[currentProject].rentas;
-  if(field==="id") r.unidades[i].id=val;
+  if(field==="id" || field==="inicio" || field==="fin") r.unidades[i][field]=val;
   else if(field==="tipo") r.unidades[i].tipo=val;
   else r.unidades[i][field]=+val||0;
+  // Auto-calcular fin si hay inicio y un plazo típico (no forzado, solo si fin vacío)
   recalcDispAuto();
+  renderRentasDashboard2();
+}
+
+// Sugerir fin de contrato a 12 meses del inicio (botón opcional)
+function autoFinContrato(i){
+  const r=drafts[currentProject].rentas;
+  const ini=r.unidades[i].inicio;
+  if(!ini) return;
+  const d=new Date(ini+"T00:00:00");
+  d.setFullYear(d.getFullYear()+1);
+  r.unidades[i].fin = d.toISOString().slice(0,10);
+  renderUnidadesList();
   renderRentasDashboard2();
 }
 
@@ -2443,8 +2459,8 @@ function renderUnidadesList(){
     cont.innerHTML='<div class="unidades-empty">Sin unidades cerradas aún. Agrega cada departamento rentado o renovado esta semana.</div>';
     return;
   }
-  cont.innerHTML=`<div class="unidad-head"><span>ID / Depto</span><span>Tipo</span><span>Días en lista</span><span>Incremento %</span><span></span></div>`+
-    units.map((u,i)=>`<div class="unidad-row">
+  cont.innerHTML=`<div class="unidad-head unidad-grid"><span>ID / Depto</span><span>Tipo</span><span>Días lista</span><span>Incr. %</span><span>Inicio contrato</span><span>Fin contrato</span><span></span></div>`+
+    units.map((u,i)=>`<div class="unidad-row unidad-grid">
       <input type="text" value="${(u.id||"").replace(/"/g,'&quot;')}" placeholder="Ej. 304" oninput="updateUnidad(${i},'id',this.value)">
       <select onchange="updateUnidad(${i},'tipo',this.value)">
         <option value="nueva" ${u.tipo==="nueva"?"selected":""}>Renta nueva</option>
@@ -2452,6 +2468,11 @@ function renderUnidadesList(){
       </select>
       <input type="number" min="0" step="1" value="${u.dias||""}" placeholder="${u.tipo==="renovacion"?"N/A":"0"}" oninput="updateUnidad(${i},'dias',this.value)" ${u.tipo==="renovacion"?"disabled style='opacity:.4'":""}>
       <input type="number" step="0.1" value="${u.incr||""}" placeholder="0.0" oninput="updateUnidad(${i},'incr',this.value)">
+      <input type="date" value="${u.inicio||""}" oninput="updateUnidad(${i},'inicio',this.value)" title="Inicio de contrato">
+      <div style="display:flex;gap:3px;align-items:center">
+        <input type="date" value="${u.fin||""}" oninput="updateUnidad(${i},'fin',this.value)" title="Fin de contrato" style="flex:1">
+        <button onclick="autoFinContrato(${i})" title="+12 meses del inicio" style="padding:4px 6px;border:1px solid var(--border-md);border-radius:5px;background:var(--surface);font-size:9px;cursor:pointer;white-space:nowrap;color:var(--text-3)">+1a</button>
+      </div>
       <button class="u-del" onclick="removeUnidad(${i})" title="Quitar">✕</button>
     </div>`).join("");
 }
@@ -2540,6 +2561,18 @@ function persistMonthOverrides(){
 // ══════════════════════════════════════════
 // DASHBOARD VISUAL (semana + mes en una vista)
 // ══════════════════════════════════════════
+// Formato de fecha de vencimiento con alerta si está próximo (≤60 días)
+function fmtDateVenc(d){
+  if(!d) return "—";
+  const fin=new Date(d+"T00:00:00");
+  const hoy=new Date(); hoy.setHours(0,0,0,0);
+  const dias=Math.round((fin-hoy)/(1000*60*60*24));
+  let color="var(--text-2)";
+  if(dias<0) color="var(--red)";          // vencido
+  else if(dias<=60) color="var(--amber)";  // por vencer pronto
+  return `<span style="color:${color}">${fmtDate(d)}</span>`;
+}
+
 function renderRentasDashboard2(){
   const cont=document.getElementById("rentas-dashboard");
   if(!cont || !currentProject) return;
@@ -2611,12 +2644,14 @@ function renderRentasDashboard2(){
     html+=`<div class="rd-section">
       <div class="rd-section-label">🔑 Unidades cerradas · ${units.length}</div>
       <table class="rd-units-table">
-        <thead><tr><th>Unidad</th><th>Tipo</th><th style="text-align:center">Días en lista</th><th style="text-align:center">Incremento</th></tr></thead>
+        <thead><tr><th>Unidad</th><th>Tipo</th><th style="text-align:center">Días lista</th><th style="text-align:center">Incremento</th><th style="text-align:center">Inicio contrato</th><th style="text-align:center">Fin contrato</th></tr></thead>
         <tbody>${units.map(u=>`<tr>
           <td><strong>${u.id||"—"}</strong></td>
           <td><span class="rd-tag ${u.tipo}">${u.tipo==="nueva"?"Renta nueva":"Renovación"}</span></td>
           <td style="text-align:center;font-family:DM Mono,monospace">${u.tipo==="renovacion"?'<span style="color:var(--text-3)">—</span>':(+u.dias||0)+" d"}</td>
           <td style="text-align:center;font-family:DM Mono,monospace;color:${+u.incr>0?'var(--green)':'var(--text-2)'}">${+u.incr?((+u.incr>0?"+":"")+(+u.incr).toFixed(1)+"%"):"—"}</td>
+          <td style="text-align:center;font-family:DM Mono,monospace;font-size:11.5px">${u.inicio?fmtDate(u.inicio):'<span style="color:var(--text-3)">—</span>'}</td>
+          <td style="text-align:center;font-family:DM Mono,monospace;font-size:11.5px">${u.fin?fmtDateVenc(u.fin):'<span style="color:var(--text-3)">—</span>'}</td>
         </tr>`).join("")}</tbody>
       </table>
       <div class="rd-units-summary">
