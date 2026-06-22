@@ -340,6 +340,27 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .cap-inv-row{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px}
 .add-unit-btn{margin-top:10px;padding:8px 14px;border:1px dashed var(--border-strong);border-radius:9px;background:transparent;color:var(--text-2);font-size:12px;font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;font-weight:500;cursor:pointer;transition:all .15s;width:100%}
 .add-unit-btn:hover{border-color:var(--green-b);background:var(--green-bg);color:var(--green)}
+
+/* ── UNIDAD CERRADA (tarjeta con atribución) ── */
+.unidad-card{background:var(--surface-2);border:1px solid var(--border);border-radius:11px;padding:10px;margin-bottom:9px}
+.unidad-card-row1{display:grid;grid-template-columns:1fr 1fr 0.75fr 0.7fr 1.1fr 1.25fr 30px;gap:7px;align-items:center}
+.unidad-card-row1 input,.unidad-card-row1 select{padding:7px 9px;border:1px solid var(--border-md);border-radius:7px;font-size:12.5px;font-family:'HelveticaNow',sans-serif;background:var(--surface);color:var(--text-1);outline:none;width:100%;box-sizing:border-box}
+.unidad-card-row1 input[type=number]{font-family:'DM Mono',monospace}
+.unidad-card-row1 input[type=date]{font-size:11px;font-family:'DM Mono',monospace}
+.unidad-card-row2{display:flex;align-items:center;gap:10px;margin-top:9px;padding-top:9px;border-top:1px dashed var(--border-md);flex-wrap:wrap}
+.unidad-attr-label{font-size:11px;font-weight:600;color:var(--text-2);white-space:nowrap}
+.canal-pills{display:inline-flex;gap:4px;flex-wrap:wrap}
+.canal-pill{padding:5px 11px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border-md);background:var(--surface);color:var(--text-2);font-family:'HelveticaNow',sans-serif;transition:all .13s}
+.canal-pill:hover{border-color:var(--text-3)}
+.canal-pill.active.c-directo{background:#5C7CFA;color:#fff;border-color:#5C7CFA}
+.canal-pill.active.c-interno{background:#1A7A4A;color:#fff;border-color:#1A7A4A}
+.canal-pill.active.c-externo{background:#E8590C;color:#fff;border-color:#E8590C}
+.canal-pill.active.c-otro{background:#6B6B6B;color:#fff;border-color:#6B6B6B}
+.broker-input{flex:1;min-width:140px;padding:6px 10px;border:1px solid var(--border-md);border-radius:7px;font-size:12px;font-family:'HelveticaNow',sans-serif;background:var(--surface);color:var(--text-1);outline:none}
+.u-del{width:28px;height:28px;border:none;background:transparent;color:var(--text-3);cursor:pointer;border-radius:6px;font-size:14px}
+.u-del:hover{background:var(--red-bg);color:var(--red)}
+@media(max-width:900px){.unidad-card-row1{grid-template-columns:1fr 1fr;gap:6px}.unidad-card-row2{flex-direction:column;align-items:stretch}}
+
 .unidad-row{display:grid;gap:7px;align-items:center;margin-bottom:7px;padding:8px;background:var(--surface-2);border-radius:9px}
 .unidad-grid{grid-template-columns:1fr 1fr 0.75fr 0.75fr 1.15fr 1.3fr 30px}
 .unidad-row input[type=date]{font-size:11px;font-family:'DM Mono',monospace}
@@ -376,6 +397,35 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .rd-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px}
 .rd-tag.nueva{background:var(--green-bg);color:var(--green)}
 .rd-tag.renovacion{background:var(--blue-bg);color:var(--blue)}
+
+/* ── DISTINTIVO DE BROKERS ── */
+.broker-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:14px}
+.broker-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:1.25rem}
+.broker-card-title{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);font-weight:600;margin-bottom:1rem}
+.broker-mix-wrap{display:flex;align-items:center;gap:18px}
+.broker-donut{position:relative;width:120px;height:120px;flex-shrink:0}
+.broker-donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.broker-mix-legend{flex:1;display:flex;flex-direction:column;gap:9px}
+.mix-leg-row{display:flex;align-items:center;gap:9px}
+.mix-dot{width:11px;height:11px;border-radius:3px;flex-shrink:0}
+.mix-leg-name{font-size:12.5px;color:var(--text-2);flex:1}
+.mix-leg-val{font-size:12.5px;font-weight:700;font-family:'DM Mono',monospace;color:var(--text-1)}
+/* Podio */
+.podio{display:flex;align-items:flex-end;justify-content:center;gap:14px;min-height:150px;padding-top:8px}
+.podio-col{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;max-width:110px}
+.podio-medal{font-size:22px;line-height:1}
+.podio-name{font-size:11.5px;font-weight:600;color:var(--text-1);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.podio-bar{width:100%;border-radius:9px 9px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;min-height:40px}
+.podio-count{font-size:20px;font-weight:700;font-family:'DM Mono',monospace;color:#fff}
+.podio-canal{font-size:9.5px;font-weight:600;text-align:center}
+.ranking-rest{margin-top:14px;border-top:1px solid var(--border);padding-top:10px;display:flex;flex-direction:column;gap:6px}
+.ranking-row{display:flex;align-items:center;gap:10px;font-size:12px}
+.ranking-pos{width:20px;height:20px;border-radius:50%;background:var(--surface-3);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--text-2);flex-shrink:0}
+.ranking-name{flex:1;color:var(--text-1);font-weight:500}
+.ranking-canal{font-size:10px;font-weight:600}
+.ranking-count{font-family:'DM Mono',monospace;font-weight:700;color:var(--text-1)}
+@media(max-width:900px){.broker-grid{grid-template-columns:1fr}}
+
 .rd-units-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
 .rd-mes-banner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-lg);padding:10px 16px;margin-bottom:12px}
 @media(max-width:900px){.rd-inv-grid{grid-template-columns:1fr 1fr}.rd-flow-grid{grid-template-columns:1fr}.cap-inv-row{grid-template-columns:1fr}.unidad-grid{grid-template-columns:1fr 1fr;gap:6px}.unidad-head.unidad-grid{display:none}}
@@ -1445,12 +1495,13 @@ function exportExcel(){
           "Unidad":u.id||"", "Tipo":u.tipo==="nueva"?"Renta nueva":"Renovación",
           "Días en lista":u.tipo==="renovacion"?"":(+u.dias||0),
           "Incremento %":+u.incr||0,
-          "Inicio contrato":u.inicio||"", "Fin contrato":u.fin||""
+          "Inicio contrato":u.inicio||"", "Fin contrato":u.fin||"",
+          "Canal":u.canal?(({directo:"Directo",interno:"Broker interno",externo:"Broker externo",otro:"Otro"})[u.canal]||u.canal):"", "Broker":u.broker||""
         });
       });
     });
   });
-  const wsUnits=XLSX.utils.json_to_sheet(unitRows.length?unitRows:[{Proyecto:"",Fecha:"",Unidad:"",Tipo:"","Días en lista":"","Incremento %":"","Inicio contrato":"","Fin contrato":""}]);
+  const wsUnits=XLSX.utils.json_to_sheet(unitRows.length?unitRows:[{Proyecto:"",Fecha:"",Unidad:"",Tipo:"","Días en lista":"","Incremento %":"","Inicio contrato":"","Fin contrato":"",Canal:"",Broker:""}]);
   XLSX.utils.book_append_sheet(wb,wsUnits,"Unidades cerradas");
 
   // ─ Hoja 4: AMENIDADES ─
@@ -2414,7 +2465,7 @@ function addUnidad(){
   if(!drafts[currentProject].rentas) drafts[currentProject].rentas={};
   const r=drafts[currentProject].rentas;
   if(!Array.isArray(r.unidades)) r.unidades=[];
-  r.unidades.push({id:"", tipo:"nueva", dias:0, incr:0, inicio:"", fin:""});
+  r.unidades.push({id:"", tipo:"nueva", dias:0, incr:0, inicio:"", fin:"", canal:"directo", broker:""});
   renderUnidadesList();
   recalcDispAuto();
   renderRentasDashboard2();
@@ -2430,7 +2481,7 @@ function removeUnidad(i){
 
 function updateUnidad(i, field, val){
   const r=drafts[currentProject].rentas;
-  if(field==="id" || field==="inicio" || field==="fin") r.unidades[i][field]=val;
+  if(field==="id" || field==="inicio" || field==="fin" || field==="canal" || field==="broker") r.unidades[i][field]=val;
   else if(field==="tipo") r.unidades[i].tipo=val;
   else r.unidades[i][field]=+val||0;
   // Auto-calcular fin si hay inicio y un plazo típico (no forzado, solo si fin vacío)
@@ -2459,22 +2510,33 @@ function renderUnidadesList(){
     cont.innerHTML='<div class="unidades-empty">Sin unidades cerradas aún. Agrega cada departamento rentado o renovado esta semana.</div>';
     return;
   }
-  cont.innerHTML=`<div class="unidad-head unidad-grid"><span>ID / Depto</span><span>Tipo</span><span>Días lista</span><span>Incr. %</span><span>Inicio contrato</span><span>Fin contrato</span><span></span></div>`+
-    units.map((u,i)=>`<div class="unidad-row unidad-grid">
-      <input type="text" value="${(u.id||"").replace(/"/g,'&quot;')}" placeholder="Ej. 304" oninput="updateUnidad(${i},'id',this.value)">
+  const canales=[["directo","Directo"],["interno","Broker interno"],["externo","Broker externo"],["otro","Otro"]];
+  cont.innerHTML=units.map((u,i)=>{
+    const necesitaBroker = u.canal && u.canal!=="directo";
+    return `<div class="unidad-card">
+    <div class="unidad-card-row1">
+      <input type="text" value="${(u.id||"").replace(/"/g,'&quot;')}" placeholder="Depto (ej. 304)" oninput="updateUnidad(${i},'id',this.value)">
       <select onchange="updateUnidad(${i},'tipo',this.value)">
         <option value="nueva" ${u.tipo==="nueva"?"selected":""}>Renta nueva</option>
         <option value="renovacion" ${u.tipo==="renovacion"?"selected":""}>Renovación</option>
       </select>
-      <input type="number" min="0" step="1" value="${u.dias||""}" placeholder="${u.tipo==="renovacion"?"N/A":"0"}" oninput="updateUnidad(${i},'dias',this.value)" ${u.tipo==="renovacion"?"disabled style='opacity:.4'":""}>
-      <input type="number" step="0.1" value="${u.incr||""}" placeholder="0.0" oninput="updateUnidad(${i},'incr',this.value)">
+      <input type="number" min="0" step="1" value="${u.dias||""}" placeholder="Días lista" oninput="updateUnidad(${i},'dias',this.value)" ${u.tipo==="renovacion"?"disabled style='opacity:.4'":""}>
+      <input type="number" step="0.1" value="${u.incr||""}" placeholder="Incr. %" oninput="updateUnidad(${i},'incr',this.value)">
       <input type="date" value="${u.inicio||""}" oninput="updateUnidad(${i},'inicio',this.value)" title="Inicio de contrato">
       <div style="display:flex;gap:3px;align-items:center">
-        <input type="date" value="${u.fin||""}" oninput="updateUnidad(${i},'fin',this.value)" title="Fin de contrato" style="flex:1">
-        <button onclick="autoFinContrato(${i})" title="+12 meses del inicio" style="padding:4px 6px;border:1px solid var(--border-md);border-radius:5px;background:var(--surface);font-size:9px;cursor:pointer;white-space:nowrap;color:var(--text-3)">+1a</button>
+        <input type="date" value="${u.fin||""}" oninput="updateUnidad(${i},'fin',this.value)" title="Fin de contrato" style="flex:1;min-width:0">
+        <button onclick="autoFinContrato(${i})" title="+12 meses del inicio" style="padding:5px 6px;border:1px solid var(--border-md);border-radius:5px;background:var(--surface);font-size:9px;cursor:pointer;white-space:nowrap;color:var(--text-3)">+1a</button>
       </div>
       <button class="u-del" onclick="removeUnidad(${i})" title="Quitar">✕</button>
-    </div>`).join("");
+    </div>
+    <div class="unidad-card-row2">
+      <span class="unidad-attr-label">🤝 ¿Quién la cerró?</span>
+      <div class="canal-pills">
+        ${canales.map(([val,lbl])=>`<button class="canal-pill ${u.canal===val?'active':''} c-${val}" onclick="updateUnidad(${i},'canal','${val}')">${lbl}</button>`).join("")}
+      </div>
+      <input type="text" class="broker-input" value="${(u.broker||"").replace(/"/g,'&quot;')}" placeholder="${necesitaBroker?'Nombre del broker':'(sin broker)'}" oninput="updateUnidad(${i},'broker',this.value)" ${necesitaBroker?'':'disabled style="opacity:.35"'}>
+    </div>
+  </div>`;}).join("");
 }
 
 function loadRentasInputs(){
@@ -2573,6 +2635,127 @@ function fmtDateVenc(d){
   return `<span style="color:${color}">${fmtDate(d)}</span>`;
 }
 
+// ══════════════════════════════════════════
+// DISTINTIVO DE RENTAS GLOBALES (brokers)
+// ══════════════════════════════════════════
+const CANAL_INFO={
+  directo:{label:"Directo",color:"#5C7CFA",icon:"🏢"},
+  interno:{label:"Broker interno",color:"#1A7A4A",icon:"🤝"},
+  externo:{label:"Broker externo",color:"#E8590C",icon:"🌐"},
+  otro:{label:"Otro",color:"#6B6B6B",icon:"•"}
+};
+
+// Recolecta unidades cerradas (solo rentas nuevas cuentan como "cierre") de un rango
+function collectCierres(pid, soloSemana, ym){
+  let units=[];
+  const hist=getHistory(pid);
+  hist.forEach(e=>{
+    if(!e.rentas || !Array.isArray(e.rentas.unidades)) return;
+    if(soloSemana){
+      const cur=drafts[pid] && drafts[pid].rentas ? drafts[pid].rentas : null;
+      // para "semana" usamos el draft actual
+    }
+    if(ym && monthKeyOf(e.date)!==ym) return;
+    e.rentas.unidades.forEach(u=>{ if(u.tipo==="nueva") units.push(u); });
+  });
+  return units;
+}
+
+// Cierres de la semana en edición (draft actual)
+function cierresSemana(pid){
+  const r=drafts[pid] && drafts[pid].rentas ? drafts[pid].rentas : null;
+  if(!r || !Array.isArray(r.unidades)) return [];
+  return r.unidades.filter(u=>u.tipo==="nueva");
+}
+
+// Mix de canal a partir de una lista de unidades
+function mixCanal(units){
+  const mix={directo:0,interno:0,externo:0,otro:0};
+  units.forEach(u=>{ const ca=u.canal||"directo"; mix[ca]=(mix[ca]||0)+1; });
+  return mix;
+}
+
+// Ranking de brokers (interno+externo con nombre)
+function rankBrokers(units){
+  const map={};
+  units.forEach(u=>{
+    if((u.canal==="interno"||u.canal==="externo"||u.canal==="otro") && u.broker && u.broker.trim()){
+      const key=u.broker.trim();
+      if(!map[key]) map[key]={nombre:key, cierres:0, canal:u.canal};
+      map[key].cierres++;
+    }
+  });
+  return Object.values(map).sort((a,b)=>b.cierres-a.cierres);
+}
+
+function renderBrokerDistintivo(pid, ym){
+  // Usar acumulado del mes para el distintivo (más representativo que una semana)
+  const unitsMes=collectCierres(pid, false, ym);
+  const unitsSem=cierresSemana(pid);
+  const totalMes=unitsMes.length;
+  if(totalMes===0 && unitsSem.length===0) return "";
+
+  const mix=mixCanal(unitsMes.length?unitsMes:unitsSem);
+  const ranking=rankBrokers(unitsMes.length?unitsMes:unitsSem);
+  const totalRef=(unitsMes.length?unitsMes:unitsSem).length;
+
+  // Podio (top 3)
+  const podioHtml=ranking.length? `
+    <div class="podio">
+      ${ranking.slice(0,3).map((b,idx)=>{
+        const medals=["🥇","🥈","🥉"];
+        const heights=[88,68,54];
+        const ci=CANAL_INFO[b.canal]||CANAL_INFO.otro;
+        return `<div class="podio-col">
+          <div class="podio-medal">${medals[idx]}</div>
+          <div class="podio-name" title="${b.nombre}">${b.nombre}</div>
+          <div class="podio-bar" style="height:${heights[idx]}px;background:linear-gradient(180deg,${ci.color},${ci.color}cc)">
+            <span class="podio-count">${b.cierres}</span>
+          </div>
+          <div class="podio-canal" style="color:${ci.color}">${ci.icon} ${ci.label.replace('Broker ','')}</div>
+        </div>`;
+      }).join("")}
+    </div>
+    ${ranking.length>3?`<div class="ranking-rest">${ranking.slice(3).map((b,idx)=>{const ci=CANAL_INFO[b.canal]||CANAL_INFO.otro;return `<div class="ranking-row"><span class="ranking-pos">${idx+4}</span><span class="ranking-name">${b.nombre}</span><span class="ranking-canal" style="color:${ci.color}">${ci.label.replace('Broker ','')}</span><span class="ranking-count">${b.cierres}</span></div>`;}).join("")}</div>`:""}
+  ` : '<div class="rentas-empty" style="margin:0">Aún no hay cierres atribuidos a brokers. Captura el canal y nombre de quien cierra cada renta.</div>';
+
+  return `<div class="rd-section">
+    <div class="rd-section-label">🏆 Distintivo de rentas — ¿quién cierra?${ym?' · '+monthName(ym):''}</div>
+    <div class="broker-grid">
+      <div class="broker-card">
+        <div class="broker-card-title">Mix de canal de cierre</div>
+        <div class="broker-mix-wrap">
+          <div class="broker-donut"><canvas id="canal-donut"></canvas><div class="broker-donut-center"><span style="font-size:22px;font-weight:700;font-family:'DM Mono',monospace">${totalRef}</span><span style="font-size:9px;text-transform:uppercase;color:var(--text-3);letter-spacing:.04em">cierres</span></div></div>
+          <div class="broker-mix-legend">
+            ${Object.keys(CANAL_INFO).map(k=>{const ci=CANAL_INFO[k];const v=mix[k]||0;const pct=totalRef>0?Math.round(v/totalRef*100):0;return `<div class="mix-leg-row"><span class="mix-dot" style="background:${ci.color}"></span><span class="mix-leg-name">${ci.label}</span><span class="mix-leg-val">${v} · ${pct}%</span></div>`;}).join("")}
+          </div>
+        </div>
+      </div>
+      <div class="broker-card">
+        <div class="broker-card-title">🏅 Podio de brokers</div>
+        ${podioHtml}
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderCanalDonut(pid, ym){
+  const ctx=document.getElementById("canal-donut");
+  if(!ctx) return;
+  destroyChart("canaldonut");
+  const unitsMes=collectCierres(pid, false, ym);
+  const unitsSem=cierresSemana(pid);
+  const mix=mixCanal(unitsMes.length?unitsMes:unitsSem);
+  const keys=Object.keys(CANAL_INFO);
+  const data=keys.map(k=>mix[k]||0);
+  if(data.reduce((a,b)=>a+b,0)===0) return;
+  charts["canaldonut"]=new Chart(ctx,{type:"doughnut",
+    data:{labels:keys.map(k=>CANAL_INFO[k].label),datasets:[{data,backgroundColor:keys.map(k=>CANAL_INFO[k].color),borderWidth:0}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:"68%",plugins:{legend:{display:false},tooltip:{callbacks:{label:(x)=>x.label+": "+x.raw}}}}
+  });
+}
+
+
 function renderRentasDashboard2(){
   const cont=document.getElementById("rentas-dashboard");
   if(!cont || !currentProject) return;
@@ -2662,6 +2845,9 @@ function renderRentasDashboard2(){
     </div>`;
   }
 
+  // ── SECCIÓN 3.5: DISTINTIVO DE RENTAS GLOBALES (brokers) ──
+  html+=renderBrokerDistintivo(pid, ym);
+
   // ── SECCIÓN 4: ACUMULADO DEL MES ──
   if(ym){
     const months=[...new Set(getHistory(pid).filter(e=>e.rentas).map(e=>monthKeyOf(e.date)))].sort().reverse();
@@ -2686,6 +2872,7 @@ function renderRentasDashboard2(){
   // Render charts después de inyectar el DOM
   renderDonutOcupacion(pid, r);
   renderWaterfall();
+  renderCanalDonut(pid, ym);
   if(ym) renderMonthlyInline();
   renderExecutivePulse();
 }
