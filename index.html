@@ -959,7 +959,7 @@ window._fbLoadAll = async function(){
         <div class="chart-card" style="margin-bottom:12px">
           <div class="chart-card-title">📊 Reporte de ocupación y satisfacción semanal</div>
           <div class="chart-card-sub" id="amen-chart-sub">Barras horizontales: % de uso vs. capacidad · Marcadores: satisfacción (1–10)</div>
-          <div class="chart-wrap" style="height:560px"><canvas id="chart-amenidades"></canvas></div>
+          <div class="chart-wrap amen-chart-wrap" style="height:560px;max-width:760px;margin:0 auto"><canvas id="chart-amenidades"></canvas></div>
           <div class="amen-legend">
             <span class="amen-leg-item"><span class="amen-leg-box" style="background:#8DB63C"></span>Ocupación de amenidad reservable (0–100%)</span>
             <span class="amen-leg-item"><span class="amen-leg-box" style="background:#9A9A9C"></span>Ocupación de amenidad de uso libre (0–100%)</span>
@@ -1765,11 +1765,19 @@ function openAmenPaste(){
       <div style="margin-bottom:12px">
         <label style="font-size:11.5px;font-weight:600;color:var(--text-2);display:block;margin-bottom:6px">¿Qué columnas estás pegando?</label>
         <select id="amen-paste-format" onchange="previewAmenPaste()" style="width:100%;padding:9px 12px;border:1px solid var(--border-md);border-radius:9px;font-size:13px;font-family:HelveticaNow,sans-serif;background:var(--surface);color:var(--text-1);cursor:pointer">
-          <option value="usos_sat">Uso última semana + Satisfacción (2 columnas)</option>
-          <option value="usos">Solo Uso última semana (1 columna)</option>
-          <option value="cap">Solo Capacidad total semanal (1 columna)</option>
-          <option value="sat">Solo Satisfacción (1 columna)</option>
-          <option value="cap_usos_sat">Capacidad + Uso + Satisfacción (3 columnas)</option>
+          <optgroup label="Armar catálogo (reemplaza la lista de amenidades)">
+            <option value="cat_nombre">Solo nombres de amenidades (1 columna)</option>
+            <option value="cat_nombre_tipo">Nombre + Tipo (2 columnas)</option>
+            <option value="cat_nombre_tipo_cap">Nombre + Tipo + Capacidad (3 columnas)</option>
+            <option value="cat_full">Tabla completa: Nombre + Tipo + Capacidad + Uso + Satisfacción</option>
+          </optgroup>
+          <optgroup label="Llenar datos (mantiene la lista actual)">
+            <option value="usos_sat" selected>Uso última semana + Satisfacción (2 columnas)</option>
+            <option value="usos">Solo Uso última semana (1 columna)</option>
+            <option value="cap">Solo Capacidad total semanal (1 columna)</option>
+            <option value="sat">Solo Satisfacción (1 columna)</option>
+            <option value="cap_usos_sat">Capacidad + Uso + Satisfacción (3 columnas)</option>
+          </optgroup>
         </select>
       </div>
       <textarea id="amen-paste-area" placeholder="Pega aquí las columnas..." style="width:100%;min-height:170px;padding:12px;border:1px solid var(--border-md);border-radius:10px;font-family:'DM Mono',monospace;font-size:13px;color:var(--text-1);background:var(--surface-2);outline:none;box-sizing:border-box;resize:vertical" oninput="previewAmenPaste()"></textarea>
@@ -1812,10 +1820,41 @@ function parseAmenPaste(text){
     else if(row.indexOf(";")>=0) cells=row.split(";");
     else if(/\s{2,}/.test(row)) cells=row.split(/\s{2,}/);
     else cells=[row];
-    cells=cells.map(s=>s.trim()).filter(s=>s!=="");
+    cells=cells.map(s=>s.trim());
     const num=(s)=>{ if(s===undefined||s==="") return null; const v=parseFloat(s.replace(",",".")); return isNaN(v)?null:v; };
-    return {_cols:cells.map(num)};
+    // _cols = números (para datos), _raw = texto crudo (para nombres/tipo)
+    return {_cols:cells.map(num), _raw:cells};
   });
+}
+
+// Normaliza el tipo escrito en Excel a "reservable" / "no_reservable"
+function normalizaTipo(s){
+  if(!s) return "reservable";
+  const t=s.toLowerCase().trim();
+  if(t.indexOf("no")>=0 || t.indexOf("libre")>=0 || t.indexOf("uso")>=0) return "no_reservable";
+  return "reservable";
+}
+
+// ¿El formato seleccionado arma catálogo (incluye nombres)?
+function esFormatoCatalogo(fmt){ return fmt && fmt.indexOf("cat_")===0; }
+
+// Construye un catálogo nuevo desde el texto pegado según el formato
+function buildCatalogFromPaste(parsed, fmt){
+  const pid=currentProject;
+  let nextId=0;
+  const mkId=(nombre)=>{ nextId++; return pid+"_p"+Date.now().toString(36)+nextId; };
+  const out=[];
+  parsed.forEach(r=>{
+    const raw=r._raw||[];
+    const nombre=(raw[0]||"").trim();
+    if(!nombre) return; // sin nombre, se ignora la fila
+    const item={id:mkId(nombre), nombre:nombre, tipo:"reservable", aplica_sat:true, capacidad:0, sat0:0};
+    if(fmt==="cat_nombre_tipo"){ item.tipo=normalizaTipo(raw[1]); }
+    else if(fmt==="cat_nombre_tipo_cap"){ item.tipo=normalizaTipo(raw[1]); item.capacidad=r._cols[2]||0; }
+    else if(fmt==="cat_full"){ item.tipo=normalizaTipo(raw[1]); item.capacidad=r._cols[2]||0; item._usos=r._cols[3]; item._sat=r._cols[4]; item.sat0=r._cols[4]||0; }
+    out.push(item);
+  });
+  return out;
 }
 
 function previewAmenPaste(){
@@ -1824,8 +1863,21 @@ function previewAmenPaste(){
   const catalog=getAmenCatalog(currentProject);
   const prev=document.getElementById("amen-paste-preview");
   if(!text.trim()){ prev.innerHTML=""; return; }
-  const n=parsed.length, exp=catalog.length;
   const fmt=document.getElementById("amen-paste-format").value;
+  const n=parsed.length, exp=catalog.length;
+
+  if(esFormatoCatalogo(fmt)){
+    // Formato que arma catálogo (reemplaza la lista)
+    const nuevoCat=buildCatalogFromPaste(parsed, fmt);
+    const validas=nuevoCat.length;
+    const preview=nuevoCat.slice(0,4).map(a=>`${a.nombre} <span style="color:var(--text-3)">(${a.tipo==="reservable"?"Reservable":"Uso libre"}${a.capacidad?", cap "+a.capacidad:""})</span>`).join(" · ");
+    prev.innerHTML=`<div style="color:var(--green);font-weight:600;margin-bottom:5px">✓ Se creará un catálogo de ${validas} amenidades (reemplaza las ${exp} actuales)</div>
+      <div style="font-size:11px;color:var(--text-2);line-height:1.6">${preview}${validas>4?` <span style="color:var(--text-3)">… y ${validas-4} más</span>`:""}</div>
+      <div style="font-size:11px;color:var(--amber);margin-top:6px">⚠️ Esto borra la lista de amenidades actual de este proyecto.</div>`;
+    return;
+  }
+
+  // Formatos que llenan datos (mantienen la lista)
   const colsEsperadas={usos_sat:2,usos:1,cap:1,sat:1,cap_usos_sat:3}[fmt];
   const colsDetectadas=parsed.length?Math.max(...parsed.map(p=>p._cols.length)):0;
   let msg, color;
@@ -1840,7 +1892,32 @@ function previewAmenPaste(){
 function applyAmenPaste(){
   const text=document.getElementById("amen-paste-area").value;
   const fmt=document.getElementById("amen-paste-format").value;
-  const parsed=mapPasteByFormat(parseAmenPaste(text), fmt);
+  const parsedRaw=parseAmenPaste(text);
+
+  // ── Formato que arma catálogo: reemplaza la lista de amenidades ──
+  if(esFormatoCatalogo(fmt)){
+    const nuevoCat=buildCatalogFromPaste(parsedRaw, fmt);
+    if(nuevoCat.length===0){ showToast("No detecté nombres válidos"); return; }
+    if(!confirm("¿Reemplazar el catálogo de "+PROJECTS[currentProject].name+" con "+nuevoCat.length+" amenidades? Esto borra la lista actual.")) return;
+    const a=amenDraft();
+    // Limpiar datos viejos y precargar usos/sat si vienen en cat_full
+    const nuevaData={};
+    nuevoCat.forEach(item=>{
+      nuevaData[item.id]={cap:item.capacidad||0, usos:(item._usos!=null?item._usos:0), sat:(item._sat!=null?item._sat:0)};
+      delete item._usos; delete item._sat; // limpiar temporales del catálogo
+    });
+    amenCatalog[currentProject]=nuevoCat;
+    a.data=nuevaData;
+    persistAmenConfig();
+    closeAmenPaste();
+    renderAmenCaptureTable();
+    renderAmenidades();
+    showToast("Catálogo creado: "+nuevoCat.length+" amenidades ✓");
+    return;
+  }
+
+  // ── Formatos que llenan datos: mantienen la lista ──
+  const parsed=mapPasteByFormat(parsedRaw, fmt);
   const catalog=getAmenCatalog(currentProject);
   const a=amenDraft();
   let applied=0;
