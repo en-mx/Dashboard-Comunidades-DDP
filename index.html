@@ -253,6 +253,26 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .amen-leg-box{width:22px;height:13px;border-radius:2px;display:inline-block}
 .amen-leg-circle{width:15px;height:15px;border-radius:50%;background:#fff;border:1.5px solid #6B6B6B;display:inline-block}
 
+
+.masa-cap-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px}
+.masa-hab-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:900px){.masa-cap-grid{grid-template-columns:1fr}.masa-hab-grid{grid-template-columns:1fr 1fr}}
+
+
+.masa-hero-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px}
+.amen-masa-card.masa-accent{background:linear-gradient(135deg,#15302A,#1A3D33);border:none}
+.amen-masa-card.masa-accent .amen-masa-lbl{color:rgba(255,255,255,.7)}
+.amen-masa-card.masa-accent .amen-masa-val{color:#fff}
+.amen-masa-card.masa-accent .amen-masa-sub{color:rgba(255,255,255,.65)}
+.masa-breakdown{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:1.1rem 1.3rem;margin-bottom:14px}
+.masa-bd-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;flex-wrap:wrap;gap:6px}
+.masa-bd-bar{display:flex;height:18px;border-radius:6px;overflow:hidden;background:var(--surface-3);margin-bottom:12px}
+.masa-bd-seg{height:100%;transition:width .4s}
+.masa-bd-legend{display:flex;gap:18px;flex-wrap:wrap}
+.masa-bd-leg{font-size:12px;color:var(--text-2);display:inline-flex;align-items:center;gap:7px}
+.masa-bd-dot{width:10px;height:10px;border-radius:3px}
+@media(max-width:900px){.masa-hero-grid{grid-template-columns:1fr 1fr}}
+
 .amen-masa-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px}
 .amen-masa-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:1rem 1.25rem}
 .amen-masa-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);font-weight:500;margin-bottom:6px}
@@ -261,6 +281,10 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .amen-cap-table{width:100%;border-collapse:collapse}
 .amen-cap-table th{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-3);font-weight:700;padding:6px 8px;text-align:left;border-bottom:1px solid var(--border)}
 .amen-cap-table td{padding:5px 8px;border-bottom:1px solid var(--border)}
+.amen-drag-handle{cursor:grab;color:var(--text-3);font-size:15px;text-align:center;user-select:none}
+.amen-drag-handle:active{cursor:grabbing}
+.amen-cap-table tr.amen-drop-target td{border-top:2px solid var(--text-1)}
+.amen-cap-table tr[draggable=true]{transition:opacity .15s}
 .amen-cap-table input{width:100%;padding:6px 8px;border:1px solid var(--border-md);border-radius:6px;font-size:12.5px;font-family:'DM Mono',monospace;background:var(--surface);color:var(--text-1);outline:none;box-sizing:border-box;text-align:center}
 .amen-cap-table .amen-name-cell{font-size:12.5px;font-weight:500;color:var(--text-1);font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif}
 .amen-cap-table input.amen-name-input{text-align:left;font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif}
@@ -287,6 +311,26 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .amen-leg-item{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--text-2)}
 .amen-leg-box{width:22px;height:13px;border-radius:2px;display:inline-block}
 .amen-leg-circle{width:15px;height:15px;border-radius:50%;background:#fff;border:1.5px solid #6B6B6B;display:inline-block}
+
+
+.masa-cap-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px}
+.masa-hab-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:900px){.masa-cap-grid{grid-template-columns:1fr}.masa-hab-grid{grid-template-columns:1fr 1fr}}
+
+
+.masa-hero-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px}
+.amen-masa-card.masa-accent{background:linear-gradient(135deg,#15302A,#1A3D33);border:none}
+.amen-masa-card.masa-accent .amen-masa-lbl{color:rgba(255,255,255,.7)}
+.amen-masa-card.masa-accent .amen-masa-val{color:#fff}
+.amen-masa-card.masa-accent .amen-masa-sub{color:rgba(255,255,255,.65)}
+.masa-breakdown{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:1.1rem 1.3rem;margin-bottom:14px}
+.masa-bd-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;flex-wrap:wrap;gap:6px}
+.masa-bd-bar{display:flex;height:18px;border-radius:6px;overflow:hidden;background:var(--surface-3);margin-bottom:12px}
+.masa-bd-seg{height:100%;transition:width .4s}
+.masa-bd-legend{display:flex;gap:18px;flex-wrap:wrap}
+.masa-bd-leg{font-size:12px;color:var(--text-2);display:inline-flex;align-items:center;gap:7px}
+.masa-bd-dot{width:10px;height:10px;border-radius:3px}
+@media(max-width:900px){.masa-hero-grid{grid-template-columns:1fr 1fr}}
 
 .amen-masa-grid{grid-template-columns:1fr}}
 
@@ -347,6 +391,20 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .unidad-card-row1 input,.unidad-card-row1 select{padding:7px 9px;border:1px solid var(--border-md);border-radius:7px;font-size:12.5px;font-family:'HelveticaNow',sans-serif;background:var(--surface);color:var(--text-1);outline:none;width:100%;box-sizing:border-box}
 .unidad-card-row1 input[type=number]{font-family:'DM Mono',monospace}
 .unidad-card-row1 input[type=date]{font-size:11px;font-family:'DM Mono',monospace}
+
+/* ── Fila media: monto + amueblado ── */
+.unidad-card-row-mid{display:flex;gap:18px;margin-top:9px;padding-top:9px;border-top:1px dashed var(--border-md);flex-wrap:wrap}
+.umid-field{display:flex;flex-direction:column;gap:5px}
+.umid-label{font-size:11px;font-weight:600;color:var(--text-2)}
+.umid-money{display:flex;align-items:center;border:1px solid var(--border-md);border-radius:7px;background:var(--surface);overflow:hidden}
+.umid-currency{padding:0 8px;color:var(--text-3);font-size:13px;font-family:'DM Mono',monospace;background:var(--surface-2);align-self:stretch;display:flex;align-items:center}
+.umid-money input{border:none;padding:7px 9px;font-size:13px;font-family:'DM Mono',monospace;background:transparent;color:var(--text-1);outline:none;width:130px}
+.amueblado-toggle{display:inline-flex;gap:4px}
+.amue-btn{padding:6px 12px;border-radius:7px;font-size:11.5px;font-weight:600;cursor:pointer;border:1px solid var(--border-md);background:var(--surface);color:var(--text-2);font-family:'HelveticaNow',sans-serif;transition:all .13s}
+.amue-btn.active-si{background:#8B5CF6;color:#fff;border-color:#8B5CF6}
+.amue-btn.active-no{background:var(--surface-3);color:var(--text-1);border-color:var(--border-strong)}
+.canal-pill.active.c-asesor{background:#0CA678;color:#fff;border-color:#0CA678}
+
 .unidad-card-row2{display:flex;align-items:center;gap:10px;margin-top:9px;padding-top:9px;border-top:1px dashed var(--border-md);flex-wrap:wrap}
 .unidad-attr-label{font-size:11px;font-weight:600;color:var(--text-2);white-space:nowrap}
 .canal-pills{display:inline-flex;gap:4px;flex-wrap:wrap}
@@ -359,7 +417,21 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .broker-input{flex:1;min-width:140px;padding:6px 10px;border:1px solid var(--border-md);border-radius:7px;font-size:12px;font-family:'HelveticaNow',sans-serif;background:var(--surface);color:var(--text-1);outline:none}
 .u-del{width:28px;height:28px;border:none;background:transparent;color:var(--text-3);cursor:pointer;border-radius:6px;font-size:14px}
 .u-del:hover{background:var(--red-bg);color:var(--red)}
-@media(max-width:900px){.unidad-card-row1{grid-template-columns:1fr 1fr;gap:6px}.unidad-card-row2{flex-direction:column;align-items:stretch}}
+@media(max-width:900px){.unidad-card-row1{grid-template-columns:1fr 1fr;gap:6px}
+/* ── Fila media: monto + amueblado ── */
+.unidad-card-row-mid{display:flex;gap:18px;margin-top:9px;padding-top:9px;border-top:1px dashed var(--border-md);flex-wrap:wrap}
+.umid-field{display:flex;flex-direction:column;gap:5px}
+.umid-label{font-size:11px;font-weight:600;color:var(--text-2)}
+.umid-money{display:flex;align-items:center;border:1px solid var(--border-md);border-radius:7px;background:var(--surface);overflow:hidden}
+.umid-currency{padding:0 8px;color:var(--text-3);font-size:13px;font-family:'DM Mono',monospace;background:var(--surface-2);align-self:stretch;display:flex;align-items:center}
+.umid-money input{border:none;padding:7px 9px;font-size:13px;font-family:'DM Mono',monospace;background:transparent;color:var(--text-1);outline:none;width:130px}
+.amueblado-toggle{display:inline-flex;gap:4px}
+.amue-btn{padding:6px 12px;border-radius:7px;font-size:11.5px;font-weight:600;cursor:pointer;border:1px solid var(--border-md);background:var(--surface);color:var(--text-2);font-family:'HelveticaNow',sans-serif;transition:all .13s}
+.amue-btn.active-si{background:#8B5CF6;color:#fff;border-color:#8B5CF6}
+.amue-btn.active-no{background:var(--surface-3);color:var(--text-1);border-color:var(--border-strong)}
+.canal-pill.active.c-asesor{background:#0CA678;color:#fff;border-color:#0CA678}
+
+.unidad-card-row2{flex-direction:column;align-items:stretch}}
 
 .unidad-row{display:grid;gap:7px;align-items:center;margin-bottom:7px;padding:8px;background:var(--surface-2);border-radius:9px}
 .unidad-grid{grid-template-columns:1fr 1fr 0.75fr 0.75fr 1.15fr 1.3fr 30px}
@@ -389,6 +461,18 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .rd-stat.accent-green .rd-stat-lbl{color:rgba(255,255,255,.7)}
 .rd-stat.accent-green .rd-stat-val{color:#fff}
 .rd-stat.accent-green .rd-stat-sub{color:rgba(255,255,255,.65)}
+
+.rd-amue-tag{font-size:11px;font-weight:600;color:#8B5CF6;background:#F3EEFF;padding:2px 8px;border-radius:12px}
+.rd-amueblado-row{display:flex;align-items:center;gap:14px;margin-top:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:1rem 1.25rem}
+.rd-amue-card{display:flex;align-items:center;gap:10px;min-width:150px}
+.rd-amue-icon{font-size:22px}
+.rd-amue-val{font-size:24px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;color:var(--text-1)}
+.rd-amue-lbl{font-size:11px;color:var(--text-2);margin-top:3px}
+.rd-amue-bar{flex:1;height:10px;background:var(--surface-3);border-radius:6px;overflow:hidden;min-width:60px}
+.rd-amue-fill{height:100%;background:linear-gradient(90deg,#8B5CF6,#A78BFA);border-radius:6px;transition:width .4s}
+@media(max-width:900px){.rd-amue-tag{font-size:11px;font-weight:600;color:#8B5CF6;background:#F3EEFF;padding:2px 8px;border-radius:12px}
+.rd-amueblado-row{flex-direction:column;align-items:stretch}.rd-amue-bar{order:3}}
+
 .rd-flow-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .rd-units-table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
 .rd-units-table th{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);font-weight:700;padding:9px 12px;text-align:left;background:var(--surface-2);border-bottom:1px solid var(--border)}
@@ -428,7 +512,19 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 
 .rd-units-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
 .rd-mes-banner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-lg);padding:10px 16px;margin-bottom:12px}
-@media(max-width:900px){.rd-inv-grid{grid-template-columns:1fr 1fr}.rd-flow-grid{grid-template-columns:1fr}.cap-inv-row{grid-template-columns:1fr}.unidad-grid{grid-template-columns:1fr 1fr;gap:6px}.unidad-head.unidad-grid{display:none}}
+@media(max-width:900px){.rd-inv-grid{grid-template-columns:1fr 1fr}
+.rd-amue-tag{font-size:11px;font-weight:600;color:#8B5CF6;background:#F3EEFF;padding:2px 8px;border-radius:12px}
+.rd-amueblado-row{display:flex;align-items:center;gap:14px;margin-top:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:1rem 1.25rem}
+.rd-amue-card{display:flex;align-items:center;gap:10px;min-width:150px}
+.rd-amue-icon{font-size:22px}
+.rd-amue-val{font-size:24px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;color:var(--text-1)}
+.rd-amue-lbl{font-size:11px;color:var(--text-2);margin-top:3px}
+.rd-amue-bar{flex:1;height:10px;background:var(--surface-3);border-radius:6px;overflow:hidden;min-width:60px}
+.rd-amue-fill{height:100%;background:linear-gradient(90deg,#8B5CF6,#A78BFA);border-radius:6px;transition:width .4s}
+@media(max-width:900px){.rd-amue-tag{font-size:11px;font-weight:600;color:#8B5CF6;background:#F3EEFF;padding:2px 8px;border-radius:12px}
+.rd-amueblado-row{flex-direction:column;align-items:stretch}.rd-amue-bar{order:3}}
+
+.rd-flow-grid{grid-template-columns:1fr}.cap-inv-row{grid-template-columns:1fr}.unidad-grid{grid-template-columns:1fr 1fr;gap:6px}.unidad-head.unidad-grid{display:none}}
 
 .rentas-empty{background:var(--surface-2);border:1px dashed var(--border-md);border-radius:var(--r-lg);padding:1.5rem;text-align:center;color:var(--text-3);font-size:13px}
 .rentas-delta{font-size:11px;margin-top:4px}
@@ -482,9 +578,9 @@ window._fbSaveMonthOverrides = async function(pid, overrides){
   } catch(e){ console.error("Firebase month override save error:", e); }
 };
 
-window._fbSaveInvConfig = async function(pid, total){
+window._fbSaveInvConfig = async function(pid, total, amueblado){
   try{
-    await _fdb.collection("config").doc(pid).set({invTotal: total}, {merge:true});
+    await _fdb.collection("config").doc(pid).set({invTotal: total, invAmueblado: (amueblado!==undefined?amueblado:0)}, {merge:true});
   } catch(e){ console.error("Firebase inv config save error:", e); }
 };
 
@@ -507,6 +603,7 @@ window._fbLoadAllConfig = async function(){
         pillarConfig: data.pillarConfig ? JSON.parse(data.pillarConfig) : null,
         monthOverrides: data.monthOverrides ? JSON.parse(data.monthOverrides) : null,
         invTotal: (data.invTotal!==undefined) ? data.invTotal : null,
+        invAmueblado: (data.invAmueblado!==undefined) ? data.invAmueblado : null,
         amenEnabled: (data.amenEnabled!==undefined) ? data.amenEnabled : null,
         amenCatalog: data.amenCatalog ? JSON.parse(data.amenCatalog) : null
       };
@@ -747,6 +844,10 @@ window._fbLoadAll = async function(){
                 <input type="number" id="r-invtotal" min="0" step="1" placeholder="0" oninput="onInvTotalInput()">
               </div>
               <div class="rentas-input-group">
+                <label>De ese total, ¿cuántas amuebladas? <span class="hint">(unidades amuebladas del inventario)</span></label>
+                <input type="number" id="r-invamueblado" min="0" step="1" placeholder="0" oninput="onInvAmuebladoInput()">
+              </div>
+              <div class="rentas-input-group">
                 <label>Disponibles esta semana <span class="hint" id="disp-hint">(vacías por rentar)</span></label>
                 <div style="display:flex;gap:6px;align-items:center">
                   <input type="number" id="r-disponible" min="0" step="1" placeholder="0" oninput="onDisponibleManual()" style="flex:1">
@@ -817,14 +918,33 @@ window._fbLoadAll = async function(){
           <div class="rentas-form">
             <div class="cap-block">
               <div class="cap-block-title">👥 Masa crítica de la torre</div>
-              <div class="cap-inv-row">
+              <div class="masa-cap-grid">
+                <div class="rentas-input-group">
+                  <label>Departamentos entregados <span class="hint">(total entregados)</span></label>
+                  <input type="number" id="am-entregados" min="0" step="1" placeholder="0" oninput="onMasaInput()">
+                </div>
                 <div class="rentas-input-group">
                   <label>Personas viviendo <span class="hint">(habitantes actuales)</span></label>
                   <input type="number" id="am-personas" min="0" step="1" placeholder="0" oninput="onMasaInput()">
                 </div>
+              </div>
+              <div style="font-size:11.5px;font-weight:600;color:var(--text-2);margin:14px 0 9px">Departamentos habitados, por tipo:</div>
+              <div class="masa-hab-grid">
                 <div class="rentas-input-group">
-                  <label>Viviendas habitadas <span class="hint">(unidades ocupadas)</span></label>
-                  <input type="number" id="am-viviendas" min="0" step="1" placeholder="0" oninput="onMasaInput()">
+                  <label>🏠 Por propietario</label>
+                  <input type="number" id="am-propietario" min="0" step="1" placeholder="0" oninput="onMasaInput()">
+                </div>
+                <div class="rentas-input-group">
+                  <label>📋 Renta larga estancia</label>
+                  <input type="number" id="am-larga" min="0" step="1" placeholder="0" oninput="onMasaInput()">
+                </div>
+                <div class="rentas-input-group">
+                  <label>✈️ Corta estancia</label>
+                  <input type="number" id="am-corta" min="0" step="1" placeholder="0" oninput="onMasaInput()">
+                </div>
+                <div class="rentas-input-group">
+                  <label>= Total habitados</label>
+                  <input type="number" id="am-habtotal" disabled style="opacity:.7;font-weight:700" placeholder="0">
                 </div>
               </div>
             </div>
@@ -961,6 +1081,9 @@ async function syncFromFirebase(){
         if(cfg.invTotal!==undefined && cfg.invTotal!==null){
           invConfig[pid] = cfg.invTotal;
         }
+        if(cfg.invAmueblado!==undefined && cfg.invAmueblado!==null){
+          invAmueblado[pid] = cfg.invAmueblado;
+        }
         if(cfg.amenEnabled!==undefined && cfg.amenEnabled!==null){
           amenEnabled[pid] = cfg.amenEnabled;
         }
@@ -972,6 +1095,7 @@ async function syncFromFirebase(){
     }
     // Cargar invConfig de localStorage como respaldo
     try{ const li=JSON.parse(localStorage.getItem("dp_inv_config")); if(li) Object.keys(li).forEach(k=>{ if(invConfig[k]===undefined) invConfig[k]=li[k]; }); }catch(e){}
+    try{ const la=JSON.parse(localStorage.getItem("dp_inv_amueblado")); if(la) Object.keys(la).forEach(k=>{ if(invAmueblado[k]===undefined) invAmueblado[k]=la[k]; }); }catch(e){}
     const remote = window._fbLoadAll ? await window._fbLoadAll() : null;
     if(remote && Object.keys(remote).length > 0){
       // Merge: Firebase gana sobre localStorage por proyecto
@@ -1022,6 +1146,7 @@ let currentProject = null;
 let drafts = {}; // borrador por proyecto, independiente
 let monthOverrides = {}; // overrides manuales del acumulado mensual por proyecto/mes
 let invConfig = {}; // inventario total de renta por proyecto
+let invAmueblado = {}; // unidades amuebladas del inventario por proyecto
 
 // ── AMENIDADES: configuración por proyecto ──
 let amenEnabled = { agwa:false, upsf:false, jinetes:false, ut:true }; // solo UT por ahora
@@ -1126,13 +1251,22 @@ function persistAmenConfig(){
 }
 
 function persistInvConfig(){
-  try{ localStorage.setItem("dp_inv_config", JSON.stringify(invConfig)); }catch(e){}
+  try{ localStorage.setItem("dp_inv_config", JSON.stringify(invConfig)); localStorage.setItem("dp_inv_amueblado", JSON.stringify(invAmueblado)); }catch(e){}
   clearTimeout(window._invTimer);
   window._invTimer=setTimeout(()=>{
     if(window._fbSaveInvConfig && currentProject){
-      window._fbSaveInvConfig(currentProject, invConfig[currentProject]||0);
+      window._fbSaveInvConfig(currentProject, invConfig[currentProject]||0, invAmueblado[currentProject]||0);
     }
   }, 600);
+}
+
+function getInvAmueblado(pid){ return invAmueblado[pid]!==undefined?invAmueblado[pid]:0; }
+
+function onInvAmuebladoInput(){
+  const v=+document.getElementById("r-invamueblado").value||0;
+  invAmueblado[currentProject]=v;
+  persistInvConfig();
+  renderRentasDashboard2();
 }
 let charts = {};
 
@@ -1468,7 +1602,7 @@ function exportExcel(){
       if(!r) return;
       rentRows.push({
         Proyecto:p.name, Fecha:e.date,
-        "Inv. total":getInvTotal(pid), "Disponibles":getDisp(r),
+        "Inv. total":getInvTotal(pid), "Amuebladas inv.":getInvAmueblado(pid), "Disponibles":getDisp(r),
         "Ocupadas":getOcupadas(pid,r), "Ocupación %":ocupacionPct(pid,r),
         "Rentas nuevas":rNuevas(r), "Renovaciones":rRenov(r),
         "Lib. no renov.":rNoreno(r), "Lib. venta":rVenta(r),
@@ -1496,12 +1630,13 @@ function exportExcel(){
           "Días en lista":u.tipo==="renovacion"?"":(+u.dias||0),
           "Incremento %":+u.incr||0,
           "Inicio contrato":u.inicio||"", "Fin contrato":u.fin||"",
-          "Canal":u.canal?(({directo:"Directo",interno:"Broker interno",externo:"Broker externo",otro:"Otro"})[u.canal]||u.canal):"", "Broker":u.broker||""
+          "Monto renta":+u.monto||"", "Amueblado":u.amueblado?"Sí":"No",
+          "Canal":u.canal?(({directo:"Directo",asesor:"Asesor DDP",interno:"Broker interno",externo:"Broker externo",otro:"Otro"})[u.canal]||u.canal):"", "Broker/Asesor":u.broker||""
         });
       });
     });
   });
-  const wsUnits=XLSX.utils.json_to_sheet(unitRows.length?unitRows:[{Proyecto:"",Fecha:"",Unidad:"",Tipo:"","Días en lista":"","Incremento %":"","Inicio contrato":"","Fin contrato":"",Canal:"",Broker:""}]);
+  const wsUnits=XLSX.utils.json_to_sheet(unitRows.length?unitRows:[{Proyecto:"",Fecha:"",Unidad:"",Tipo:"","Días en lista":"","Incremento %":"","Inicio contrato":"","Fin contrato":"","Monto renta":"",Amueblado:"",Canal:"","Broker/Asesor":""}]);
   XLSX.utils.book_append_sheet(wb,wsUnits,"Unidades cerradas");
 
   // ─ Hoja 4: AMENIDADES ─
@@ -1541,7 +1676,10 @@ function exportExcel(){
       if(!a) return;
       masaRows.push({
         Proyecto:p.name, Fecha:e.date,
-        "Personas viviendo":a.personas||0, "Viviendas habitadas":a.viviendas||0,
+        "Entregados":a.entregados||0, "Habitados":a.viviendas||0,
+        "% entregas habitadas":a.entregados>0?Math.round((a.viviendas||0)/a.entregados*100):"",
+        "Hab. propietario":a.hab_propietario||0, "Hab. renta larga":a.hab_larga||0, "Hab. corta estancia":a.hab_corta||0,
+        "Personas viviendo":a.personas||0,
         "Inv. total":getInvTotal(pid),
         "Ocupación torre %":getInvTotal(pid)>0?Math.round((a.viviendas||0)/getInvTotal(pid)*100):"",
         "Personas/vivienda":a.viviendas>0?+(a.personas/a.viviendas).toFixed(1):""
@@ -1575,7 +1713,13 @@ function descargar(blob, nombre){
 function amenDraft(){
   if(!drafts[currentProject].amenidades) drafts[currentProject].amenidades={personas:0, viviendas:0, data:{}};
   if(!drafts[currentProject].amenidades.data) drafts[currentProject].amenidades.data={};
-  return drafts[currentProject].amenidades;
+  const a=drafts[currentProject].amenidades;
+  // Asegurar campos nuevos del modelo enriquecido
+  if(a.entregados===undefined) a.entregados=0;
+  if(a.hab_propietario===undefined) a.hab_propietario=0;
+  if(a.hab_larga===undefined) a.hab_larga=0;
+  if(a.hab_corta===undefined) a.hab_corta=0;
+  return a;
 }
 
 // % uso de una amenidad en una semana
@@ -1601,7 +1745,13 @@ function toggleAmenCapture(){
 function onMasaInput(){
   const a=amenDraft();
   a.personas=+document.getElementById("am-personas").value||0;
-  a.viviendas=+document.getElementById("am-viviendas").value||0;
+  a.entregados=+document.getElementById("am-entregados").value||0;
+  a.hab_propietario=+document.getElementById("am-propietario").value||0;
+  a.hab_larga=+document.getElementById("am-larga").value||0;
+  a.hab_corta=+document.getElementById("am-corta").value||0;
+  // Viviendas habitadas = suma de los tres tipos
+  a.viviendas=(a.hab_propietario||0)+(a.hab_larga||0)+(a.hab_corta||0);
+  const ht=document.getElementById("am-habtotal"); if(ht) ht.value=a.viviendas||"";
   renderAmenMasaCritica();
 }
 
@@ -1609,10 +1759,20 @@ function onMasaInput(){
 function openAmenPaste(){
   const catalog=getAmenCatalog(currentProject);
   const html=`<div style="position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:flex;align-items:center;justify-content:center;padding:1rem" id="amen-paste-overlay" onclick="if(event.target.id==='amen-paste-overlay')closeAmenPaste()">
-    <div style="background:var(--surface);border-radius:18px;padding:1.75rem;max-width:560px;width:100%;max-height:85vh;overflow:auto">
-      <div style="font-size:16px;font-weight:700;margin-bottom:4px">📋 Pegar usos desde Excel</div>
-      <p style="font-size:12.5px;color:var(--text-2);margin-bottom:1rem;line-height:1.5">Copia de tu Excel las dos columnas <strong>Uso última semana</strong> y <strong>Satisfacción</strong> (en ese orden), desde la primera amenidad hasta la última, y pégalas aquí abajo. El orden debe coincidir con la tabla (${catalog.length} amenidades).</p>
-      <textarea id="amen-paste-area" placeholder="Pega aquí las columnas (usos[TAB]satisfacción)..." style="width:100%;min-height:180px;padding:12px;border:1px solid var(--border-md);border-radius:10px;font-family:'DM Mono',monospace;font-size:13px;color:var(--text-1);background:var(--surface-2);outline:none;box-sizing:border-box;resize:vertical" oninput="previewAmenPaste()"></textarea>
+    <div style="background:var(--surface);border-radius:18px;padding:1.75rem;max-width:580px;width:100%;max-height:85vh;overflow:auto">
+      <div style="font-size:16px;font-weight:700;margin-bottom:4px">📋 Pegar desde Excel</div>
+      <p style="font-size:12.5px;color:var(--text-2);margin-bottom:1rem;line-height:1.5">Copia de tu Excel la(s) columna(s) en el orden de las amenidades de la tabla (${catalog.length} amenidades) y pégalas abajo.</p>
+      <div style="margin-bottom:12px">
+        <label style="font-size:11.5px;font-weight:600;color:var(--text-2);display:block;margin-bottom:6px">¿Qué columnas estás pegando?</label>
+        <select id="amen-paste-format" onchange="previewAmenPaste()" style="width:100%;padding:9px 12px;border:1px solid var(--border-md);border-radius:9px;font-size:13px;font-family:HelveticaNow,sans-serif;background:var(--surface);color:var(--text-1);cursor:pointer">
+          <option value="usos_sat">Uso última semana + Satisfacción (2 columnas)</option>
+          <option value="usos">Solo Uso última semana (1 columna)</option>
+          <option value="cap">Solo Capacidad total semanal (1 columna)</option>
+          <option value="sat">Solo Satisfacción (1 columna)</option>
+          <option value="cap_usos_sat">Capacidad + Uso + Satisfacción (3 columnas)</option>
+        </select>
+      </div>
+      <textarea id="amen-paste-area" placeholder="Pega aquí las columnas..." style="width:100%;min-height:170px;padding:12px;border:1px solid var(--border-md);border-radius:10px;font-family:'DM Mono',monospace;font-size:13px;color:var(--text-1);background:var(--surface-2);outline:none;box-sizing:border-box;resize:vertical" oninput="previewAmenPaste()"></textarea>
       <div id="amen-paste-preview" style="margin-top:12px;font-size:12px"></div>
       <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:1.25rem">
         <button onclick="closeAmenPaste()" style="padding:9px 16px;border:1px solid var(--border-md);border-radius:10px;background:var(--surface);font-size:13px;font-family:'HelveticaNow',sans-serif;cursor:pointer">Cancelar</button>
@@ -1625,6 +1785,21 @@ function openAmenPaste(){
   div.innerHTML=html;
   document.body.appendChild(div);
 }
+
+// Mapea las columnas pegadas según el formato elegido
+function mapPasteByFormat(parsed, format){
+  // parsed: [{c0, c1, c2}] valores crudos por columna
+  return parsed.map(r=>{
+    const cols=r._cols||[];
+    const out={cap:null,usos:null,sat:null};
+    if(format==="usos_sat"){ out.usos=cols[0]; out.sat=cols[1]!==undefined?cols[1]:null; }
+    else if(format==="usos"){ out.usos=cols[0]; }
+    else if(format==="cap"){ out.cap=cols[0]; }
+    else if(format==="sat"){ out.sat=cols[0]; }
+    else if(format==="cap_usos_sat"){ out.cap=cols[0]; out.usos=cols[1]!==undefined?cols[1]:null; out.sat=cols[2]!==undefined?cols[2]:null; }
+    return out;
+  });
+}
 function closeAmenPaste(){ const el=document.getElementById("amen-paste-container"); if(el) el.remove(); }
 
 // Parsea el texto pegado: filas con usos y (opcional) satisfacción separados por tab/espacios/coma
@@ -1634,12 +1809,12 @@ function parseAmenPaste(text){
     // Excel copia con TAB entre columnas. Priorizamos TAB para no romper decimales con coma.
     let cells;
     if(row.indexOf("\t")>=0) cells=row.split("\t");
-    else if(row.indexOf(";")>=0) cells=row.split(";");       // CSV español usa ; como separador
-    else if(/\s{2,}/.test(row)) cells=row.split(/\s{2,}/);   // múltiples espacios
-    else cells=[row];                                         // un solo valor por renglón
+    else if(row.indexOf(";")>=0) cells=row.split(";");
+    else if(/\s{2,}/.test(row)) cells=row.split(/\s{2,}/);
+    else cells=[row];
     cells=cells.map(s=>s.trim()).filter(s=>s!=="");
     const num=(s)=>{ if(s===undefined||s==="") return null; const v=parseFloat(s.replace(",",".")); return isNaN(v)?null:v; };
-    return {usos:num(cells[0]), sat:cells.length>1?num(cells[1]):null};
+    return {_cols:cells.map(num)};
   });
 }
 
@@ -1650,16 +1825,22 @@ function previewAmenPaste(){
   const prev=document.getElementById("amen-paste-preview");
   if(!text.trim()){ prev.innerHTML=""; return; }
   const n=parsed.length, exp=catalog.length;
+  const fmt=document.getElementById("amen-paste-format").value;
+  const colsEsperadas={usos_sat:2,usos:1,cap:1,sat:1,cap_usos_sat:3}[fmt];
+  const colsDetectadas=parsed.length?Math.max(...parsed.map(p=>p._cols.length)):0;
   let msg, color;
   if(n===exp){ msg=`✓ ${n} renglones — coinciden con las ${exp} amenidades`; color="var(--green)"; }
-  else if(n<exp){ msg=`⚠️ ${n} renglones — faltan ${exp-n} (la tabla tiene ${exp} amenidades). Se llenarán las primeras ${n}.`; color="var(--amber)"; }
-  else { msg=`⚠️ ${n} renglones — sobran ${n-exp} (la tabla tiene ${exp}). Se usarán los primeros ${exp}.`; color="var(--amber)"; }
-  prev.innerHTML=`<div style="color:${color};font-weight:600;margin-bottom:6px">${msg}</div>`;
+  else if(n<exp){ msg=`⚠️ ${n} renglones — faltan ${exp-n} (la tabla tiene ${exp}). Se llenarán las primeras ${n}.`; color="var(--amber)"; }
+  else { msg=`⚠️ ${n} renglones — sobran ${n-exp}. Se usarán los primeros ${exp}.`; color="var(--amber)"; }
+  let colMsg="";
+  if(colsDetectadas<colsEsperadas) colMsg=`<div style="color:var(--amber);font-size:11px">Detecté ${colsDetectadas} columna(s) pero el formato espera ${colsEsperadas}.</div>`;
+  prev.innerHTML=`<div style="color:${color};font-weight:600;margin-bottom:4px">${msg}</div>${colMsg}`;
 }
 
 function applyAmenPaste(){
   const text=document.getElementById("amen-paste-area").value;
-  const parsed=parseAmenPaste(text);
+  const fmt=document.getElementById("amen-paste-format").value;
+  const parsed=mapPasteByFormat(parseAmenPaste(text), fmt);
   const catalog=getAmenCatalog(currentProject);
   const a=amenDraft();
   let applied=0;
@@ -1667,42 +1848,47 @@ function applyAmenPaste(){
     if(i>=parsed.length) return;
     const p=parsed[i];
     if(!a.data[am.id]) a.data[am.id]=amenDefaultData(am);
-    if(p.usos!==null){ a.data[am.id].usos=p.usos; applied++; }
-    if(p.sat!==null && am.aplica_sat){ a.data[am.id].sat=p.sat; }
+    if(p.cap!==null && p.cap!==undefined){ a.data[am.id].cap=p.cap; am.capacidad=p.cap; applied++; }
+    if(p.usos!==null && p.usos!==undefined){ a.data[am.id].usos=p.usos; applied++; }
+    if(p.sat!==null && p.sat!==undefined && am.aplica_sat){ a.data[am.id].sat=p.sat; }
   });
+  persistAmenConfig();
   closeAmenPaste();
   renderAmenCaptureTable();
   renderAmenidades();
-  showToast(applied+" usos pegados ✓");
+  showToast(applied+" valores pegados ✓");
 }
 
 // ── PEGADO DIRECTO SOBRE LA TABLA (clic en celda + Ctrl+V llena hacia abajo) ──
 function onAmenCellPaste(event, startIdx){
   const text=(event.clipboardData||window.clipboardData).getData("text");
   if(!text || !/[\n\t]/.test(text.trim())){
-    // Pegado de un solo valor: comportamiento normal
-    return;
+    return; // un solo valor: comportamiento normal
   }
-  // Pegado multi-valor: interceptar y llenar hacia abajo
   event.preventDefault();
-  const parsed=parseAmenPaste(text);
+  const parsed=parseAmenPaste(text); // [{_cols:[...]}]
   const catalog=getAmenCatalog(currentProject);
   const a=amenDraft();
-  // ¿La celda destino es de usos o satisfacción?
-  const field = event.target.id.startsWith("amu-") ? "usos" : "sat";
+  // Campo destino según la celda donde se pegó
+  const id=event.target.id;
+  const baseField = id.startsWith("amc-") ? "cap" : id.startsWith("amu-") ? "usos" : "sat";
+  // Orden de campos a llenar si hay varias columnas, empezando por la celda destino
+  const orden = baseField==="cap" ? ["cap","usos","sat"] : baseField==="usos" ? ["usos","sat"] : ["sat"];
   let applied=0;
   parsed.forEach((p,k)=>{
     const i=startIdx+k;
     if(i>=catalog.length) return;
     const am=catalog[i];
     if(!a.data[am.id]) a.data[am.id]=amenDefaultData(am);
-    // Si pegaron 2 columnas, primera = usos, segunda = sat (sin importar dónde inició)
-    if(p.usos!==null){
-      if(field==="usos"){ a.data[am.id].usos=p.usos; applied++; }
-      else if(am.aplica_sat){ a.data[am.id].sat=p.usos; applied++; }
-    }
-    if(p.sat!==null && am.aplica_sat){ a.data[am.id].sat=p.sat; }
+    p._cols.forEach((val,ci)=>{
+      if(val===null || ci>=orden.length) return;
+      const f=orden[ci];
+      if(f==="cap"){ a.data[am.id].cap=val; am.capacidad=val; applied++; }
+      else if(f==="usos"){ a.data[am.id].usos=val; applied++; }
+      else if(f==="sat" && am.aplica_sat){ a.data[am.id].sat=val; applied++; }
+    });
   });
+  persistAmenConfig();
   renderAmenCaptureTable();
   renderAmenidades();
   showToast(applied+" valores pegados ✓");
@@ -1715,26 +1901,29 @@ function renderAmenCaptureTable(){
   const catalog=getAmenCatalog(currentProject);
   const a=amenDraft();
   cont.innerHTML=`
-  <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px;flex-wrap:wrap">
+    <span style="font-size:11px;color:var(--text-3)">⠿ Arrastra una amenidad para reordenar</span>
     <button class="amen-paste-btn" onclick="openAmenPaste()">📋 Pegar desde Excel</button>
   </div>
   <table class="amen-cap-table">
     <thead><tr>
-      <th style="width:26%">Amenidad</th>
-      <th style="width:16%">Tipo</th>
-      <th style="width:11%;text-align:center">Sat. aplica</th>
-      <th style="width:15%;text-align:center">Capacidad</th>
-      <th style="width:15%;text-align:center">Uso última semana</th>
-      <th style="width:13%;text-align:center">Satisf.<br><span style="font-weight:500;text-transform:none;letter-spacing:0;color:var(--text-3);font-size:9px">heredada — actualízala si cambió</span></th>
+      <th style="width:3%"></th>
+      <th style="width:24%">Amenidad</th>
+      <th style="width:15%">Tipo</th>
+      <th style="width:10%;text-align:center">Sat. aplica</th>
+      <th style="width:15%;text-align:center">Capacidad total semanal</th>
+      <th style="width:14%;text-align:center">Uso última semana</th>
+      <th style="width:12%;text-align:center">Satisf.<br><span style="font-weight:500;text-transform:none;letter-spacing:0;color:var(--text-3);font-size:9px">heredada — actualízala si cambió</span></th>
       <th style="width:4%"></th>
     </tr></thead>
-    <tbody>${catalog.map((am,i)=>{
+    <tbody id="amen-cap-tbody">${catalog.map((am,i)=>{
       const d=a.data[am.id]||amenDefaultData(am);
-      return `<tr>
+      return `<tr draggable="true" data-idx="${i}" ondragstart="amenDragStart(event,${i})" ondragover="amenDragOver(event,${i})" ondrop="amenDrop(event,${i})" ondragend="amenDragEnd(event)" ondragleave="amenDragLeave(event)">
+        <td class="amen-drag-handle" title="Arrastra para mover">⠿</td>
         <td><input class="amen-name-input" type="text" value="${(am.nombre||'').replace(/"/g,'&quot;')}" oninput="updateAmenCatalog(${i},'nombre',this.value)"></td>
         <td><button class="amen-tipo-btn ${am.tipo}" onclick="toggleAmenTipo(${i})">${am.tipo==="reservable"?"Reservable":"No reservable"}</button></td>
         <td style="text-align:center"><button class="amen-sat-btn ${am.aplica_sat?'':'off'}" onclick="toggleAmenSat(${i})">${am.aplica_sat?"✓ Sí":"— No"}</button></td>
-        <td><input type="number" min="0" step="1" value="${d.cap!==undefined?d.cap:am.capacidad}" oninput="updateAmenData('${am.id}','cap',this.value,${i})"></td>
+        <td><input type="number" id="amc-${i}" min="0" step="1" value="${d.cap!==undefined?d.cap:am.capacidad}" oninput="updateAmenData('${am.id}','cap',this.value,${i})" onpaste="onAmenCellPaste(event,${i})"></td>
         <td><input type="number" id="amu-${i}" class="amen-usos-input" min="0" step="0.01" value="${d.usos||''}" placeholder="0" oninput="updateAmenData('${am.id}','usos',this.value,${i})" onpaste="onAmenCellPaste(event,${i})"></td>
         <td><input type="number" id="ams-${i}" class="amen-sat-input" min="0" max="10" step="0.5" value="${d.sat||''}" placeholder="—" oninput="updateAmenData('${am.id}','sat',this.value,${i})" onpaste="onAmenCellPaste(event,${i})" ${am.aplica_sat?'':'disabled style="opacity:.3"'}></td>
         <td><button class="u-del" onclick="removeAmen(${i})" title="Quitar">✕</button></td>
@@ -1743,6 +1932,27 @@ function renderAmenCaptureTable(){
   </table>
   <button class="amen-add-btn" onclick="addAmen()">+ Agregar amenidad</button>`;
 }
+
+// ── DRAG & DROP para reordenar amenidades ──
+let _amenDragIdx=null;
+function amenDragStart(e, i){ _amenDragIdx=i; e.dataTransfer.effectAllowed="move"; e.target.closest("tr").style.opacity="0.4"; }
+function amenDragOver(e, i){ e.preventDefault(); e.dataTransfer.dropEffect="move"; const tr=e.target.closest("tr"); if(tr) tr.classList.add("amen-drop-target"); }
+function amenDragLeave(e){ const tr=e.target.closest("tr"); if(tr) tr.classList.remove("amen-drop-target"); }
+function amenDragEnd(e){ const tr=e.target.closest("tr"); if(tr) tr.style.opacity=""; document.querySelectorAll(".amen-drop-target").forEach(t=>t.classList.remove("amen-drop-target")); }
+function amenDrop(e, dropIdx){
+  e.preventDefault();
+  document.querySelectorAll(".amen-drop-target").forEach(t=>t.classList.remove("amen-drop-target"));
+  if(_amenDragIdx===null || _amenDragIdx===dropIdx) return;
+  const catalog=getAmenCatalog(currentProject);
+  const [moved]=catalog.splice(_amenDragIdx,1);
+  catalog.splice(dropIdx,0,moved);
+  _amenDragIdx=null;
+  persistAmenConfig();
+  renderAmenCaptureTable();
+  renderAmenidades();
+  showToast("Orden actualizado ✓");
+}
+
 
 function updateAmenCatalog(i, field, val){
   const catalog=getAmenCatalog(currentProject);
@@ -1815,8 +2025,13 @@ function loadAmenInputs(){
   if(config) config.style.display = enabled ? "none" : "block";
   if(enabled){
     const a=amenDraft();
-    const setP=document.getElementById("am-personas"); if(setP) setP.value=a.personas||"";
-    const setV=document.getElementById("am-viviendas"); if(setV) setV.value=a.viviendas||"";
+    const setVal=(id,v)=>{const el=document.getElementById(id); if(el) el.value=(v!==undefined&&v!==0)?v:"";};
+    setVal("am-personas", a.personas);
+    setVal("am-entregados", a.entregados);
+    setVal("am-propietario", a.hab_propietario);
+    setVal("am-larga", a.hab_larga);
+    setVal("am-corta", a.hab_corta);
+    setVal("am-habtotal", a.viviendas);
     renderAmenidades();
   } else {
     // Aunque esté apagado, mostrar el catálogo para configurarlo
@@ -1863,6 +2078,19 @@ function restoreAmenDefault(){
   showToast("Catálogo original restaurado ✓");
 }
 
+function amenDropConfig(e, dropIdx){
+  e.preventDefault();
+  document.querySelectorAll(".amen-drop-target").forEach(t=>t.classList.remove("amen-drop-target"));
+  if(_amenDragIdx===null || _amenDragIdx===dropIdx) return;
+  const catalog=getAmenCatalog(currentProject);
+  const [moved]=catalog.splice(_amenDragIdx,1);
+  catalog.splice(dropIdx,0,moved);
+  _amenDragIdx=null;
+  persistAmenConfig();
+  renderAmenConfigTable();
+  showToast("Orden actualizado ✓");
+}
+
 function renderAmenConfigTable(){
   const cont=document.getElementById("amen-config-table");
   if(!cont) return;
@@ -1871,9 +2099,11 @@ function renderAmenConfigTable(){
     cont.innerHTML='<div class="unidades-empty">Sin amenidades aún. Agrega las de este proyecto.</div><button class="amen-add-btn" onclick="addAmen()">+ Agregar amenidad</button>';
     return;
   }
-  cont.innerHTML=`<table class="amen-cap-table">
-    <thead><tr><th style="width:40%">Amenidad</th><th style="width:24%">Tipo</th><th style="width:14%;text-align:center">Sat. aplica</th><th style="width:18%;text-align:center">Capacidad</th><th style="width:4%"></th></tr></thead>
-    <tbody>${catalog.map((am,i)=>`<tr>
+  cont.innerHTML=`<div style="font-size:11px;color:var(--text-3);margin-bottom:8px">⠿ Arrastra una amenidad para reordenar</div>
+  <table class="amen-cap-table">
+    <thead><tr><th style="width:3%"></th><th style="width:38%">Amenidad</th><th style="width:23%">Tipo</th><th style="width:14%;text-align:center">Sat. aplica</th><th style="width:18%;text-align:center">Capacidad total semanal</th><th style="width:4%"></th></tr></thead>
+    <tbody>${catalog.map((am,i)=>`<tr draggable="true" data-idx="${i}" ondragstart="amenDragStart(event,${i})" ondragover="amenDragOver(event,${i})" ondrop="amenDropConfig(event,${i})" ondragend="amenDragEnd(event)" ondragleave="amenDragLeave(event)">
+      <td class="amen-drag-handle" title="Arrastra para mover">⠿</td>
       <td><input class="amen-name-input" type="text" value="${(am.nombre||'').replace(/"/g,'&quot;')}" oninput="updateAmenCatalog(${i},'nombre',this.value)"></td>
       <td><button class="amen-tipo-btn ${am.tipo}" onclick="toggleAmenTipo(${i})">${am.tipo==="reservable"?"Reservable":"No reservable"}</button></td>
       <td style="text-align:center"><button class="amen-sat-btn ${am.aplica_sat?'':'off'}" onclick="toggleAmenSat(${i})">${am.aplica_sat?"✓ Sí":"— No"}</button></td>
@@ -1885,19 +2115,75 @@ function renderAmenConfigTable(){
 }
 
 // ── MASA CRÍTICA ──
+// Abre la captura y enfoca el desglose de masa crítica
+function abrirCapturaMasa(){
+  const cap=document.getElementById("amen-capture");
+  if(cap && cap.style.display==="none"){ toggleAmenCapture(); }
+  setTimeout(()=>{
+    const el=document.getElementById("am-propietario");
+    if(el){ el.scrollIntoView({behavior:"smooth",block:"center"}); el.focus(); }
+  }, 120);
+}
+
 function renderAmenMasaCritica(){
   const cont=document.getElementById("amen-masa-critica");
   if(!cont) return;
   const a=amenDraft();
-  const total=getInvTotal(currentProject);
-  const ocupPct = total>0 ? Math.round((a.viviendas||0)/total*100) : 0;
-  const ppv = (a.viviendas>0) ? (a.personas/a.viviendas).toFixed(1) : "—";
-  cont.innerHTML=`<div class="amen-masa-grid">
+  const entregados=a.entregados||0;
+  const habitados=a.viviendas||0;
+  const prop=a.hab_propietario||0, larga=a.hab_larga||0, corta=a.hab_corta||0;
+  const pctHab = entregados>0 ? Math.round(habitados/entregados*100) : 0;
+  const ppv = (habitados>0) ? (a.personas/habitados).toFixed(1) : "—";
+  const pctProp = habitados>0?Math.round(prop/habitados*100):0;
+  const pctLarga = habitados>0?Math.round(larga/habitados*100):0;
+  const pctCorta = habitados>0?Math.round(corta/habitados*100):0;
+
+  cont.innerHTML=`
+  <div class="masa-hero-grid">
+    <div class="amen-masa-card"><div class="amen-masa-lbl">📦 Entregados</div><div class="amen-masa-val">${entregados}</div><div class="amen-masa-sub">departamentos entregados</div></div>
+    <div class="amen-masa-card masa-accent"><div class="amen-masa-lbl">🏠 Habitados</div><div class="amen-masa-val">${habitados}${entregados>0?'<span style="font-size:14px;opacity:.6"> / '+entregados+'</span>':''}</div><div class="amen-masa-sub">${pctHab}% de las entregas habitadas</div></div>
     <div class="amen-masa-card"><div class="amen-masa-lbl">👤 Personas viviendo</div><div class="amen-masa-val">${a.personas||0}</div><div class="amen-masa-sub">masa crítica actual</div></div>
-    <div class="amen-masa-card"><div class="amen-masa-lbl">🏠 Viviendas habitadas</div><div class="amen-masa-val">${a.viviendas||0}${total>0?'<span style="font-size:13px;color:var(--text-3)"> / '+total+'</span>':''}</div><div class="amen-masa-sub">${ocupPct}% de ocupación de la torre</div></div>
-    <div class="amen-masa-card"><div class="amen-masa-lbl">📊 Personas por vivienda</div><div class="amen-masa-val">${ppv}</div><div class="amen-masa-sub">densidad promedio</div></div>
+    <div class="amen-masa-card"><div class="amen-masa-lbl">📊 Personas / vivienda</div><div class="amen-masa-val">${ppv}</div><div class="amen-masa-sub">densidad promedio</div></div>
+  </div>
+  ${(()=>{
+    const sumDesglose = prop+larga+corta;
+    // Caso 1: hay desglose capturado → mostrar barra de composición
+    if(sumDesglose>0){
+      return `
+  <div class="masa-breakdown">
+    <div class="masa-bd-header">
+      <span style="font-size:11.5px;font-weight:600;color:var(--text-2)">Composición de los ${sumDesglose} habitados</span>
+      <span style="font-size:11px;color:var(--text-3)">${entregados>0?Math.round(sumDesglose/entregados*100)+'% de ocupación sobre entregas':''}</span>
+    </div>
+    <div class="masa-bd-bar">
+      ${prop>0?`<div class="masa-bd-seg" style="width:${Math.round(prop/sumDesglose*100)}%;background:#5C7CFA" title="Propietarios: ${prop}"></div>`:''}
+      ${larga>0?`<div class="masa-bd-seg" style="width:${Math.round(larga/sumDesglose*100)}%;background:#1A7A4A" title="Renta larga: ${larga}"></div>`:''}
+      ${corta>0?`<div class="masa-bd-seg" style="width:${Math.round(corta/sumDesglose*100)}%;background:#E8590C" title="Corta estancia: ${corta}"></div>`:''}
+    </div>
+    <div class="masa-bd-legend">
+      <span class="masa-bd-leg"><span class="masa-bd-dot" style="background:#5C7CFA"></span>Propietario <strong>${prop}</strong> <span style="color:var(--text-3)">· ${Math.round(prop/sumDesglose*100)}%</span></span>
+      <span class="masa-bd-leg"><span class="masa-bd-dot" style="background:#1A7A4A"></span>Renta larga estancia <strong>${larga}</strong> <span style="color:var(--text-3)">· ${Math.round(larga/sumDesglose*100)}%</span></span>
+      <span class="masa-bd-leg"><span class="masa-bd-dot" style="background:#E8590C"></span>Corta estancia <strong>${corta}</strong> <span style="color:var(--text-3)">· ${Math.round(corta/sumDesglose*100)}%</span></span>
+    </div>
   </div>`;
+    }
+    // Caso 2: hay habitados (modelo viejo) pero sin desglose → invitar a capturarlo
+    if(habitados>0){
+      return `
+  <div class="masa-breakdown" style="border-style:dashed">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+      <div>
+        <div style="font-size:12.5px;font-weight:600;color:var(--text-1);margin-bottom:3px">Desglose de habitados pendiente</div>
+        <div style="font-size:11.5px;color:var(--text-2)">Tienes ${habitados} viviendas habitadas pero aún sin desglosar por tipo. Captura cuántas son por propietario, renta larga estancia y corta estancia.</div>
+      </div>
+      <button onclick="abrirCapturaMasa()" style="padding:8px 16px;border:1px solid var(--text-1);border-radius:10px;background:var(--text-1);color:#fff;font-size:12px;font-family:'HelveticaNow',sans-serif;font-weight:600;cursor:pointer;white-space:nowrap">Capturar desglose</button>
+    </div>
+  </div>`;
+    }
+    return '';
+  })()}`;
 }
+
 
 // ── RENDER PRINCIPAL ──
 function renderAmenidades(){
@@ -1948,12 +2234,38 @@ function renderAmenChart(){
   // Satisfacción como pares {x:valor, y:indice} para barras horizontales
   const satPoints=sats.map((s,i)=>s!==null?{x:s,y:labels[i]}:null).filter(x=>x);
 
+  // Plugin: dibuja el número de satisfacción centrado dentro de cada bolita
+  const satLabelPlugin={
+    id:"satLabels",
+    afterDatasetsDraw(chart){
+      const ds=chart.data.datasets.findIndex(d=>d.label==="Satisfacción");
+      if(ds<0) return;
+      const meta=chart.getDatasetMeta(ds);
+      const ctx2=chart.ctx;
+      ctx2.save();
+      ctx2.font="700 10px 'DM Mono', monospace";
+      ctx2.textAlign="center";
+      ctx2.textBaseline="middle";
+      meta.data.forEach((pt,idx)=>{
+        const raw=chart.data.datasets[ds].data[idx];
+        if(!raw) return;
+        const val=(typeof raw==="object")?raw.x:raw;
+        if(val===null||val===undefined) return;
+        // Texto: entero si es redondo, si no un decimal
+        const txt=(Math.round(val)===val)?String(val):val.toFixed(1);
+        ctx2.fillStyle="#3A3A3A";
+        ctx2.fillText(txt, pt.x, pt.y+0.5);
+      });
+      ctx2.restore();
+    }
+  };
+
   charts["amenidades"]=new Chart(ctx,{
     data:{labels,datasets:[
       {type:"bar",label:"% Uso",data:pcts,backgroundColor:colors,borderRadius:3,xAxisID:"x",order:2,barPercentage:0.72,categoryPercentage:0.85},
       {type:"scatter",label:"Satisfacción",data:satPoints,xAxisID:"x1",order:1,
-        pointRadius:10,pointHoverRadius:12,
-        backgroundColor:"rgba(255,255,255,.92)",borderColor:"#6B6B6B",borderWidth:1.5,pointStyle:"circle"}
+        pointRadius:13,pointHoverRadius:15,
+        backgroundColor:"rgba(255,255,255,.95)",borderColor:"#6B6B6B",borderWidth:1.5,pointStyle:"circle"}
     ]},
     options:{
       indexAxis:"y",
@@ -1970,7 +2282,8 @@ function renderAmenChart(){
         x1:{position:"bottom",min:0,max:10,title:{display:true,text:"Calificación de satisfacción (1–10)",font:{size:10,weight:"600"}},ticks:{stepSize:1,font:{family:"DM Mono",size:10}},grid:{display:false}},
         y:{ticks:{font:{family:"HelveticaNow",size:10.5},autoSkip:false},grid:{display:false}}
       }
-    }
+    },
+    plugins:[satLabelPlugin]
   });
 }
 
@@ -1981,7 +2294,7 @@ function renderAmenSummary(){
   const a=amenDraft();
   const g=amenGlobals();
   cont.innerHTML=`<table class="amen-summary-table">
-    <thead><tr><th>Amenidad</th><th style="text-align:center">Ocupación</th><th style="text-align:center">Satisfacción</th><th>Tipo</th><th style="text-align:center">Capacidad</th><th style="text-align:center">Uso semana</th></tr></thead>
+    <thead><tr><th>Amenidad</th><th style="text-align:center">Ocupación</th><th style="text-align:center">Satisfacción</th><th>Tipo</th><th style="text-align:center">Capacidad total sem.</th><th style="text-align:center">Uso semana</th></tr></thead>
     <tbody>
       <tr class="row-global"><td>PROMEDIO GLOBAL <span style="font-weight:500;color:var(--text-3);font-size:10px">(reservables)</span></td><td style="text-align:center;font-family:DM Mono,monospace">${g.ocupacion}%</td><td style="text-align:center;font-family:DM Mono,monospace">${g.satisfaccion||"—"}</td><td></td><td></td><td></td></tr>
       ${catalog.map(am=>{
@@ -2465,7 +2778,7 @@ function addUnidad(){
   if(!drafts[currentProject].rentas) drafts[currentProject].rentas={};
   const r=drafts[currentProject].rentas;
   if(!Array.isArray(r.unidades)) r.unidades=[];
-  r.unidades.push({id:"", tipo:"nueva", dias:0, incr:0, inicio:"", fin:"", canal:"directo", broker:""});
+  r.unidades.push({id:"", tipo:"nueva", dias:0, incr:0, inicio:"", fin:"", canal:"directo", broker:"", monto:0, amueblado:false});
   renderUnidadesList();
   recalcDispAuto();
   renderRentasDashboard2();
@@ -2483,9 +2796,14 @@ function updateUnidad(i, field, val){
   const r=drafts[currentProject].rentas;
   if(field==="id" || field==="inicio" || field==="fin" || field==="canal" || field==="broker") r.unidades[i][field]=val;
   else if(field==="tipo") r.unidades[i].tipo=val;
+  else if(field==="amueblado") r.unidades[i].amueblado=val;  // boolean
+  else if(field==="monto") r.unidades[i].monto=+val||0;
   else r.unidades[i][field]=+val||0;
-  // Auto-calcular fin si hay inicio y un plazo típico (no forzado, solo si fin vacío)
   recalcDispAuto();
+  // Campos que cambian la UI de la fila (pills de canal, tipo, amueblado) requieren redibujar la lista
+  if(field==="canal" || field==="tipo" || field==="amueblado"){
+    renderUnidadesList();
+  }
   renderRentasDashboard2();
 }
 
@@ -2510,9 +2828,10 @@ function renderUnidadesList(){
     cont.innerHTML='<div class="unidades-empty">Sin unidades cerradas aún. Agrega cada departamento rentado o renovado esta semana.</div>';
     return;
   }
-  const canales=[["directo","Directo"],["interno","Broker interno"],["externo","Broker externo"],["otro","Otro"]];
+  const canales=[["directo","Directo"],["asesor","Asesor DDP"],["interno","Broker interno"],["externo","Broker externo"],["otro","Otro"]];
   cont.innerHTML=units.map((u,i)=>{
     const necesitaBroker = u.canal && u.canal!=="directo";
+    const brokerPlaceholder = u.canal==="asesor" ? "Nombre del asesor DDP" : u.canal==="otro" ? "Especifica el canal y/o nombre" : (necesitaBroker?"Nombre del broker":"(sin broker)");
     return `<div class="unidad-card">
     <div class="unidad-card-row1">
       <input type="text" value="${(u.id||"").replace(/"/g,'&quot;')}" placeholder="Depto (ej. 304)" oninput="updateUnidad(${i},'id',this.value)">
@@ -2529,15 +2848,29 @@ function renderUnidadesList(){
       </div>
       <button class="u-del" onclick="removeUnidad(${i})" title="Quitar">✕</button>
     </div>
+    <div class="unidad-card-row-mid">
+      <div class="umid-field">
+        <span class="umid-label">💰 Monto de renta mensual</span>
+        <div class="umid-money"><span class="umid-currency">$</span><input type="number" min="0" step="100" value="${u.monto||""}" placeholder="0" oninput="updateUnidad(${i},'monto',this.value)"></div>
+      </div>
+      <div class="umid-field">
+        <span class="umid-label">🛋️ ¿Amueblado?</span>
+        <div class="amueblado-toggle">
+          <button class="amue-btn ${u.amueblado===true?'active-si':''}" onclick="updateUnidad(${i},'amueblado',true)">Sí, amueblado</button>
+          <button class="amue-btn ${u.amueblado===false||u.amueblado===undefined?'active-no':''}" onclick="updateUnidad(${i},'amueblado',false)">Sin amueblar</button>
+        </div>
+      </div>
+    </div>
     <div class="unidad-card-row2">
       <span class="unidad-attr-label">🤝 ¿Quién la cerró?</span>
       <div class="canal-pills">
         ${canales.map(([val,lbl])=>`<button class="canal-pill ${u.canal===val?'active':''} c-${val}" onclick="updateUnidad(${i},'canal','${val}')">${lbl}</button>`).join("")}
       </div>
-      <input type="text" class="broker-input" value="${(u.broker||"").replace(/"/g,'&quot;')}" placeholder="${necesitaBroker?'Nombre del broker':'(sin broker)'}" oninput="updateUnidad(${i},'broker',this.value)" ${necesitaBroker?'':'disabled style="opacity:.35"'}>
+      <input type="text" class="broker-input" value="${(u.broker||"").replace(/"/g,'&quot;')}" placeholder="${brokerPlaceholder}" oninput="updateUnidad(${i},'broker',this.value)" ${necesitaBroker?'':'disabled style="opacity:.35"'}>
     </div>
   </div>`;}).join("");
 }
+
 
 function loadRentasInputs(){
   const r = drafts[currentProject] && drafts[currentProject].rentas ? drafts[currentProject].rentas : {};
@@ -2546,6 +2879,7 @@ function loadRentasInputs(){
   if(drafts[currentProject]) drafts[currentProject].rentas=r;
   const set=(id,v)=>{ const el=document.getElementById(id); if(el) el.value=(v!==undefined&&v!==0&&v!=="")?v:""; };
   set("r-invtotal", getInvTotal(currentProject));
+  set("r-invamueblado", getInvAmueblado(currentProject));
   set("r-disponible", r.disponible);
   set("r-noreno", r.noreno);
   set("r-venta", r.venta);
@@ -2640,6 +2974,7 @@ function fmtDateVenc(d){
 // ══════════════════════════════════════════
 const CANAL_INFO={
   directo:{label:"Directo",color:"#5C7CFA",icon:"🏢"},
+  asesor:{label:"Asesor DDP",color:"#0CA678",icon:"⭐"},
   interno:{label:"Broker interno",color:"#1A7A4A",icon:"🤝"},
   externo:{label:"Broker externo",color:"#E8590C",icon:"🌐"},
   otro:{label:"Otro",color:"#6B6B6B",icon:"•"}
@@ -2670,7 +3005,7 @@ function cierresSemana(pid){
 
 // Mix de canal a partir de una lista de unidades
 function mixCanal(units){
-  const mix={directo:0,interno:0,externo:0,otro:0};
+  const mix={directo:0,asesor:0,interno:0,externo:0,otro:0};
   units.forEach(u=>{ const ca=u.canal||"directo"; mix[ca]=(mix[ca]||0)+1; });
   return mix;
 }
@@ -2679,7 +3014,7 @@ function mixCanal(units){
 function rankBrokers(units){
   const map={};
   units.forEach(u=>{
-    if((u.canal==="interno"||u.canal==="externo"||u.canal==="otro") && u.broker && u.broker.trim()){
+    if((u.canal==="asesor"||u.canal==="interno"||u.canal==="externo"||u.canal==="otro") && u.broker && u.broker.trim()){
       const key=u.broker.trim();
       if(!map[key]) map[key]={nombre:key, cierres:0, canal:u.canal};
       map[key].cierres++;
@@ -2794,6 +3129,12 @@ function renderRentasDashboard2(){
       <div class="rd-stat"><div class="rd-stat-lbl">Ocupadas</div><div class="rd-stat-val">${ocup}</div><div class="rd-stat-sub">${pct}% del inventario</div></div>
       <div class="rd-stat"><div class="rd-stat-lbl">Disponibles</div><div class="rd-stat-val">${disp}</div><div class="rd-stat-sub">vacías por rentar</div></div>
     </div>
+    ${(()=>{ const amue=getInvAmueblado(pid); const sinAmue=Math.max(0,total-amue); const pctAmue=total>0?Math.round(amue/total*100):0; if(total===0&&amue===0) return ""; return `
+    <div class="rd-amueblado-row">
+      <div class="rd-amue-card amueblado"><span class="rd-amue-icon">🛋️</span><div><div class="rd-amue-val">${amue}</div><div class="rd-amue-lbl">Amuebladas · ${pctAmue}%</div></div></div>
+      <div class="rd-amue-bar"><div class="rd-amue-fill" style="width:${pctAmue}%"></div></div>
+      <div class="rd-amue-card sin"><span class="rd-amue-icon">📦</span><div><div class="rd-amue-val">${sinAmue}</div><div class="rd-amue-lbl">Sin amueblar · ${100-pctAmue}%</div></div></div>
+    </div>`; })()}
   </div>`;
 
   // ── SECCIÓN 2: FLUJO DE LA SEMANA ──
@@ -2827,15 +3168,20 @@ function renderRentasDashboard2(){
     html+=`<div class="rd-section">
       <div class="rd-section-label">🔑 Unidades cerradas · ${units.length}</div>
       <table class="rd-units-table">
-        <thead><tr><th>Unidad</th><th>Tipo</th><th style="text-align:center">Días lista</th><th style="text-align:center">Incremento</th><th style="text-align:center">Inicio contrato</th><th style="text-align:center">Fin contrato</th></tr></thead>
-        <tbody>${units.map(u=>`<tr>
+        <thead><tr><th>Unidad</th><th>Tipo</th><th style="text-align:right">Monto renta</th><th style="text-align:center">Amueblado</th><th style="text-align:center">Días</th><th style="text-align:center">Incr.</th><th style="text-align:center">Fin contrato</th><th>Cerró</th></tr></thead>
+        <tbody>${units.map(u=>{
+          const ci=CANAL_INFO[u.canal||"directo"]||CANAL_INFO.directo;
+          const quien = (u.canal && u.canal!=="directo" && u.broker) ? u.broker : ci.label;
+          return `<tr>
           <td><strong>${u.id||"—"}</strong></td>
           <td><span class="rd-tag ${u.tipo}">${u.tipo==="nueva"?"Renta nueva":"Renovación"}</span></td>
-          <td style="text-align:center;font-family:DM Mono,monospace">${u.tipo==="renovacion"?'<span style="color:var(--text-3)">—</span>':(+u.dias||0)+" d"}</td>
+          <td style="text-align:right;font-family:DM Mono,monospace;font-weight:600">${+u.monto?"$"+(+u.monto).toLocaleString("es-MX"):'<span style="color:var(--text-3)">—</span>'}</td>
+          <td style="text-align:center">${u.amueblado?'<span class="rd-amue-tag">🛋️ Sí</span>':'<span style="color:var(--text-3);font-size:11px">No</span>'}</td>
+          <td style="text-align:center;font-family:DM Mono,monospace">${u.tipo==="renovacion"?'<span style="color:var(--text-3)">—</span>':(+u.dias||0)}</td>
           <td style="text-align:center;font-family:DM Mono,monospace;color:${+u.incr>0?'var(--green)':'var(--text-2)'}">${+u.incr?((+u.incr>0?"+":"")+(+u.incr).toFixed(1)+"%"):"—"}</td>
-          <td style="text-align:center;font-family:DM Mono,monospace;font-size:11.5px">${u.inicio?fmtDate(u.inicio):'<span style="color:var(--text-3)">—</span>'}</td>
           <td style="text-align:center;font-family:DM Mono,monospace;font-size:11.5px">${u.fin?fmtDateVenc(u.fin):'<span style="color:var(--text-3)">—</span>'}</td>
-        </tr>`).join("")}</tbody>
+          <td style="font-size:11.5px"><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:50%;background:${ci.color};display:inline-block"></span>${quien}</span></td>
+        </tr>`;}).join("")}</tbody>
       </table>
       <div class="rd-units-summary">
         <div class="rentas-mini"><div class="rm-label">Días promedio<br>en lista (nuevas)</div><div class="rm-value">${diasProm}<span class="rm-unit"> d</span></div></div>
