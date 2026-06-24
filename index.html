@@ -381,7 +381,8 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .cap-block{margin-bottom:1.25rem}
 .cap-block:last-child{margin-bottom:0}
 .cap-block-title{font-size:12.5px;font-weight:700;color:var(--text-1);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
-.cap-inv-row{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px}
+.cap-inv-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px}
+@media(max-width:900px){.cap-inv-row{grid-template-columns:1fr 1fr}}
 .add-unit-btn{margin-top:10px;padding:8px 14px;border:1px dashed var(--border-strong);border-radius:9px;background:transparent;color:var(--text-2);font-size:12px;font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;font-weight:500;cursor:pointer;transition:all .15s;width:100%}
 .add-unit-btn:hover{border-color:var(--green-b);background:var(--green-bg);color:var(--green)}
 
@@ -445,6 +446,52 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 
 /* ── DASHBOARD VISUAL ── */
 .rd-section{margin-bottom:1rem}
+
+/* ── EMBUDO DE COMPOSICIÓN DE LA TORRE ── */
+
+/* ── DISTINTIVO INVENTARIO + TRACCIÓN ── */
+
+/* ── MOVIMIENTO MENSUAL ── */
+.movimiento-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:14px}
+.movimiento-side{display:flex;flex-direction:column;gap:11px;justify-content:center}
+.mov-flow-item{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:14px 16px}
+.mov-flow-icon{font-size:22px}
+.mov-flow-val{font-size:26px;font-weight:700;font-family:'DM Mono',monospace;line-height:1}
+.mov-flow-lbl{font-size:11px;color:var(--text-2);margin-top:3px}
+.mov-in .mov-flow-val{color:#0CA678}
+.mov-out .mov-flow-val{color:#E8590C}
+.mov-net{background:var(--surface-2)}
+.mov-net .mov-flow-val{color:var(--text-1)}
+@media(max-width:900px){.movimiento-grid{grid-template-columns:1fr}}
+
+.distintivo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.dist-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:1.1rem;display:flex;flex-direction:column;gap:3px;position:relative;overflow:hidden}
+.dist-card::before{content:"";position:absolute;top:0;left:0;width:100%;height:3px}
+.dist-prop::before{background:#5C7CFA}
+.dist-ddp::before{background:#2563EB}
+.dist-disp::before{background:#F59E0B}
+.dist-visitas::before{background:#0CA678}
+.dist-proceso::before{background:#8B5CF6}
+.dist-icon{font-size:20px;margin-bottom:2px}
+.dist-val{font-size:30px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;color:var(--text-1)}
+.dist-lbl{font-size:12px;font-weight:700;color:var(--text-1);margin-top:4px}
+.dist-sub{font-size:10px;color:var(--text-3)}
+.dist-visitas-dots{display:flex;flex-wrap:wrap;gap:3px;margin-top:6px;align-items:center}
+.visita-dot{width:7px;height:7px;border-radius:50%;background:#0CA678;opacity:.8}
+.visita-more{font-size:10px;font-weight:700;color:#0CA678;font-family:'DM Mono',monospace;margin-left:2px}
+@media(max-width:900px){.distintivo-grid{grid-template-columns:1fr 1fr}}
+
+.funnel{display:flex;flex-direction:column;gap:11px}
+.funnel-stage{display:flex;align-items:center;gap:16px}
+.funnel-bar-track{flex:1;background:var(--surface-2);border-radius:8px;height:38px;display:flex;align-items:center;overflow:hidden;min-width:0}
+.funnel-bar{height:100%;border-radius:8px;display:flex;align-items:center;justify-content:flex-end;padding-right:12px;min-width:42px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.funnel-num{color:#fff;font-weight:700;font-family:'DM Mono',monospace;font-size:16px}
+.funnel-available{box-shadow:0 0 0 2px rgba(245,158,11,.3)}
+.funnel-meta{width:230px;flex-shrink:0;display:flex;flex-direction:column;gap:1px}
+.funnel-name{font-size:13px;font-weight:700;color:var(--text-1)}
+.funnel-sub{font-size:10.5px;color:var(--text-3)}
+@media(max-width:900px){.funnel-stage{flex-direction:column;align-items:stretch;gap:4px}.funnel-meta{width:auto}.funnel-bar-track{height:32px}}
+
 .rd-section-label{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--text-3);font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
 .rd-section-label::after{content:"";flex:1;height:1px;background:var(--border)}
 .rd-inv-grid{display:grid;grid-template-columns:auto 1fr 1fr 1fr;gap:12px;align-items:stretch}
@@ -578,9 +625,9 @@ window._fbSaveMonthOverrides = async function(pid, overrides){
   } catch(e){ console.error("Firebase month override save error:", e); }
 };
 
-window._fbSaveInvConfig = async function(pid, total, amueblado){
+window._fbSaveInvConfig = async function(pid, total, amueblado, totalTorre){
   try{
-    await _fdb.collection("config").doc(pid).set({invTotal: total, invAmueblado: (amueblado!==undefined?amueblado:0)}, {merge:true});
+    await _fdb.collection("config").doc(pid).set({invTotal: total, invAmueblado: (amueblado!==undefined?amueblado:0), totalTorre: (totalTorre!==undefined?totalTorre:0)}, {merge:true});
   } catch(e){ console.error("Firebase inv config save error:", e); }
 };
 
@@ -603,6 +650,7 @@ window._fbLoadAllConfig = async function(){
         pillarConfig: data.pillarConfig ? JSON.parse(data.pillarConfig) : null,
         monthOverrides: data.monthOverrides ? JSON.parse(data.monthOverrides) : null,
         invTotal: (data.invTotal!==undefined) ? data.invTotal : null,
+        totalTorre: (data.totalTorre!==undefined) ? data.totalTorre : null,
         invAmueblado: (data.invAmueblado!==undefined) ? data.invAmueblado : null,
         amenEnabled: (data.amenEnabled!==undefined) ? data.amenEnabled : null,
         amenCatalog: data.amenCatalog ? JSON.parse(data.amenCatalog) : null
@@ -837,14 +885,18 @@ window._fbLoadAll = async function(){
         <div class="rentas-form">
           <!-- Inventario -->
           <div class="cap-block">
-            <div class="cap-block-title">📦 Inventario de renta</div>
+            <div class="cap-block-title">🏢 Composición de la torre</div>
             <div class="cap-inv-row">
               <div class="rentas-input-group">
-                <label>Inventario total <span class="hint">(unidades en renta del proyecto)</span></label>
+                <label>Total de la torre <span class="hint">(todas las unidades que existen)</span></label>
+                <input type="number" id="r-totaltorre" min="0" step="1" placeholder="0" oninput="onTotalTorreInput()">
+              </div>
+              <div class="rentas-input-group">
+                <label>Inventario DDP en renta <span class="hint">(de los entregados, puestos a rentar)</span></label>
                 <input type="number" id="r-invtotal" min="0" step="1" placeholder="0" oninput="onInvTotalInput()">
               </div>
               <div class="rentas-input-group">
-                <label>De ese total, ¿cuántas amuebladas? <span class="hint">(unidades amuebladas del inventario)</span></label>
+                <label>¿Cuántas amuebladas? <span class="hint">(del inventario DDP)</span></label>
                 <input type="number" id="r-invamueblado" min="0" step="1" placeholder="0" oninput="onInvAmuebladoInput()">
               </div>
               <div class="rentas-input-group">
@@ -855,6 +907,7 @@ window._fbLoadAll = async function(){
                 </div>
               </div>
             </div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:8px">💡 Los <strong>entregados</strong> se toman de la masa crítica de amenidades. <strong>Rentados</strong> = inventario DDP − disponibles.</div>
           </div>
 
           <!-- Unidades cerradas -->
@@ -879,6 +932,10 @@ window._fbLoadAll = async function(){
               <div class="rentas-input-group">
                 <label>Citas de la semana <span class="hint">(showings / visitas)</span></label>
                 <input type="number" id="r-citas" min="0" step="1" placeholder="0" oninput="onRentaInput()">
+              </div>
+              <div class="rentas-input-group">
+                <label>En proceso de cierre <span class="hint">(negociaciones en curso)</span></label>
+                <input type="number" id="r-enproceso" min="0" step="1" placeholder="0" oninput="onRentaInput()">
               </div>
             </div>
           </div>
@@ -1081,6 +1138,9 @@ async function syncFromFirebase(){
         if(cfg.invTotal!==undefined && cfg.invTotal!==null){
           invConfig[pid] = cfg.invTotal;
         }
+        if(cfg.totalTorre!==undefined && cfg.totalTorre!==null){
+          totalTorre[pid] = cfg.totalTorre;
+        }
         if(cfg.invAmueblado!==undefined && cfg.invAmueblado!==null){
           invAmueblado[pid] = cfg.invAmueblado;
         }
@@ -1095,6 +1155,7 @@ async function syncFromFirebase(){
     }
     // Cargar invConfig de localStorage como respaldo
     try{ const li=JSON.parse(localStorage.getItem("dp_inv_config")); if(li) Object.keys(li).forEach(k=>{ if(invConfig[k]===undefined) invConfig[k]=li[k]; }); }catch(e){}
+    try{ const lt=JSON.parse(localStorage.getItem("dp_total_torre")); if(lt) Object.keys(lt).forEach(k=>{ if(totalTorre[k]===undefined) totalTorre[k]=lt[k]; }); }catch(e){}
     try{ const la=JSON.parse(localStorage.getItem("dp_inv_amueblado")); if(la) Object.keys(la).forEach(k=>{ if(invAmueblado[k]===undefined) invAmueblado[k]=la[k]; }); }catch(e){}
     const remote = window._fbLoadAll ? await window._fbLoadAll() : null;
     if(remote && Object.keys(remote).length > 0){
@@ -1146,6 +1207,7 @@ let currentProject = null;
 let drafts = {}; // borrador por proyecto, independiente
 let monthOverrides = {}; // overrides manuales del acumulado mensual por proyecto/mes
 let invConfig = {}; // inventario total de renta por proyecto
+let totalTorre = {}; // total de unidades de la torre por proyecto
 let invAmueblado = {}; // unidades amuebladas del inventario por proyecto
 
 // ── AMENIDADES: configuración por proyecto ──
@@ -1251,11 +1313,11 @@ function persistAmenConfig(){
 }
 
 function persistInvConfig(){
-  try{ localStorage.setItem("dp_inv_config", JSON.stringify(invConfig)); localStorage.setItem("dp_inv_amueblado", JSON.stringify(invAmueblado)); }catch(e){}
+  try{ localStorage.setItem("dp_inv_config", JSON.stringify(invConfig)); localStorage.setItem("dp_inv_amueblado", JSON.stringify(invAmueblado)); localStorage.setItem("dp_total_torre", JSON.stringify(totalTorre)); }catch(e){}
   clearTimeout(window._invTimer);
   window._invTimer=setTimeout(()=>{
     if(window._fbSaveInvConfig && currentProject){
-      window._fbSaveInvConfig(currentProject, invConfig[currentProject]||0, invAmueblado[currentProject]||0);
+      window._fbSaveInvConfig(currentProject, invConfig[currentProject]||0, invAmueblado[currentProject]||0, totalTorre[currentProject]||0);
     }
   }, 600);
 }
@@ -1602,7 +1664,7 @@ function exportExcel(){
       if(!r) return;
       rentRows.push({
         Proyecto:p.name, Fecha:e.date,
-        "Inv. total":getInvTotal(pid), "Amuebladas inv.":getInvAmueblado(pid), "Disponibles":getDisp(r),
+        "Total torre":getTotalTorre(pid), "Inv. DDP renta":getInvTotal(pid), "Amuebladas inv.":getInvAmueblado(pid), "Disponibles":getDisp(r), "En proceso cierre":(r&&r.enproceso)||0,
         "Ocupadas":getOcupadas(pid,r), "Ocupación %":ocupacionPct(pid,r),
         "Rentas nuevas":rNuevas(r), "Renovaciones":rRenov(r),
         "Lib. no renov.":rNoreno(r), "Lib. venta":rVenta(r),
@@ -2824,6 +2886,14 @@ function onInvTotalInput(){
   renderRentasDashboard2();
 }
 
+function getTotalTorre(pid){ return totalTorre[pid]!==undefined?totalTorre[pid]:0; }
+function onTotalTorreInput(){
+  const v=+document.getElementById("r-totaltorre").value||0;
+  totalTorre[currentProject]=v;
+  persistInvConfig();
+  renderRentasDashboard2();
+}
+
 function onDisponibleManual(){
   if(!drafts[currentProject].rentas) drafts[currentProject].rentas={};
   const r=drafts[currentProject].rentas;
@@ -2852,6 +2922,7 @@ function onRentaInput(){
   r.noreno = +document.getElementById("r-noreno").value||0;
   r.venta  = +document.getElementById("r-venta").value||0;
   r.citas  = +document.getElementById("r-citas").value||0;
+  r.enproceso = +document.getElementById("r-enproceso").value||0;
   // Recalcular disponible auto si no está en override manual
   recalcDispAuto();
   renderRentasDashboard2();
@@ -2987,6 +3058,8 @@ function loadRentasInputs(){
   if(drafts[currentProject]) drafts[currentProject].rentas=r;
   const set=(id,v)=>{ const el=document.getElementById(id); if(el) el.value=(v!==undefined&&v!==0&&v!=="")?v:""; };
   set("r-invtotal", getInvTotal(currentProject));
+  set("r-totaltorre", getTotalTorre(currentProject));
+  set("r-enproceso", (drafts[currentProject].rentas&&drafts[currentProject].rentas.enproceso)||"");
   set("r-invamueblado", getInvAmueblado(currentProject));
   set("r-disponible", r.disponible);
   set("r-noreno", r.noreno);
@@ -3223,6 +3296,103 @@ function renderRentasDashboard2(){
 
   let html="";
 
+  // Datos del embudo de composición de la torre
+  const torreTotal=getTotalTorre(pid);
+  const aAmen=(drafts[pid] && drafts[pid].amenidades)?drafts[pid].amenidades:{};
+  const entregados=aAmen.entregados||0;
+  const enRenta=total;                       // inventario DDP en renta
+  const rentados=ocup;                        // = inv DDP − disponibles
+  const propietario=aAmen.hab_propietario||0;
+  const enProceso=r?(+r.enproceso||0):0;
+
+  // ── SECCIÓN 0: COMPOSICIÓN DE LA TORRE (embudo) ──
+  if(torreTotal>0 || entregados>0){
+    const noEntregados=Math.max(0, torreTotal-entregados);
+    const pctEnt = torreTotal>0?Math.round(entregados/torreTotal*100):0;
+    const pctRenta = entregados>0?Math.round(enRenta/entregados*100):0;
+    const pctRentados = enRenta>0?Math.round(rentados/enRenta*100):0;
+    const w=(v)=>torreTotal>0?Math.max(2,Math.round(v/torreTotal*100)):0;
+    html+=`<div class="rd-section">
+      <div class="rd-section-label">🏢 Composición de la torre</div>
+      <div class="funnel">
+        <div class="funnel-stage">
+          <div class="funnel-bar-track">
+            <div class="funnel-bar" style="width:${w(torreTotal)}%;background:linear-gradient(90deg,#2C3E50,#34495E)"><span class="funnel-num">${torreTotal}</span></div>
+          </div>
+          <div class="funnel-meta"><span class="funnel-name">Total torre</span><span class="funnel-sub">todas las unidades</span></div>
+        </div>
+        <div class="funnel-stage">
+          <div class="funnel-bar-track">
+            <div class="funnel-bar" style="width:${w(entregados)}%;background:linear-gradient(90deg,#1A7A4A,#27AE60)"><span class="funnel-num">${entregados}</span></div>
+          </div>
+          <div class="funnel-meta"><span class="funnel-name">Entregados</span><span class="funnel-sub">${pctEnt}% de la torre · vendidos y entregados</span></div>
+        </div>
+        <div class="funnel-stage">
+          <div class="funnel-bar-track">
+            <div class="funnel-bar" style="width:${w(enRenta)}%;background:linear-gradient(90deg,#2563EB,#3B82F6)"><span class="funnel-num">${enRenta}</span></div>
+          </div>
+          <div class="funnel-meta"><span class="funnel-name">En renta (inventario DDP)</span><span class="funnel-sub">${pctRenta}% de entregados puestos a rentar</span></div>
+        </div>
+        <div class="funnel-stage">
+          <div class="funnel-bar-track">
+            <div class="funnel-bar" style="width:${w(rentados)}%;background:linear-gradient(90deg,#7C3AED,#8B5CF6)"><span class="funnel-num">${rentados}</span></div>
+          </div>
+          <div class="funnel-meta"><span class="funnel-name">Rentados</span><span class="funnel-sub">${pctRentados}% del inventario DDP · contrato vigente</span></div>
+        </div>
+        <div class="funnel-stage">
+          <div class="funnel-bar-track">
+            <div class="funnel-bar funnel-available" style="width:${w(disp)}%;background:linear-gradient(90deg,#D97706,#F59E0B)"><span class="funnel-num">${disp}</span></div>
+          </div>
+          <div class="funnel-meta"><span class="funnel-name">Disponibles</span><span class="funnel-sub">vacías por rentar ahora</span></div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+
+  // ── SECCIÓN 0.5: DISTINTIVO INVENTARIO + VISITAS + EN PROCESO ──
+  {
+    const propTorre = propietario;
+    const invDDP = enRenta;
+    const dispDDP = disp;
+    const citasSem = r?(+r.citas||0):0;
+    html+=`<div class="rd-section">
+      <div class="rd-section-label">⭐ Distintivo de inventario y tracción</div>
+      <div class="distintivo-grid">
+        <div class="dist-card dist-prop">
+          <div class="dist-icon">🏠</div>
+          <div class="dist-val">${propTorre}</div>
+          <div class="dist-lbl">Propietario</div>
+          <div class="dist-sub">unidades habitadas por dueño</div>
+        </div>
+        <div class="dist-card dist-ddp">
+          <div class="dist-icon">🏢</div>
+          <div class="dist-val">${invDDP}</div>
+          <div class="dist-lbl">Inventario DDP</div>
+          <div class="dist-sub">unidades en renta DDP</div>
+        </div>
+        <div class="dist-card dist-disp">
+          <div class="dist-icon">🔑</div>
+          <div class="dist-val">${dispDDP}</div>
+          <div class="dist-lbl">Disponibles</div>
+          <div class="dist-sub">listas para rentar</div>
+        </div>
+        <div class="dist-card dist-visitas">
+          <div class="dist-icon">👀</div>
+          <div class="dist-val">${citasSem}</div>
+          <div class="dist-lbl">Visitas esta semana</div>
+          <div class="dist-visitas-dots">${(()=>{ const max=Math.min(citasSem,30); let dots=""; for(let k=0;k<max;k++) dots+='<span class="visita-dot"></span>'; return dots+(citasSem>30?'<span class="visita-more">+'+(citasSem-30)+'</span>':''); })()}</div>
+        </div>
+        <div class="dist-card dist-proceso">
+          <div class="dist-icon">⏳</div>
+          <div class="dist-val">${enProceso}</div>
+          <div class="dist-lbl">En proceso de cierre</div>
+          <div class="dist-sub">negociaciones en curso</div>
+        </div>
+      </div>
+    </div>`;
+  }
+
   // ── SECCIÓN 1: INVENTARIO ──
   html+=`<div class="rd-section">
     <div class="rd-section-label">📦 Inventario y ocupación</div>
@@ -3299,6 +3469,27 @@ function renderRentasDashboard2(){
     </div>`;
   }
 
+  // ── SECCIÓN 3.4: MOVIMIENTO MENSUAL DE INVENTARIO (cascada) ──
+  if(ym){
+    const mEff=monthEffective(pid, ym);
+    if(mEff){
+      html+=`<div class="rd-section">
+        <div class="rd-section-label">🌊 Movimiento del inventario · ${monthName(ym)}</div>
+        <div class="movimiento-grid">
+          <div class="chart-card" style="margin:0">
+            <div class="chart-card-sub" style="margin-bottom:8px">Cómo se movió el inventario disponible durante el mes</div>
+            <div class="chart-wrap" style="height:260px"><canvas id="chart-movimiento"></canvas></div>
+          </div>
+          <div class="movimiento-side">
+            <div class="mov-flow-item mov-in"><span class="mov-flow-icon">📥</span><div><div class="mov-flow-val">+${mEff.noreno+mEff.venta}</div><div class="mov-flow-lbl">Liberaciones (entran al pool)</div></div></div>
+            <div class="mov-flow-item mov-out"><span class="mov-flow-icon">📤</span><div><div class="mov-flow-val">−${mEff.nuevas}</div><div class="mov-flow-lbl">Rentas nuevas (salen del pool)</div></div></div>
+            <div class="mov-flow-item mov-net"><span class="mov-flow-icon">⚖️</span><div><div class="mov-flow-val">${(mEff.nuevas-mEff.noreno-mEff.venta)>=0?'−':'+'}${Math.abs(mEff.nuevas-mEff.noreno-mEff.venta)}</div><div class="mov-flow-lbl">Cambio neto en disponibles</div></div></div>
+          </div>
+        </div>
+      </div>`;
+    }
+  }
+
   // ── SECCIÓN 3.5: DISTINTIVO DE RENTAS GLOBALES (brokers) ──
   html+=renderBrokerDistintivo(pid, ym);
 
@@ -3327,9 +3518,73 @@ function renderRentasDashboard2(){
   renderDonutOcupacion(pid, r);
   renderWaterfall();
   renderCanalDonut(pid, ym);
+  if(ym) renderMovimientoMensual(pid, ym);
   if(ym) renderMonthlyInline();
   renderExecutivePulse();
 }
+
+function renderMovimientoMensual(pid, ym){
+  const ctx=document.getElementById("chart-movimiento");
+  if(!ctx) return;
+  destroyChart("movimiento");
+  const mEff=monthEffective(pid, ym);
+  if(!mEff) return;
+  // Disponibles al final del mes (último registro)
+  const dispFin = mEff.disponible||0;
+  const liberaciones = mEff.noreno + mEff.venta;
+  const rentasNuevas = mEff.nuevas;
+  // Reconstruir disponible inicial: fin = inicio + liberaciones − nuevas  →  inicio = fin − liberaciones + nuevas
+  const dispIni = Math.max(0, dispFin - liberaciones + rentasNuevas);
+
+  // Cascada: [inicio] [+liberaciones] [−nuevas] [fin]
+  // Usamos barras flotantes para el efecto cascada
+  const pColor = PROJECTS[pid] ? PROJECTS[pid].color : "#20C997";
+  const labels=["Disp. inicio","+ Liberaciones","− Rentas nuevas","Disp. fin"];
+  // floating bars: [base, top]
+  const step1=dispIni;
+  const step2=step1+liberaciones;
+  const step3=step2-rentasNuevas;
+  const data=[
+    [0, dispIni],
+    [step1, step2],
+    [step3, step2],
+    [0, step3]
+  ];
+  const colors=["#94A3B8","#0CA678","#E8590C",pColor];
+
+  charts["movimiento"]=new Chart(ctx,{
+    type:"bar",
+    data:{labels,datasets:[{data,backgroundColor:colors,borderRadius:5,borderSkipped:false,barPercentage:0.7}]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},
+        tooltip:{callbacks:{label:(x)=>{
+          const v=x.raw; const mag=Math.abs(v[1]-v[0]);
+          if(x.dataIndex===0) return "Disponibles al inicio: "+dispIni;
+          if(x.dataIndex===1) return "Entraron al pool: +"+liberaciones;
+          if(x.dataIndex===2) return "Salieron (rentadas): −"+rentasNuevas;
+          return "Disponibles al final: "+dispFin;
+        }}}
+      },
+      scales:{
+        y:{beginAtZero:true,ticks:{font:{family:"DM Mono",size:10}},grid:{color:"rgba(0,0,0,.05)"}},
+        x:{ticks:{font:{family:"HelveticaNow",size:10.5}},grid:{display:false}}
+      }
+    },
+    plugins:[{
+      id:"movLabels",
+      afterDatasetsDraw(chart){
+        const meta=chart.getDatasetMeta(0);
+        const c2=chart.ctx;
+        c2.save(); c2.font="700 12px 'DM Mono',monospace"; c2.textAlign="center"; c2.fillStyle="#3A3A3A";
+        const vals=[dispIni, "+"+liberaciones, "−"+rentasNuevas, dispFin];
+        meta.data.forEach((bar,i)=>{ c2.fillText(vals[i], bar.x, bar.y-7); });
+        c2.restore();
+      }
+    }]
+  });
+}
+
 
 function renderDonutOcupacion(pid, r){
   const ctx=document.getElementById("donut-ocupacion");
