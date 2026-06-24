@@ -382,6 +382,7 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .cap-block:last-child{margin-bottom:0}
 .cap-block-title{font-size:12.5px;font-weight:700;color:var(--text-1);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
 .cap-inv-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px}
+.cap-block-subtitle{font-size:11.5px;font-weight:600;color:var(--text-2);margin-bottom:10px}
 @media(max-width:900px){.cap-inv-row{grid-template-columns:1fr 1fr}}
 .add-unit-btn{margin-top:10px;padding:8px 14px;border:1px dashed var(--border-strong);border-radius:9px;background:transparent;color:var(--text-2);font-size:12px;font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;font-weight:500;cursor:pointer;transition:all .15s;width:100%}
 .add-unit-btn:hover{border-color:var(--green-b);background:var(--green-bg);color:var(--green)}
@@ -405,6 +406,7 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .amue-btn.active-si{background:#8B5CF6;color:#fff;border-color:#8B5CF6}
 .amue-btn.active-no{background:var(--surface-3);color:var(--text-1);border-color:var(--border-strong)}
 .canal-pill.active.c-asesor{background:#0CA678;color:#fff;border-color:#0CA678}
+.canal-pill.active.c-propietario{background:#9333EA;color:#fff;border-color:#9333EA}
 
 .unidad-card-row2{display:flex;align-items:center;gap:10px;margin-top:9px;padding-top:9px;border-top:1px dashed var(--border-md);flex-wrap:wrap}
 .unidad-attr-label{font-size:11px;font-weight:600;color:var(--text-2);white-space:nowrap}
@@ -431,6 +433,7 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .amue-btn.active-si{background:#8B5CF6;color:#fff;border-color:#8B5CF6}
 .amue-btn.active-no{background:var(--surface-3);color:var(--text-1);border-color:var(--border-strong)}
 .canal-pill.active.c-asesor{background:#0CA678;color:#fff;border-color:#0CA678}
+.canal-pill.active.c-propietario{background:#9333EA;color:#fff;border-color:#9333EA}
 
 .unidad-card-row2{flex-direction:column;align-items:stretch}}
 
@@ -476,6 +479,13 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .dist-val{font-size:30px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;color:var(--text-1)}
 .dist-lbl{font-size:12px;font-weight:700;color:var(--text-1);margin-top:4px}
 .dist-sub{font-size:10px;color:var(--text-3)}
+
+.disp-origen-bar{display:flex;height:14px;border-radius:6px;overflow:hidden;background:var(--surface-3);margin-top:14px}
+.disp-origen-seg{height:100%;transition:width .4s}
+.disp-origen-legend{display:flex;gap:18px;margin-top:8px;font-size:12px;color:var(--text-2)}
+.disp-origen-legend span{display:inline-flex;align-items:center;gap:7px}
+.disp-dot{width:10px;height:10px;border-radius:3px}
+
 .dist-visitas-dots{display:flex;flex-wrap:wrap;gap:3px;margin-top:6px;align-items:center}
 .visita-dot{width:7px;height:7px;border-radius:50%;background:#0CA678;opacity:.8}
 .visita-more{font-size:10px;font-weight:700;color:#0CA678;font-family:'DM Mono',monospace;margin-left:2px}
@@ -510,7 +520,7 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .rd-stat.accent-green .rd-stat-sub{color:rgba(255,255,255,.65)}
 
 .rd-amue-tag{font-size:11px;font-weight:600;color:#8B5CF6;background:#F3EEFF;padding:2px 8px;border-radius:12px}
-.rd-amueblado-row{display:flex;align-items:center;gap:14px;margin-top:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:1rem 1.25rem}
+.rd-amueblado-row{display:flex;align-items:center;gap:14px;margin-top:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:1rem 1.25rem;flex-wrap:wrap}
 .rd-amue-card{display:flex;align-items:center;gap:10px;min-width:150px}
 .rd-amue-icon{font-size:22px}
 .rd-amue-val{font-size:24px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;color:var(--text-1)}
@@ -561,7 +571,7 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .rd-mes-banner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-lg);padding:10px 16px;margin-bottom:12px}
 @media(max-width:900px){.rd-inv-grid{grid-template-columns:1fr 1fr}
 .rd-amue-tag{font-size:11px;font-weight:600;color:#8B5CF6;background:#F3EEFF;padding:2px 8px;border-radius:12px}
-.rd-amueblado-row{display:flex;align-items:center;gap:14px;margin-top:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:1rem 1.25rem}
+.rd-amueblado-row{display:flex;align-items:center;gap:14px;margin-top:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:1rem 1.25rem;flex-wrap:wrap}
 .rd-amue-card{display:flex;align-items:center;gap:10px;min-width:150px}
 .rd-amue-icon{font-size:22px}
 .rd-amue-val{font-size:24px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;color:var(--text-1)}
@@ -892,22 +902,33 @@ window._fbLoadAll = async function(){
                 <input type="number" id="r-totaltorre" min="0" step="1" placeholder="0" oninput="onTotalTorreInput()">
               </div>
               <div class="rentas-input-group">
-                <label>Inventario DDP en renta <span class="hint">(de los entregados, puestos a rentar)</span></label>
+                <label>Con intención de renta <span class="hint">(deptos que se quieren rentar)</span></label>
                 <input type="number" id="r-invtotal" min="0" step="1" placeholder="0" oninput="onInvTotalInput()">
               </div>
               <div class="rentas-input-group">
-                <label>¿Cuántas amuebladas? <span class="hint">(del inventario DDP)</span></label>
-                <input type="number" id="r-invamueblado" min="0" step="1" placeholder="0" oninput="onInvAmuebladoInput()">
-              </div>
-              <div class="rentas-input-group">
-                <label>Disponibles esta semana <span class="hint" id="disp-hint">(vacías por rentar)</span></label>
+                <label>Disponibles esta semana <span class="hint" id="disp-hint">(en comercialización ahora)</span></label>
                 <div style="display:flex;gap:6px;align-items:center">
                   <input type="number" id="r-disponible" min="0" step="1" placeholder="0" oninput="onDisponibleManual()" style="flex:1">
                   <button id="disp-auto-btn" onclick="resetDisponibleAuto()" style="display:none;padding:8px 10px;border:1px solid var(--border-md);border-radius:8px;background:var(--surface);font-size:10.5px;font-family:HelveticaNow,Helvetica Neue,Arial,sans-serif;color:var(--text-2);cursor:pointer;white-space:nowrap">↺ Auto</button>
                 </div>
               </div>
             </div>
-            <div style="font-size:11px;color:var(--text-3);margin-top:8px">💡 Los <strong>entregados</strong> se toman de la masa crítica de amenidades. <strong>Rentados</strong> = inventario DDP − disponibles.</div>
+            <div class="cap-block-subtitle" style="margin-top:16px">De los disponibles en comercialización, desglosa:</div>
+            <div class="cap-inv-row">
+              <div class="rentas-input-group">
+                <label>🏢 Disponibles de DDP <span class="hint">(nuestro inventario a la venta)</span></label>
+                <input type="number" id="r-dispddp" min="0" step="1" placeholder="0" oninput="onDispDesgloseInput()">
+              </div>
+              <div class="rentas-input-group">
+                <label>🏠 Disponibles del propietario <span class="hint">(auto = disponibles − DDP)</span></label>
+                <input type="number" id="r-dispprop" disabled style="opacity:.7;font-weight:700" placeholder="0">
+              </div>
+              <div class="rentas-input-group">
+                <label>🛋️ Amueblados disponibles <span class="hint">(de los disponibles, cuántos amueblados)</span></label>
+                <input type="number" id="r-invamueblado" min="0" step="1" placeholder="0" oninput="onInvAmuebladoInput()">
+              </div>
+            </div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:10px">💡 Los <strong>entregados</strong> vienen de la masa crítica. <strong>Rentados</strong> = con intención de renta − disponibles.</div>
           </div>
 
           <!-- Unidades cerradas -->
@@ -1664,7 +1685,7 @@ function exportExcel(){
       if(!r) return;
       rentRows.push({
         Proyecto:p.name, Fecha:e.date,
-        "Total torre":getTotalTorre(pid), "Inv. DDP renta":getInvTotal(pid), "Amuebladas inv.":getInvAmueblado(pid), "Disponibles":getDisp(r), "En proceso cierre":(r&&r.enproceso)||0,
+        "Total torre":getTotalTorre(pid), "Con intención renta":getInvTotal(pid), "Disponibles":getDisp(r), "Disp. DDP":(r&&r.dispDDP)||0, "Disp. propietario":Math.max(0,getDisp(r)-((r&&r.dispDDP)||0)), "Amueblados disp.":getInvAmueblado(pid), "En proceso cierre":(r&&r.enproceso)||0,
         "Ocupadas":getOcupadas(pid,r), "Ocupación %":ocupacionPct(pid,r),
         "Rentas nuevas":rNuevas(r), "Renovaciones":rRenov(r),
         "Lib. no renov.":rNoreno(r), "Lib. venta":rVenta(r),
@@ -2901,6 +2922,20 @@ function onDisponibleManual(){
   if(v===""){ delete r.disponible; r.disponible_manual=false; }
   else { r.disponible=+v; r.disponible_manual=true; }
   document.getElementById("disp-auto-btn").style.display = r.disponible_manual ? "block":"none";
+  // Actualizar disponibles del propietario (auto)
+  const dispProp = Math.max(0, getDisp(r) - (+r.dispDDP||0));
+  const pp=document.getElementById("r-dispprop"); if(pp) pp.value=dispProp||"";
+  renderRentasDashboard2();
+}
+
+function onDispDesgloseInput(){
+  if(!drafts[currentProject].rentas) drafts[currentProject].rentas={};
+  const r=drafts[currentProject].rentas;
+  r.dispDDP = +document.getElementById("r-dispddp").value||0;
+  // Disponibles del propietario = disponibles totales − DDP
+  const dispTotal = getDisp(r);
+  const dispProp = Math.max(0, dispTotal - r.dispDDP);
+  const pp=document.getElementById("r-dispprop"); if(pp) pp.value=dispProp||"";
   renderRentasDashboard2();
 }
 
@@ -3007,10 +3042,10 @@ function renderUnidadesList(){
     cont.innerHTML='<div class="unidades-empty">Sin unidades cerradas aún. Agrega cada departamento rentado o renovado esta semana.</div>';
     return;
   }
-  const canales=[["directo","Directo"],["asesor","Asesor DDP"],["interno","Broker interno"],["externo","Broker externo"],["otro","Otro"]];
+  const canales=[["directo","Directo"],["asesor","Asesor DDP"],["propietario","Propietario"],["interno","Broker interno"],["externo","Broker externo"],["otro","Otro"]];
   cont.innerHTML=units.map((u,i)=>{
     const necesitaBroker = u.canal && u.canal!=="directo";
-    const brokerPlaceholder = u.canal==="asesor" ? "Nombre del asesor DDP" : u.canal==="otro" ? "Especifica el canal y/o nombre" : (necesitaBroker?"Nombre del broker":"(sin broker)");
+    const brokerPlaceholder = u.canal==="asesor" ? "Nombre del asesor DDP" : u.canal==="propietario" ? "Nombre del propietario (opcional)" : u.canal==="otro" ? "Especifica el canal y/o nombre" : (necesitaBroker?"Nombre del broker":"(sin broker)");
     return `<div class="unidad-card">
     <div class="unidad-card-row1">
       <input type="text" value="${(u.id||"").replace(/"/g,'&quot;')}" placeholder="Depto (ej. 304)" oninput="updateUnidad(${i},'id',this.value)">
@@ -3060,6 +3095,9 @@ function loadRentasInputs(){
   set("r-invtotal", getInvTotal(currentProject));
   set("r-totaltorre", getTotalTorre(currentProject));
   set("r-enproceso", (drafts[currentProject].rentas&&drafts[currentProject].rentas.enproceso)||"");
+  const _r=drafts[currentProject].rentas||{};
+  set("r-dispddp", _r.dispDDP||"");
+  set("r-dispprop", Math.max(0, getDisp(_r)-(+_r.dispDDP||0))||"");
   set("r-invamueblado", getInvAmueblado(currentProject));
   set("r-disponible", r.disponible);
   set("r-noreno", r.noreno);
@@ -3156,6 +3194,7 @@ function fmtDateVenc(d){
 const CANAL_INFO={
   directo:{label:"Directo",color:"#5C7CFA",icon:"🏢"},
   asesor:{label:"Asesor DDP",color:"#0CA678",icon:"⭐"},
+  propietario:{label:"Propietario",color:"#9333EA",icon:"🏠"},
   interno:{label:"Broker interno",color:"#1A7A4A",icon:"🤝"},
   externo:{label:"Broker externo",color:"#E8590C",icon:"🌐"},
   otro:{label:"Otro",color:"#6B6B6B",icon:"•"}
@@ -3186,7 +3225,7 @@ function cierresSemana(pid){
 
 // Mix de canal a partir de una lista de unidades
 function mixCanal(units){
-  const mix={directo:0,asesor:0,interno:0,externo:0,otro:0};
+  const mix={directo:0,asesor:0,propietario:0,interno:0,externo:0,otro:0};
   units.forEach(u=>{ const ca=u.canal||"directo"; mix[ca]=(mix[ca]||0)+1; });
   return mix;
 }
@@ -3331,7 +3370,7 @@ function renderRentasDashboard2(){
           <div class="funnel-bar-track">
             <div class="funnel-bar" style="width:${w(enRenta)}%;background:linear-gradient(90deg,#2563EB,#3B82F6)"><span class="funnel-num">${enRenta}</span></div>
           </div>
-          <div class="funnel-meta"><span class="funnel-name">En renta (inventario DDP)</span><span class="funnel-sub">${pctRenta}% de entregados puestos a rentar</span></div>
+          <div class="funnel-meta"><span class="funnel-name">Con intención de renta</span><span class="funnel-sub">${pctRenta}% de entregados · se quieren rentar</span></div>
         </div>
         <div class="funnel-stage">
           <div class="funnel-bar-track">
@@ -3350,32 +3389,33 @@ function renderRentasDashboard2(){
   }
 
 
-  // ── SECCIÓN 0.5: DISTINTIVO INVENTARIO + VISITAS + EN PROCESO ──
+  // ── SECCIÓN 0.5: DISTINTIVO DE DISPONIBLES + VISITAS + EN PROCESO ──
   {
-    const propTorre = propietario;
-    const invDDP = enRenta;
-    const dispDDP = disp;
+    const dispDDP = r?(+r.dispDDP||0):0;
+    const dispProp = Math.max(0, disp - dispDDP);
+    const pctDDP = disp>0?Math.round(dispDDP/disp*100):0;
+    const pctProp = disp>0?Math.round(dispProp/disp*100):0;
     const citasSem = r?(+r.citas||0):0;
     html+=`<div class="rd-section">
-      <div class="rd-section-label">⭐ Distintivo de inventario y tracción</div>
+      <div class="rd-section-label">⭐ Distintivo de disponibles y tracción</div>
       <div class="distintivo-grid">
-        <div class="dist-card dist-prop">
-          <div class="dist-icon">🏠</div>
-          <div class="dist-val">${propTorre}</div>
-          <div class="dist-lbl">Propietario</div>
-          <div class="dist-sub">unidades habitadas por dueño</div>
+        <div class="dist-card dist-disp">
+          <div class="dist-icon">🔑</div>
+          <div class="dist-val">${disp}</div>
+          <div class="dist-lbl">Disponibles total</div>
+          <div class="dist-sub">en comercialización</div>
         </div>
         <div class="dist-card dist-ddp">
           <div class="dist-icon">🏢</div>
-          <div class="dist-val">${invDDP}</div>
-          <div class="dist-lbl">Inventario DDP</div>
-          <div class="dist-sub">unidades en renta DDP</div>
-        </div>
-        <div class="dist-card dist-disp">
-          <div class="dist-icon">🔑</div>
           <div class="dist-val">${dispDDP}</div>
-          <div class="dist-lbl">Disponibles</div>
-          <div class="dist-sub">listas para rentar</div>
+          <div class="dist-lbl">De DDP</div>
+          <div class="dist-sub">${pctDDP}% · nuestro inventario</div>
+        </div>
+        <div class="dist-card dist-prop">
+          <div class="dist-icon">🏠</div>
+          <div class="dist-val">${dispProp}</div>
+          <div class="dist-lbl">Del propietario</div>
+          <div class="dist-sub">${pctProp}% · de dueños</div>
         </div>
         <div class="dist-card dist-visitas">
           <div class="dist-icon">👀</div>
@@ -3390,6 +3430,14 @@ function renderRentasDashboard2(){
           <div class="dist-sub">negociaciones en curso</div>
         </div>
       </div>
+      ${disp>0?`<div class="disp-origen-bar">
+        <div class="disp-origen-seg" style="width:${pctDDP}%;background:#2563EB" title="DDP: ${dispDDP}"></div>
+        <div class="disp-origen-seg" style="width:${pctProp}%;background:#5C7CFA" title="Propietario: ${dispProp}"></div>
+      </div>
+      <div class="disp-origen-legend">
+        <span><span class="disp-dot" style="background:#2563EB"></span>DDP ${dispDDP} (${pctDDP}%)</span>
+        <span><span class="disp-dot" style="background:#5C7CFA"></span>Propietario ${dispProp} (${pctProp}%)</span>
+      </div>`:''}
     </div>`;
   }
 
@@ -3403,13 +3451,14 @@ function renderRentasDashboard2(){
           <div class="rd-donut-center"><span class="rd-donut-pct">${pct}%</span><span class="rd-donut-lbl">Ocupación</span></div>
         </div>
       </div>
-      <div class="rd-stat"><div class="rd-stat-lbl">Inventario total</div><div class="rd-stat-val">${total}</div><div class="rd-stat-sub">unidades en renta</div></div>
+      <div class="rd-stat"><div class="rd-stat-lbl">Con intención de renta</div><div class="rd-stat-val">${total}</div><div class="rd-stat-sub">deptos a rentar</div></div>
       <div class="rd-stat"><div class="rd-stat-lbl">Ocupadas</div><div class="rd-stat-val">${ocup}</div><div class="rd-stat-sub">${pct}% del inventario</div></div>
       <div class="rd-stat"><div class="rd-stat-lbl">Disponibles</div><div class="rd-stat-val">${disp}</div><div class="rd-stat-sub">vacías por rentar</div></div>
     </div>
-    ${(()=>{ const amue=getInvAmueblado(pid); const sinAmue=Math.max(0,total-amue); const pctAmue=total>0?Math.round(amue/total*100):0; if(total===0&&amue===0) return ""; return `
+    ${(()=>{ const amue=getInvAmueblado(pid); const sinAmue=Math.max(0,disp-amue); const pctAmue=disp>0?Math.round(amue/disp*100):0; if(disp===0&&amue===0) return ""; return `
     <div class="rd-amueblado-row">
-      <div class="rd-amue-card amueblado"><span class="rd-amue-icon">🛋️</span><div><div class="rd-amue-val">${amue}</div><div class="rd-amue-lbl">Amuebladas · ${pctAmue}%</div></div></div>
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);font-weight:700;width:100%;margin-bottom:2px">🔑 De los ${disp} disponibles para renta:</div>
+      <div class="rd-amue-card amueblado"><span class="rd-amue-icon">🛋️</span><div><div class="rd-amue-val">${amue}</div><div class="rd-amue-lbl">Amueblados · ${pctAmue}%</div></div></div>
       <div class="rd-amue-bar"><div class="rd-amue-fill" style="width:${pctAmue}%"></div></div>
       <div class="rd-amue-card sin"><span class="rd-amue-icon">📦</span><div><div class="rd-amue-val">${sinAmue}</div><div class="rd-amue-lbl">Sin amueblar · ${100-pctAmue}%</div></div></div>
     </div>`; })()}
