@@ -444,7 +444,15 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .efv-divider{width:1px;align-self:stretch;background:var(--border)}
 .efv-legend{display:flex;flex-direction:column;gap:6px;font-size:10.5px;color:var(--text-2);justify-content:center}
 .efv-legend span{display:inline-flex;align-items:center;gap:6px}
-.exec-cierre-pie{display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding-top:12px;border-top:1px dashed var(--border-md)}
+.exec-cierre-pie{padding-top:12px;border-top:1px dashed var(--border-md)}
+.ecp-head{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-3);font-weight:700;margin-bottom:10px}
+.ecp-body{display:flex;align-items:center;gap:16px}
+.ecp-chart{width:88px;height:88px;flex-shrink:0}
+.ecp-legend{flex:1;display:flex;flex-direction:column;gap:6px}
+.ecp-leg-row{display:flex;align-items:center;gap:8px}
+.ecp-leg-name{font-size:12px;color:var(--text-2);flex:1}
+.ecp-leg-val{font-size:12px;font-weight:700;font-family:'DM Mono',monospace;color:var(--text-1)}
+.ecp-empty{font-size:11.5px;color:var(--text-3);font-style:italic;line-height:1.5}
 .ecp-lbl{font-size:11px;font-weight:600;color:var(--text-2)}
 .ecp-item{font-size:11.5px;color:var(--text-2);display:inline-flex;align-items:center;gap:6px}
 .ecp-dot{width:9px;height:9px;border-radius:50%}
@@ -2772,32 +2780,15 @@ function renderExecutivePulse(){
           <div><div class="exec-pair-val">${enProcesoSem}</div><div class="exec-pair-lbl">En proceso de cierre</div></div>
         </div>
       </div>
-      <!-- Mini gráfica visual de barras entradas vs salidas -->
-      <div class="exec-flow-viz">
-        <div class="efv-group">
-          <span class="efv-title">Semana</span>
-          <div class="efv-bars">
-            <div class="efv-bar-wrap"><div class="efv-bar in" style="height:${Math.min(100,entSem*14)}%"></div><span class="efv-bar-val">${entSem}</span></div>
-            <div class="efv-bar-wrap"><div class="efv-bar out" style="height:${Math.min(100,salSem*14)}%"></div><span class="efv-bar-val">${salSem}</span></div>
-          </div>
-        </div>
-        <div class="efv-divider"></div>
-        <div class="efv-group">
-          <span class="efv-title">Mes</span>
-          <div class="efv-bars">
-            <div class="efv-bar-wrap"><div class="efv-bar in" style="height:${Math.min(100,entMes*7)}%"></div><span class="efv-bar-val">${entMes}</span></div>
-            <div class="efv-bar-wrap"><div class="efv-bar out" style="height:${Math.min(100,salMes*7)}%"></div><span class="efv-bar-val">${salMes}</span></div>
-          </div>
-        </div>
-        <div class="efv-legend">
-          <span><span class="eft-dot in"></span>Entradas</span>
-          <span><span class="eft-dot out"></span>Salidas</span>
-        </div>
-      </div>
       ${totalCierres>0?`<div class="exec-cierre-pie">
-        <span class="ecp-lbl">Quién cerró el mes:</span>
-        ${Object.keys(CANAL_INFO).filter(k=>mixMes[k]>0).map(k=>{const ci=CANAL_INFO[k];return `<span class="ecp-item"><span class="ecp-dot" style="background:${ci.color}"></span>${ci.label.replace('Broker ','')} <strong>${mixMes[k]}</strong></span>`;}).join("")}
-      </div>`:''}
+        <div class="ecp-head">🏆 Quién cerró el mes · ${totalCierres} ${totalCierres===1?'cierre':'cierres'}</div>
+        <div class="ecp-body">
+          <div class="ecp-chart"><canvas id="exec-cierre-donut"></canvas></div>
+          <div class="ecp-legend">
+            ${Object.keys(CANAL_INFO).filter(k=>mixMes[k]>0).map(k=>{const ci=CANAL_INFO[k];const pct=Math.round(mixMes[k]/totalCierres*100);return `<div class="ecp-leg-row"><span class="ecp-dot" style="background:${ci.color}"></span><span class="ecp-leg-name">${ci.icon} ${ci.label.replace('Broker ','')}</span><span class="ecp-leg-val">${mixMes[k]} · ${pct}%</span></div>`;}).join("")}
+          </div>
+        </div>
+      </div>`:`<div class="exec-cierre-pie"><div class="ecp-empty">Sin cierres atribuidos este mes. Captura el canal (asesor, broker, propietario) en cada renta nueva para ver quién cierra.</div></div>`}
     </div>
   </div>
   <div class="exec-status-strip ${statusCls}">
@@ -2805,15 +2796,26 @@ function renderExecutivePulse(){
     <span>${statusMsg}</span>
   </div>`;
 
-  // Donut
+  // Donut de ocupación
   setTimeout(()=>{
     const ctx=document.getElementById("exec-donut");
-    if(!ctx) return;
-    destroyChart("execdonut");
-    charts["execdonut"]=new Chart(ctx,{type:"doughnut",
-      data:{labels:["Ocupadas","Disponibles"],datasets:[{data:[ocup,disp||0.0001],backgroundColor:[p.color,"#E5E4DE"],borderWidth:0}]},
-      options:{responsive:true,maintainAspectRatio:false,cutout:"74%",plugins:{legend:{display:false},tooltip:{callbacks:{label:(x)=>x.label+": "+(x.dataIndex===0?ocup:disp)}}}}
-    });
+    if(ctx){
+      destroyChart("execdonut");
+      charts["execdonut"]=new Chart(ctx,{type:"doughnut",
+        data:{labels:["Ocupadas","Disponibles"],datasets:[{data:[ocup,disp||0.0001],backgroundColor:[p.color,"#E5E4DE"],borderWidth:0}]},
+        options:{responsive:true,maintainAspectRatio:false,cutout:"74%",plugins:{legend:{display:false},tooltip:{callbacks:{label:(x)=>x.label+": "+(x.dataIndex===0?ocup:disp)}}}}
+      });
+    }
+    // Pie de quién cerró (mes)
+    const cctx=document.getElementById("exec-cierre-donut");
+    if(cctx && totalCierres>0){
+      destroyChart("execcierre");
+      const keys=Object.keys(CANAL_INFO).filter(k=>mixMes[k]>0);
+      charts["execcierre"]=new Chart(cctx,{type:"doughnut",
+        data:{labels:keys.map(k=>CANAL_INFO[k].label),datasets:[{data:keys.map(k=>mixMes[k]),backgroundColor:keys.map(k=>CANAL_INFO[k].color),borderWidth:2,borderColor:"#fff"}]},
+        options:{responsive:true,maintainAspectRatio:false,cutout:"58%",plugins:{legend:{display:false},tooltip:{callbacks:{label:(x)=>x.label+": "+x.raw}}}}
+      });
+    }
   },30);
 }
 
