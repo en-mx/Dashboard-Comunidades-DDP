@@ -368,6 +368,88 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .exec-rent-stat:last-child{border-bottom:none;padding-bottom:0}
 .exec-rent-stat-lbl{font-size:12px;color:var(--text-2)}
 .exec-rent-stat-val{font-size:18px;font-weight:700;font-family:'DM Mono',monospace;color:var(--text-1)}
+
+/* ── EXEC RENTAS: entradas/salidas ── */
+.exec-rent-top{display:flex;align-items:center;gap:16px;margin-bottom:14px}
+.exec-abs-hero{flex:1;display:flex;flex-direction:column;gap:2px;padding:12px 16px;border-radius:12px;background:var(--surface-2)}
+.exec-abs-hero.abs-positive{background:linear-gradient(135deg,#E8F5EE,#F0FAF4);border:1px solid #BFE5CF}
+.exec-abs-hero.abs-negative{background:linear-gradient(135deg,#FBEAE8,#FDF2F0);border:1px solid #F2C4BD}
+.exec-abs-lbl{font-size:11px;color:var(--text-2);font-weight:600}
+.exec-abs-num{font-size:34px;font-weight:700;font-family:'DM Mono',monospace;line-height:1.05;color:var(--text-1)}
+.exec-abs-hero.abs-positive .exec-abs-num{color:#1A7A4A}
+.exec-abs-hero.abs-negative .exec-abs-num{color:#A8291A}
+.exec-abs-sub{font-size:11px;color:var(--text-2)}
+
+
+.exec-amen-box{margin-top:14px;padding-top:14px;border-top:1px dashed var(--border-md)}
+.exec-amen-title{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-3);font-weight:700;margin-bottom:11px}
+.exec-amen-stats{display:flex;align-items:center;gap:16px}
+.exec-amen-stat{display:flex;align-items:center;gap:11px;flex:1}
+.exec-amen-circle{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative}
+.exec-amen-circle::before{content:"";position:absolute;inset:6px;background:var(--surface);border-radius:50%}
+.exec-amen-circle span{position:relative;font-size:14px;font-weight:700;font-family:'DM Mono',monospace;color:var(--text-1)}
+.exec-amen-sat-num{font-size:30px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;flex-shrink:0}
+.exec-amen-sat-max{font-size:13px;color:var(--text-3);font-weight:500}
+.exec-amen-lbl{font-size:11.5px;font-weight:600;color:var(--text-1);line-height:1.3}
+.exec-amen-sub{font-size:10px;color:var(--text-3);font-weight:400}
+.exec-amen-divider{width:1px;align-self:stretch;background:var(--border);min-height:40px}
+
+.exec-rent-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.exec-pair-card{display:flex;align-items:center;gap:11px;padding:12px 14px;border-radius:11px;border:1px solid var(--border);background:var(--surface)}
+.exec-pair-disp{border-left:3px solid #F59E0B}
+.exec-pair-proceso{border-left:3px solid #8B5CF6}
+.exec-pair-icon{font-size:20px}
+.exec-pair-val{font-size:24px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;color:var(--text-1)}
+.exec-pair-of{font-size:13px;color:var(--text-3);font-weight:500}
+.exec-pair-lbl{font-size:10.5px;color:var(--text-2);margin-top:3px}
+@media(max-width:900px){
+.exec-amen-box{margin-top:14px;padding-top:14px;border-top:1px dashed var(--border-md)}
+.exec-amen-title{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-3);font-weight:700;margin-bottom:11px}
+.exec-amen-stats{display:flex;align-items:center;gap:16px}
+.exec-amen-stat{display:flex;align-items:center;gap:11px;flex:1}
+.exec-amen-circle{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative}
+.exec-amen-circle::before{content:"";position:absolute;inset:6px;background:var(--surface);border-radius:50%}
+.exec-amen-circle span{position:relative;font-size:14px;font-weight:700;font-family:'DM Mono',monospace;color:var(--text-1)}
+.exec-amen-sat-num{font-size:30px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;flex-shrink:0}
+.exec-amen-sat-max{font-size:13px;color:var(--text-3);font-weight:500}
+.exec-amen-lbl{font-size:11.5px;font-weight:600;color:var(--text-1);line-height:1.3}
+.exec-amen-sub{font-size:10px;color:var(--text-3);font-weight:400}
+.exec-amen-divider{width:1px;align-self:stretch;background:var(--border);min-height:40px}
+
+.exec-rent-pair{grid-template-columns:1fr 1fr}}
+
+.exec-flow-table{width:100%;border-collapse:collapse;margin-bottom:12px}
+.exec-flow-table th{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-3);font-weight:700;padding:5px 8px;text-align:center;border-bottom:1px solid var(--border)}
+.exec-flow-table th:first-child{text-align:left}
+.exec-flow-table td{padding:7px 8px;font-size:13px;border-bottom:1px solid var(--border)}
+.eft-lbl{font-weight:600;color:var(--text-1);display:flex;align-items:center;gap:7px}
+.eft-hint{font-size:10px;color:var(--text-3);font-weight:400}
+.eft-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.eft-dot.in{background:#0CA678}
+.eft-dot.out{background:#E8590C}
+.eft-num{text-align:center;font-family:'DM Mono',monospace;font-weight:700;color:var(--text-1)}
+.eft-num.pos{color:#1A7A4A}
+.eft-num.neg{color:#A8291A}
+.eft-neta td{border-bottom:none;background:var(--surface-2)}
+.eft-neta .eft-lbl{font-weight:700}
+.exec-flow-viz{display:flex;align-items:flex-end;gap:14px;padding:14px;background:var(--surface-2);border-radius:12px;margin-bottom:12px;position:relative}
+.efv-group{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
+.efv-title{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);font-weight:700}
+.efv-bars{display:flex;gap:10px;align-items:flex-end;height:70px}
+.efv-bar-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;justify-content:flex-end;width:30px}
+.efv-bar{width:24px;border-radius:5px 5px 0 0;min-height:4px;transition:height .4s}
+.efv-bar.in{background:linear-gradient(180deg,#0CA678,#0A8F68)}
+.efv-bar.out{background:linear-gradient(180deg,#E8590C,#C94A0A)}
+.efv-bar-val{font-size:11px;font-weight:700;font-family:'DM Mono',monospace;color:var(--text-2)}
+.efv-divider{width:1px;align-self:stretch;background:var(--border)}
+.efv-legend{display:flex;flex-direction:column;gap:6px;font-size:10.5px;color:var(--text-2);justify-content:center}
+.efv-legend span{display:inline-flex;align-items:center;gap:6px}
+.exec-cierre-pie{display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding-top:12px;border-top:1px dashed var(--border-md)}
+.ecp-lbl{font-size:11px;font-weight:600;color:var(--text-2)}
+.ecp-item{font-size:11.5px;color:var(--text-2);display:inline-flex;align-items:center;gap:6px}
+.ecp-dot{width:9px;height:9px;border-radius:50%}
+@media(max-width:900px){.exec-rent-top{flex-direction:column}}
+
 .exec-status-strip{display:flex;align-items:center;gap:10px;margin-top:1rem;padding:11px 16px;border-radius:var(--r-lg);font-size:13px;font-weight:500}
 .exec-status-strip.good{background:var(--green-bg);color:var(--green)}
 .exec-status-strip.warn{background:var(--amber-bg);color:var(--amber)}
@@ -389,12 +471,19 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 
 /* ── UNIDAD CERRADA (tarjeta con atribución) ── */
 .unidad-card{background:var(--surface-2);border:1px solid var(--border);border-radius:11px;padding:10px;margin-bottom:9px}
-.unidad-card-row1{display:grid;grid-template-columns:1fr 1fr 0.75fr 0.7fr 1.1fr 1.25fr 30px;gap:7px;align-items:center}
+.unidad-card-row1{display:grid;grid-template-columns:1.3fr 1fr 0.9fr 0.9fr 30px;gap:7px;align-items:center}
 .unidad-card-row1 input,.unidad-card-row1 select{padding:7px 9px;border:1px solid var(--border-md);border-radius:7px;font-size:12.5px;font-family:'HelveticaNow',sans-serif;background:var(--surface);color:var(--text-1);outline:none;width:100%;box-sizing:border-box}
 .unidad-card-row1 input[type=number]{font-family:'DM Mono',monospace}
 .unidad-card-row1 input[type=date]{font-size:11px;font-family:'DM Mono',monospace}
 
 /* ── Fila media: monto + amueblado ── */
+
+.unidad-fechas-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:9px;padding-top:9px;border-top:1px dashed var(--border-md)}
+.ufecha-field{display:flex;flex-direction:column;gap:4px}
+.ufecha-lbl{font-size:10.5px;font-weight:600;color:var(--text-2)}
+.ufecha-field input[type=date]{padding:7px 9px;border:1px solid var(--border-md);border-radius:7px;font-size:11.5px;font-family:'DM Mono',monospace;background:var(--surface);color:var(--text-1);outline:none;width:100%;box-sizing:border-box}
+@media(max-width:900px){.unidad-fechas-row{grid-template-columns:1fr}}
+
 .unidad-card-row-mid{display:flex;gap:18px;margin-top:9px;padding-top:9px;border-top:1px dashed var(--border-md);flex-wrap:wrap}
 .umid-field{display:flex;flex-direction:column;gap:5px}
 .umid-label{font-size:11px;font-weight:600;color:var(--text-2)}
@@ -422,6 +511,13 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .u-del:hover{background:var(--red-bg);color:var(--red)}
 @media(max-width:900px){.unidad-card-row1{grid-template-columns:1fr 1fr;gap:6px}
 /* ── Fila media: monto + amueblado ── */
+
+.unidad-fechas-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:9px;padding-top:9px;border-top:1px dashed var(--border-md)}
+.ufecha-field{display:flex;flex-direction:column;gap:4px}
+.ufecha-lbl{font-size:10.5px;font-weight:600;color:var(--text-2)}
+.ufecha-field input[type=date]{padding:7px 9px;border:1px solid var(--border-md);border-radius:7px;font-size:11.5px;font-family:'DM Mono',monospace;background:var(--surface);color:var(--text-1);outline:none;width:100%;box-sizing:border-box}
+@media(max-width:900px){.unidad-fechas-row{grid-template-columns:1fr}}
+
 .unidad-card-row-mid{display:flex;gap:18px;margin-top:9px;padding-top:9px;border-top:1px dashed var(--border-md);flex-wrap:wrap}
 .umid-field{display:flex;flex-direction:column;gap:5px}
 .umid-label{font-size:11px;font-weight:600;color:var(--text-2)}
@@ -858,25 +954,6 @@ window._fbLoadAll = async function(){
     <!-- ═══════ RESUMEN EJECUTIVO (de un pantallazo) ═══════ -->
     <div id="exec-pulse"></div>
 
-    <!-- ═══════ COMUNIDAD A DETALLE ═══════ -->
-    <div class="big-section-label"><span>👥 Comunidad a detalle</span><span class="section-date-tag" id="sd-comunidad"></span></div>
-
-    <!-- Project charts -->
-    <div class="proj-chart-row">
-      <div class="chart-card">
-        <div class="chart-card-title">Evolución histórica</div>
-        <div class="chart-card-sub">Los 3 pilares semana a semana</div>
-        <div class="chart-wrap" style="height:200px"><canvas id="chart-proj-line"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <div class="chart-card-title">Perfil de pilares</div>
-        <div class="chart-card-sub">Última semana registrada</div>
-        <div class="chart-wrap" style="height:200px"><canvas id="chart-proj-radar"></canvas></div>
-      </div>
-    </div>
-
-    <div class="detail-score-row" id="detail-score-row"></div>
-
     <!-- ═══════ RENTAS A DETALLE ═══════ -->
     <div class="big-section-label"><span>🏠 Rentas a detalle</span><span class="section-date-tag" id="sd-rentas"></span></div>
 
@@ -968,6 +1045,24 @@ window._fbLoadAll = async function(){
     </div>
 
     <!-- ═══════ AMENIDADES (activable por proyecto) ═══════ -->
+    <!-- ═══════ COMUNIDAD A DETALLE (evolución histórica + perfiles) ═══════ -->
+    <div class="big-section-label"><span>👥 Comunidad — evolución y perfiles</span><span class="section-date-tag" id="sd-comunidad"></span></div>
+
+    <div class="proj-chart-row">
+      <div class="chart-card">
+        <div class="chart-card-title">Evolución histórica</div>
+        <div class="chart-card-sub">Los 3 pilares semana a semana</div>
+        <div class="chart-wrap" style="height:200px"><canvas id="chart-proj-line"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-card-title">Perfil de pilares</div>
+        <div class="chart-card-sub">Última semana registrada</div>
+        <div class="chart-wrap" style="height:200px"><canvas id="chart-proj-radar"></canvas></div>
+      </div>
+    </div>
+
+    <div class="detail-score-row" id="detail-score-row"></div>
+
     <div id="amen-section-wrap">
       <div class="big-section-label"><span>🏛️ Amenidades a detalle</span><span class="section-date-tag" id="sd-amenidades"></span></div>
 
@@ -1712,14 +1807,14 @@ function exportExcel(){
           "Unidad":u.id||"", "Tipo":u.tipo==="nueva"?"Renta nueva":"Renovación",
           "Días en lista":u.tipo==="renovacion"?"":(+u.dias||0),
           "Incremento %":+u.incr||0,
-          "Inicio contrato":u.inicio||"", "Fin contrato":u.fin||"",
+          "Fecha cierre":u.cierre||"", "Inicio contrato":u.inicio||"", "Fin contrato":u.fin||"",
           "Monto renta":+u.monto||"", "Amueblado":u.amueblado?"Sí":"No",
           "Canal":u.canal?(({directo:"Directo",asesor:"Asesor DDP",interno:"Broker interno",externo:"Broker externo",otro:"Otro"})[u.canal]||u.canal):"", "Broker/Asesor":u.broker||""
         });
       });
     });
   });
-  const wsUnits=XLSX.utils.json_to_sheet(unitRows.length?unitRows:[{Proyecto:"",Fecha:"",Unidad:"",Tipo:"","Días en lista":"","Incremento %":"","Inicio contrato":"","Fin contrato":"","Monto renta":"",Amueblado:"",Canal:"","Broker/Asesor":""}]);
+  const wsUnits=XLSX.utils.json_to_sheet(unitRows.length?unitRows:[{Proyecto:"",Fecha:"",Unidad:"",Tipo:"","Días en lista":"","Incremento %":"","Fecha cierre":"","Inicio contrato":"","Fin contrato":"","Monto renta":"",Amueblado:"",Canal:"","Broker/Asesor":""}]);
   XLSX.utils.book_append_sheet(wb,wsUnits,"Unidades cerradas");
 
   // ─ Hoja 4: AMENIDADES ─
@@ -2354,6 +2449,32 @@ function renderAmenidades(){
 }
 
 // Promedio global de ocupación (solo reservables con capacidad>0) y satisfacción
+// Versión para el resumen ejecutivo: usa el último registro guardado del proyecto
+function amenGlobalsFor(pid){
+  if(!amenEnabled[pid]) return null;
+  const catalog=getAmenCatalog(pid);
+  const lat=getLatest(pid);
+  const a=(lat && lat.amenidades)?lat.amenidades:{data:{}};
+  const data=a.data||{};
+  let pctSum=0, pctCount=0, satSum=0, satCount=0, usosTot=0;
+  catalog.forEach(am=>{
+    const d=data[am.id]||{cap:am.capacidad,usos:0,sat:am.sat0||0};
+    const cap=d.cap!==undefined?+d.cap:+am.capacidad;
+    if(am.tipo==="reservable"){
+      const pct = cap>0 ? Math.round((+d.usos||0)/cap*100) : 0;
+      pctSum += pct; pctCount++;
+    }
+    if(am.aplica_sat && +d.sat>0){ satSum += +d.sat; satCount++; }
+    usosTot += (+d.usos||0);
+  });
+  return {
+    ocupacion: pctCount?Math.round(pctSum/pctCount):0,
+    satisfaccion: satCount?+(satSum/satCount).toFixed(1):0,
+    totalAmen: catalog.length,
+    usosTot: usosTot
+  };
+}
+
 function amenGlobals(){
   const catalog=getAmenCatalog(currentProject);
   const a=amenDraft();
@@ -2540,17 +2661,37 @@ function renderExecutivePulse(){
     </div>`;
   }).join("");
 
+  // ── AMENIDADES (pulso global) ──
+  const amenG = amenGlobalsFor(pid);
+
   // ── RENTAS ──
   const r=lat?rentaData(lat):null;
   const total=getInvTotal(pid);
   const disp=getDisp(r), ocup=getOcupadas(pid,r), pct=ocupacionPct(pid,r);
   const ym = lat ? monthKeyOf(lat.date) : null;
   const eff = ym ? monthEffective(pid, ym) : null;
-  const absMes = eff ? (eff.nuevas-eff.noreno) : 0;
+
+  // ENTRADAS = liberaciones (no renov + venta) · SALIDAS = rentas nuevas
+  // Semana (último registro)
+  const entSem = rNoreno(r)+rVenta(r);
+  const salSem = rNuevas(r);
+  const absSem = salSem - entSem;   // absorción neta semana (salidas − entradas del pool)
+  // Mes (acumulado)
+  const entMes = eff ? (eff.noreno+eff.venta) : 0;
+  const salMes = eff ? eff.nuevas : 0;
+  const absMes = salMes - entMes;   // absorción neta del mes
   const absMesCls = absMes>0?"abs-positive":absMes<0?"abs-negative":"";
   const nuevasMes = eff?eff.nuevas:0;
   const renovMes = eff?eff.renov:0;
   const convMes = eff&&eff.citas>0?Math.round(eff.nuevas/eff.citas*100):0;
+
+  // Disponibles y en proceso de cierre (de la semana actual)
+  const enProcesoSem = r?(+r.enproceso||0):0;
+
+  // Mix de quién cierra (mes)
+  const cierresMes = collectCierres(pid, false, ym);
+  const mixMes = mixCanal(cierresMes);
+  const totalCierres = cierresMes.length;
 
   // ── STATUS SÍNTESIS ──
   const statusCom = ov>=7?"good":ov>=5?"warn":ov>0?"bad":"neutral";
@@ -2577,6 +2718,21 @@ function renderExecutivePulse(){
         ${comDelta}
       </div>
       ${pillarBars}
+      ${amenG?`
+      <div class="exec-amen-box">
+        <div class="exec-amen-title">🏛️ Pulso de amenidades</div>
+        <div class="exec-amen-stats">
+          <div class="exec-amen-stat">
+            <div class="exec-amen-circle" style="background:conic-gradient(#8DB63C ${amenG.ocupacion*3.6}deg, var(--surface-3) 0)"><span>${amenG.ocupacion}%</span></div>
+            <div class="exec-amen-lbl">Uso promedio<br><span class="exec-amen-sub">de todas las amenidades</span></div>
+          </div>
+          <div class="exec-amen-divider"></div>
+          <div class="exec-amen-stat">
+            <div class="exec-amen-sat-num" style="color:${amenG.satisfaccion>=8?'#1A7A4A':amenG.satisfaccion>=6?'#8A6010':amenG.satisfaccion>0?'#A8291A':'#9A9A9C'}">${amenG.satisfaccion>0?amenG.satisfaccion:"—"}<span class="exec-amen-sat-max">/10</span></div>
+            <div class="exec-amen-lbl">Satisfacción promedio<br><span class="exec-amen-sub">${amenG.totalAmen} amenidades</span></div>
+          </div>
+        </div>
+      </div>`:''}
     </div>
 
     <!-- RENTAS -->
@@ -2585,17 +2741,63 @@ function renderExecutivePulse(){
         <span class="exec-card-title">🏠 Salud de rentas</span>
         <span style="font-size:11px;color:var(--text-3)">${ym?monthName(ym):""}</span>
       </div>
-      <div class="exec-rent-grid">
+      <div class="exec-rent-top">
         <div class="exec-donut-mini">
           <canvas id="exec-donut"></canvas>
           <div class="exec-donut-center"><span class="exec-donut-pct" style="color:${p.color}">${pct}%</span><span class="exec-donut-lbl">Ocupación</span></div>
         </div>
-        <div class="exec-rent-stats">
-          <div class="exec-rent-stat"><span class="exec-rent-stat-lbl">Absorción neta · mes</span><span class="exec-rent-stat-val ${absMesCls}">${absMes>0?"+":""}${absMes}</span></div>
-          <div class="exec-rent-stat"><span class="exec-rent-stat-lbl">Rentas nuevas · mes</span><span class="exec-rent-stat-val">${nuevasMes}</span></div>
-          <div class="exec-rent-stat"><span class="exec-rent-stat-lbl">Disponibles ahora</span><span class="exec-rent-stat-val">${disp}${total>0?'<span style="font-size:12px;color:var(--text-3)"> / '+total+'</span>':''}</span></div>
+        <div class="exec-abs-hero ${absMesCls}">
+          <span class="exec-abs-lbl">Absorción neta · mes</span>
+          <span class="exec-abs-num">${absMes>0?"+":""}${absMes}</span>
+          <span class="exec-abs-sub">${absMes>0?"📈 positiva":absMes<0?"📉 negativa":"➖ neutral"}</span>
         </div>
       </div>
+      <!-- Mini tabla entradas/salidas semana vs mes -->
+      <table class="exec-flow-table">
+        <thead><tr><th></th><th>Semana</th><th>Mes</th></tr></thead>
+        <tbody>
+          <tr><td class="eft-lbl"><span class="eft-dot in"></span>Entradas <span class="eft-hint">liberaciones</span></td><td class="eft-num">${entSem}</td><td class="eft-num">${entMes}</td></tr>
+          <tr><td class="eft-lbl"><span class="eft-dot out"></span>Salidas <span class="eft-hint">rentas nuevas</span></td><td class="eft-num">${salSem}</td><td class="eft-num">${salMes}</td></tr>
+          <tr class="eft-neta"><td class="eft-lbl">⚖️ Absorción neta</td><td class="eft-num ${absSem>0?'pos':absSem<0?'neg':''}">${absSem>0?"+":""}${absSem}</td><td class="eft-num ${absMes>0?'pos':absMes<0?'neg':''}">${absMes>0?"+":""}${absMes}</td></tr>
+        </tbody>
+      </table>
+      <!-- Disponibles + En proceso de cierre -->
+      <div class="exec-rent-pair">
+        <div class="exec-pair-card exec-pair-disp">
+          <span class="exec-pair-icon">🔑</span>
+          <div><div class="exec-pair-val">${disp}${total>0?'<span class="exec-pair-of"> / '+total+'</span>':''}</div><div class="exec-pair-lbl">Disponibles ahora</div></div>
+        </div>
+        <div class="exec-pair-card exec-pair-proceso">
+          <span class="exec-pair-icon">⏳</span>
+          <div><div class="exec-pair-val">${enProcesoSem}</div><div class="exec-pair-lbl">En proceso de cierre</div></div>
+        </div>
+      </div>
+      <!-- Mini gráfica visual de barras entradas vs salidas -->
+      <div class="exec-flow-viz">
+        <div class="efv-group">
+          <span class="efv-title">Semana</span>
+          <div class="efv-bars">
+            <div class="efv-bar-wrap"><div class="efv-bar in" style="height:${Math.min(100,entSem*14)}%"></div><span class="efv-bar-val">${entSem}</span></div>
+            <div class="efv-bar-wrap"><div class="efv-bar out" style="height:${Math.min(100,salSem*14)}%"></div><span class="efv-bar-val">${salSem}</span></div>
+          </div>
+        </div>
+        <div class="efv-divider"></div>
+        <div class="efv-group">
+          <span class="efv-title">Mes</span>
+          <div class="efv-bars">
+            <div class="efv-bar-wrap"><div class="efv-bar in" style="height:${Math.min(100,entMes*7)}%"></div><span class="efv-bar-val">${entMes}</span></div>
+            <div class="efv-bar-wrap"><div class="efv-bar out" style="height:${Math.min(100,salMes*7)}%"></div><span class="efv-bar-val">${salMes}</span></div>
+          </div>
+        </div>
+        <div class="efv-legend">
+          <span><span class="eft-dot in"></span>Entradas</span>
+          <span><span class="eft-dot out"></span>Salidas</span>
+        </div>
+      </div>
+      ${totalCierres>0?`<div class="exec-cierre-pie">
+        <span class="ecp-lbl">Quién cerró el mes:</span>
+        ${Object.keys(CANAL_INFO).filter(k=>mixMes[k]>0).map(k=>{const ci=CANAL_INFO[k];return `<span class="ecp-item"><span class="ecp-dot" style="background:${ci.color}"></span>${ci.label.replace('Broker ','')} <strong>${mixMes[k]}</strong></span>`;}).join("")}
+      </div>`:''}
     </div>
   </div>
   <div class="exec-status-strip ${statusCls}">
@@ -2992,7 +3194,7 @@ function addUnidad(){
   if(!drafts[currentProject].rentas) drafts[currentProject].rentas={};
   const r=drafts[currentProject].rentas;
   if(!Array.isArray(r.unidades)) r.unidades=[];
-  r.unidades.push({id:"", tipo:"nueva", dias:0, incr:0, inicio:"", fin:"", canal:"directo", broker:"", monto:0, amueblado:false});
+  r.unidades.push({id:"", tipo:"nueva", dias:0, incr:0, cierre:"", inicio:"", fin:"", canal:"directo", broker:"", monto:0, amueblado:false});
   renderUnidadesList();
   recalcDispAuto();
   renderRentasDashboard2();
@@ -3008,7 +3210,7 @@ function removeUnidad(i){
 
 function updateUnidad(i, field, val){
   const r=drafts[currentProject].rentas;
-  if(field==="id" || field==="inicio" || field==="fin" || field==="canal" || field==="broker") r.unidades[i][field]=val;
+  if(field==="id" || field==="cierre" || field==="inicio" || field==="fin" || field==="canal" || field==="broker") r.unidades[i][field]=val;
   else if(field==="tipo") r.unidades[i].tipo=val;
   else if(field==="amueblado") r.unidades[i].amueblado=val;  // boolean
   else if(field==="monto") r.unidades[i].monto=+val||0;
@@ -3055,12 +3257,17 @@ function renderUnidadesList(){
       </select>
       <input type="number" min="0" step="1" value="${u.dias||""}" placeholder="Días lista" oninput="updateUnidad(${i},'dias',this.value)" ${u.tipo==="renovacion"?"disabled style='opacity:.4'":""}>
       <input type="number" step="0.1" value="${u.incr||""}" placeholder="Incr. %" oninput="updateUnidad(${i},'incr',this.value)">
-      <input type="date" value="${u.inicio||""}" oninput="updateUnidad(${i},'inicio',this.value)" title="Inicio de contrato">
-      <div style="display:flex;gap:3px;align-items:center">
-        <input type="date" value="${u.fin||""}" oninput="updateUnidad(${i},'fin',this.value)" title="Fin de contrato" style="flex:1;min-width:0">
-        <button onclick="autoFinContrato(${i})" title="+12 meses del inicio" style="padding:5px 6px;border:1px solid var(--border-md);border-radius:5px;background:var(--surface);font-size:9px;cursor:pointer;white-space:nowrap;color:var(--text-3)">+1a</button>
-      </div>
       <button class="u-del" onclick="removeUnidad(${i})" title="Quitar">✕</button>
+    </div>
+    <div class="unidad-fechas-row">
+      <div class="ufecha-field"><span class="ufecha-lbl">🤝 Fecha de cierre</span><input type="date" value="${u.cierre||""}" oninput="updateUnidad(${i},'cierre',this.value)"></div>
+      <div class="ufecha-field"><span class="ufecha-lbl">📄 Inicio de contrato</span><input type="date" value="${u.inicio||""}" oninput="updateUnidad(${i},'inicio',this.value)"></div>
+      <div class="ufecha-field"><span class="ufecha-lbl">📄 Fin de contrato</span>
+        <div style="display:flex;gap:3px;align-items:center">
+          <input type="date" value="${u.fin||""}" oninput="updateUnidad(${i},'fin',this.value)" style="flex:1;min-width:0">
+          <button onclick="autoFinContrato(${i})" title="+12 meses del inicio" style="padding:6px 7px;border:1px solid var(--border-md);border-radius:5px;background:var(--surface);font-size:9px;cursor:pointer;white-space:nowrap;color:var(--text-3)">+1a</button>
+        </div>
+      </div>
     </div>
     <div class="unidad-card-row-mid">
       <div class="umid-field">
@@ -3495,7 +3702,7 @@ function renderRentasDashboard2(){
     html+=`<div class="rd-section">
       <div class="rd-section-label">🔑 Unidades cerradas · ${units.length}</div>
       <table class="rd-units-table">
-        <thead><tr><th>Unidad</th><th>Tipo</th><th style="text-align:right">Monto renta</th><th style="text-align:center">Amueblado</th><th style="text-align:center">Días</th><th style="text-align:center">Incr.</th><th style="text-align:center">Fin contrato</th><th>Cerró</th></tr></thead>
+        <thead><tr><th>Unidad</th><th>Tipo</th><th style="text-align:right">Monto renta</th><th style="text-align:center">Amueblado</th><th style="text-align:center">Cierre</th><th style="text-align:center">Incr.</th><th style="text-align:center">Fin contrato</th><th>Cerró</th></tr></thead>
         <tbody>${units.map(u=>{
           const ci=CANAL_INFO[u.canal||"directo"]||CANAL_INFO.directo;
           const quien = (u.canal && u.canal!=="directo" && u.broker) ? u.broker : ci.label;
@@ -3504,7 +3711,7 @@ function renderRentasDashboard2(){
           <td><span class="rd-tag ${u.tipo}">${u.tipo==="nueva"?"Renta nueva":"Renovación"}</span></td>
           <td style="text-align:right;font-family:DM Mono,monospace;font-weight:600">${+u.monto?"$"+(+u.monto).toLocaleString("es-MX"):'<span style="color:var(--text-3)">—</span>'}</td>
           <td style="text-align:center">${u.amueblado?'<span class="rd-amue-tag">🛋️ Sí</span>':'<span style="color:var(--text-3);font-size:11px">No</span>'}</td>
-          <td style="text-align:center;font-family:DM Mono,monospace">${u.tipo==="renovacion"?'<span style="color:var(--text-3)">—</span>':(+u.dias||0)}</td>
+          <td style="text-align:center;font-family:DM Mono,monospace;font-size:11.5px">${u.cierre?fmtDate(u.cierre):'<span style="color:var(--text-3)">—</span>'}</td>
           <td style="text-align:center;font-family:DM Mono,monospace;color:${+u.incr>0?'var(--green)':'var(--text-2)'}">${+u.incr?((+u.incr>0?"+":"")+(+u.incr).toFixed(1)+"%"):"—"}</td>
           <td style="text-align:center;font-family:DM Mono,monospace;font-size:11.5px">${u.fin?fmtDateVenc(u.fin):'<span style="color:var(--text-3)">—</span>'}</td>
           <td style="font-size:11.5px"><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:50%;background:${ci.color};display:inline-block"></span>${quien}</span></td>
