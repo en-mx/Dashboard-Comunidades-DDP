@@ -381,6 +381,19 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .exec-abs-sub{font-size:11px;color:var(--text-2)}
 
 
+
+.exec-hab-box{margin-top:14px;padding-top:14px;border-top:1px dashed var(--border-md)}
+.exec-hab-title{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-3);font-weight:700;margin-bottom:11px}
+.exec-hab-row{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.exec-hab-stat{display:flex;flex-direction:column;align-items:center;gap:2px;flex:1}
+.exec-hab-emoji{font-size:18px;margin-bottom:2px}
+.exec-hab-num{font-size:26px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;color:var(--text-1)}
+.exec-hab-lbl{font-size:10px;color:var(--text-2);text-align:center}
+.exec-hab-arrow{color:var(--text-3);font-size:14px;flex-shrink:0}
+.exec-hab-bar{height:8px;background:var(--surface-3);border-radius:5px;overflow:hidden;margin-top:12px}
+.exec-hab-fill{height:100%;background:linear-gradient(90deg,#1A7A4A,#27AE60);border-radius:5px;transition:width .4s}
+.exec-hab-foot{font-size:10.5px;color:var(--text-3);margin-top:6px;text-align:center}
+
 .exec-amen-box{margin-top:14px;padding-top:14px;border-top:1px dashed var(--border-md)}
 .exec-amen-title{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-3);font-weight:700;margin-bottom:11px}
 .exec-amen-stats{display:flex;align-items:center;gap:16px}
@@ -395,6 +408,8 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .exec-amen-divider{width:1px;align-self:stretch;background:var(--border);min-height:40px}
 
 .exec-rent-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.exec-rent-trio{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+.exec-pair-dias{border-left:3px solid #2563EB}
 .exec-pair-card{display:flex;align-items:center;gap:11px;padding:12px 14px;border-radius:11px;border:1px solid var(--border);background:var(--surface)}
 .exec-pair-disp{border-left:3px solid #F59E0B}
 .exec-pair-proceso{border-left:3px solid #8B5CF6}
@@ -430,7 +445,7 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .eft-num{text-align:center;font-family:'DM Mono',monospace;font-weight:700;color:var(--text-1)}
 .eft-num.pos{color:#1A7A4A}
 .eft-num.neg{color:#A8291A}
-.eft-neta td{border-bottom:none;background:var(--surface-2)}
+.eft-neta td{background:var(--surface-2);border-bottom:1px solid var(--border)}
 .eft-neta .eft-lbl{font-weight:700}
 .exec-flow-viz{display:flex;align-items:flex-end;gap:14px;padding:14px;background:var(--surface-2);border-radius:12px;margin-bottom:12px;position:relative}
 .efv-group{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
@@ -2696,6 +2711,17 @@ function renderExecutivePulse(){
   // Disponibles y en proceso de cierre (de la semana actual)
   const enProcesoSem = r?(+r.enproceso||0):0;
 
+  // Días promedio en inventario (del acumulado mensual, ya calculado)
+  const diasMes = eff ? (eff.dias||0) : 0;
+
+  // Estatus habitacional (de masa crítica en amenidades del último registro)
+  const amenData = (lat && lat.amenidades) ? lat.amenidades : null;
+  const habEntregados = amenData ? (+amenData.entregados||0) : 0;
+  const habHabitados = amenData ? (+amenData.viviendas||0) : 0;
+  const habPersonas = amenData ? (+amenData.personas||0) : 0;
+  const habPct = habEntregados>0 ? Math.round(habHabitados/habEntregados*100) : 0;
+  const hayHabitacional = habEntregados>0 || habHabitados>0 || habPersonas>0;
+
   // Mix de quién cierra (mes)
   const cierresMes = collectCierres(pid, false, ym);
   const mixMes = mixCanal(cierresMes);
@@ -2726,6 +2752,19 @@ function renderExecutivePulse(){
         ${comDelta}
       </div>
       ${pillarBars}
+      ${hayHabitacional?`
+      <div class="exec-hab-box">
+        <div class="exec-hab-title">🏘️ Estatus habitacional</div>
+        <div class="exec-hab-row">
+          <div class="exec-hab-stat"><span class="exec-hab-emoji">🔑</span><span class="exec-hab-num">${habEntregados}</span><span class="exec-hab-lbl">Entregados</span></div>
+          <span class="exec-hab-arrow">→</span>
+          <div class="exec-hab-stat"><span class="exec-hab-emoji">🏡</span><span class="exec-hab-num" style="color:#1A7A4A">${habHabitados}</span><span class="exec-hab-lbl">Habitados${habPct?` · ${habPct}%`:''}</span></div>
+          <span class="exec-hab-arrow">→</span>
+          <div class="exec-hab-stat"><span class="exec-hab-emoji">👨‍👩‍👧‍👦</span><span class="exec-hab-num">${habPersonas}</span><span class="exec-hab-lbl">Personas</span></div>
+        </div>
+        ${habEntregados>0?`<div class="exec-hab-bar"><div class="exec-hab-fill" style="width:${habPct}%"></div></div>
+        <div class="exec-hab-foot">${habPct}% de las ${habEntregados} entregas están habitadas</div>`:''}
+      </div>`:''}
       ${amenG?`
       <div class="exec-amen-box">
         <div class="exec-amen-title">🏛️ Pulso de amenidades</div>
@@ -2760,17 +2799,17 @@ function renderExecutivePulse(){
           <span class="exec-abs-sub">${absMes>0?"📈 positiva":absMes<0?"📉 negativa":"➖ neutral"}</span>
         </div>
       </div>
-      <!-- Mini tabla entradas/salidas semana vs mes -->
+      <!-- Mini tabla: absorción neta primero, luego entradas/salidas -->
       <table class="exec-flow-table">
         <thead><tr><th></th><th>Semana</th><th>Mes</th></tr></thead>
         <tbody>
+          <tr class="eft-neta"><td class="eft-lbl">⚖️ Absorción neta</td><td class="eft-num ${absSem>0?'pos':absSem<0?'neg':''}">${absSem>0?"+":""}${absSem}</td><td class="eft-num ${absMes>0?'pos':absMes<0?'neg':''}">${absMes>0?"+":""}${absMes}</td></tr>
           <tr><td class="eft-lbl"><span class="eft-dot in"></span>Entradas <span class="eft-hint">liberaciones</span></td><td class="eft-num">${entSem}</td><td class="eft-num">${entMes}</td></tr>
           <tr><td class="eft-lbl"><span class="eft-dot out"></span>Salidas <span class="eft-hint">rentas nuevas</span></td><td class="eft-num">${salSem}</td><td class="eft-num">${salMes}</td></tr>
-          <tr class="eft-neta"><td class="eft-lbl">⚖️ Absorción neta</td><td class="eft-num ${absSem>0?'pos':absSem<0?'neg':''}">${absSem>0?"+":""}${absSem}</td><td class="eft-num ${absMes>0?'pos':absMes<0?'neg':''}">${absMes>0?"+":""}${absMes}</td></tr>
         </tbody>
       </table>
-      <!-- Disponibles + En proceso de cierre -->
-      <div class="exec-rent-pair">
+      <!-- Disponibles + En proceso + Días en inventario -->
+      <div class="exec-rent-trio">
         <div class="exec-pair-card exec-pair-disp">
           <span class="exec-pair-icon">🔑</span>
           <div><div class="exec-pair-val">${disp}${total>0?'<span class="exec-pair-of"> / '+total+'</span>':''}</div><div class="exec-pair-lbl">Disponibles ahora</div></div>
@@ -2778,6 +2817,10 @@ function renderExecutivePulse(){
         <div class="exec-pair-card exec-pair-proceso">
           <span class="exec-pair-icon">⏳</span>
           <div><div class="exec-pair-val">${enProcesoSem}</div><div class="exec-pair-lbl">En proceso de cierre</div></div>
+        </div>
+        <div class="exec-pair-card exec-pair-dias">
+          <span class="exec-pair-icon">📆</span>
+          <div><div class="exec-pair-val">${diasMes}<span class="exec-pair-of"> d</span></div><div class="exec-pair-lbl">Días prom. en inventario · mes</div></div>
         </div>
       </div>
       ${totalCierres>0?`<div class="exec-cierre-pie">
