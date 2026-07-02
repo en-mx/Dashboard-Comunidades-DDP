@@ -352,8 +352,8 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .exec-pillar{margin-bottom:11px}
 .exec-pillar:last-child{margin-bottom:0}
 .exec-pillar-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
-.exec-pillar-name{font-size:12.5px;color:var(--text-2);font-weight:500}
-.exec-pillar-val{font-size:13px;font-family:'DM Mono',monospace;font-weight:700;color:var(--text-1)}
+.exec-pillar-name{font-size:13px;color:var(--text-2);font-weight:500}
+.exec-pillar-val{font-size:17px;font-family:'DM Mono',monospace;font-weight:700;color:var(--text-1)}
 .exec-pillar-track{height:7px;background:var(--surface-3);border-radius:4px;overflow:hidden}
 .exec-pillar-fill{height:100%;border-radius:4px;transition:width .4s}
 .exec-pillar-na{font-size:11px;color:var(--text-3);font-style:italic}
@@ -432,6 +432,61 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .exec-amen-divider{width:1px;align-self:stretch;background:var(--border);min-height:40px}
 
 .exec-rent-pair{grid-template-columns:1fr 1fr}}
+
+
+
+/* ★ MINI TABLA DE ABSORCIÓN — corazón del reporte */
+.exec-abs-table-wrap{margin-bottom:12px}
+.exec-abs-table{width:100%;border-collapse:collapse}
+.exec-abs-table th{font-size:10px;text-transform:uppercase;letter-spacing:.03em;color:var(--text-3);font-weight:700;padding:6px 8px;text-align:center;border-bottom:1.5px solid var(--border-md);line-height:1.2}
+.exec-abs-table th:first-child{text-align:left}
+.exec-abs-table th.col-prev{color:var(--text-2);background:var(--surface-2)}
+.exec-abs-table .th-sub{font-size:9px;font-weight:600;color:var(--text-3);text-transform:none;letter-spacing:0}
+.exec-abs-table td{padding:8px;font-size:14px;border-bottom:1px solid var(--border)}
+.eat-lbl{font-weight:600;color:var(--text-1);display:flex;align-items:center;gap:7px;font-size:12.5px}
+.eat-num{text-align:center;font-family:'DM Mono',monospace;font-weight:700;color:var(--text-1)}
+.eat-num.pos{color:#1A7A4A}
+.eat-num.neg{color:#A8291A}
+.eat-num.col-prev,.exec-abs-table th.col-prev{background:var(--surface-2)}
+.exec-abs-table th.col-prev{border-left:1px solid var(--border)}
+.eat-num.col-prev{border-left:1px solid var(--border)}
+.eat-neta td{background:var(--surface-2);border-top:1px solid var(--border-md);border-bottom:1px solid var(--border-md)}
+.eat-neta .eat-num.col-prev{background:#EDEBE4;border-left:1px solid var(--border-md)}
+.eat-neta .eat-lbl{font-weight:700;font-size:13px}
+.eat-neta .eat-num{font-size:16px}
+.eat-hint-foot{font-size:9.5px;color:var(--text-3);margin-top:6px;text-align:right}
+/* Puente de inventario */
+
+.exec-inv-collapse{position:relative;margin-bottom:14px}
+.eic-toggle{position:absolute;top:-2px;right:2px;z-index:2;width:22px;height:22px;border:none;background:transparent;cursor:pointer;color:var(--text-3);display:flex;align-items:center;justify-content:center;padding:0;border-radius:6px;transition:background .12s}
+.eic-toggle:hover{background:var(--surface-3);color:var(--text-1)}
+.eic-chevron{font-size:15px;line-height:1;transition:transform .2s;display:inline-block}
+.exec-inv-collapse.collapsed .eic-chevron{transform:rotate(-90deg)}
+.exec-inv-collapse.collapsed .exec-inv-bridge{display:none}
+
+.exec-inv-bridge{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--surface-2);border-radius:12px;padding:12px 14px;margin-bottom:14px}
+.eib-stat{display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0}
+.eib-num{font-size:26px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;color:var(--text-1)}
+.eib-lbl{font-size:9px;color:var(--text-2);text-align:center;line-height:1.25}
+.eib-actual .eib-num{color:#D97706}
+.eib-op{display:flex;flex-direction:column;align-items:center;gap:2px;flex:1}
+.eib-op-sign{font-size:16px;font-weight:700;font-family:'DM Mono',monospace}
+.eib-op-sign.pos-inv{color:#A8291A}
+.eib-op-sign.neg-inv{color:#1A7A4A}
+.eib-op-lbl{font-size:8.5px;color:var(--text-3);text-align:center;line-height:1.2}
+.eib-eq{font-size:18px;color:var(--text-3);font-weight:700}
+
+.emc-head{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-3);font-weight:700;margin-bottom:12px}
+.emc-inv-flow{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--surface-2);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+.emc-inv-stat{display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0}
+.emc-inv-num{font-size:30px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;color:var(--text-1)}
+.emc-inv-lbl{font-size:9.5px;color:var(--text-2);text-align:center;line-height:1.25}
+.emc-inv-arrow{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
+.emc-delta{font-size:11px;font-weight:700;font-family:'DM Mono',monospace}
+.emc-delta.pos{color:#1A7A4A}
+.emc-delta.neg{color:#A8291A}
+.emc-arrow-line{color:var(--text-3);font-size:18px;line-height:1}
+.emc-empty{font-size:11.5px;color:var(--text-3);font-style:italic;padding:10px 0}
 
 .exec-flow-table{width:100%;border-collapse:collapse;margin-bottom:12px}
 .exec-flow-table th{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-3);font-weight:700;padding:5px 8px;text-align:center;border-bottom:1px solid var(--border)}
@@ -760,6 +815,13 @@ window._fbSaveInvConfig = async function(pid, total, amueblado, totalTorre){
   } catch(e){ console.error("Firebase inv config save error:", e); }
 };
 
+// Guarda si el puente de inventario está oculto (por proyecto, compartido)
+window._fbSaveBridgeState = async function(pid, hidden){
+  try{
+    await _fdb.collection("config").doc(pid).set({invBridgeHidden: !!hidden}, {merge:true});
+  } catch(e){ console.error("Firebase bridge state save error:", e); }
+};
+
 window._fbSaveAmenConfig = async function(pid, enabled, catalog){
   try{
     await _fdb.collection("config").doc(pid).set({
@@ -780,6 +842,7 @@ window._fbLoadAllConfig = async function(){
         monthOverrides: data.monthOverrides ? JSON.parse(data.monthOverrides) : null,
         invTotal: (data.invTotal!==undefined) ? data.invTotal : null,
         totalTorre: (data.totalTorre!==undefined) ? data.totalTorre : null,
+        invBridgeHidden: (data.invBridgeHidden!==undefined) ? data.invBridgeHidden : null,
         invAmueblado: (data.invAmueblado!==undefined) ? data.invAmueblado : null,
         amenEnabled: (data.amenEnabled!==undefined) ? data.amenEnabled : null,
         amenCatalog: data.amenCatalog ? JSON.parse(data.amenCatalog) : null
@@ -1280,6 +1343,9 @@ async function syncFromFirebase(){
         if(cfg.totalTorre!==undefined && cfg.totalTorre!==null){
           totalTorre[pid] = cfg.totalTorre;
         }
+        if(cfg.invBridgeHidden!==undefined && cfg.invBridgeHidden!==null){
+          invBridgeHidden[pid] = cfg.invBridgeHidden;
+        }
         if(cfg.invAmueblado!==undefined && cfg.invAmueblado!==null){
           invAmueblado[pid] = cfg.invAmueblado;
         }
@@ -1295,6 +1361,7 @@ async function syncFromFirebase(){
     // Cargar invConfig de localStorage como respaldo
     try{ const li=JSON.parse(localStorage.getItem("dp_inv_config")); if(li) Object.keys(li).forEach(k=>{ if(invConfig[k]===undefined) invConfig[k]=li[k]; }); }catch(e){}
     try{ const lt=JSON.parse(localStorage.getItem("dp_total_torre")); if(lt) Object.keys(lt).forEach(k=>{ if(totalTorre[k]===undefined) totalTorre[k]=lt[k]; }); }catch(e){}
+    try{ const lb=JSON.parse(localStorage.getItem("dp_bridge_hidden")); if(lb) Object.keys(lb).forEach(k=>{ if(invBridgeHidden[k]===undefined) invBridgeHidden[k]=lb[k]; }); }catch(e){}
     try{ const la=JSON.parse(localStorage.getItem("dp_inv_amueblado")); if(la) Object.keys(la).forEach(k=>{ if(invAmueblado[k]===undefined) invAmueblado[k]=la[k]; }); }catch(e){}
     const remote = window._fbLoadAll ? await window._fbLoadAll() : null;
     if(remote && Object.keys(remote).length > 0){
@@ -1347,6 +1414,7 @@ let drafts = {}; // borrador por proyecto, independiente
 let monthOverrides = {}; // overrides manuales del acumulado mensual por proyecto/mes
 let invConfig = {}; // inventario total de renta por proyecto
 let totalTorre = {}; // total de unidades de la torre por proyecto
+let invBridgeHidden = {}; // ¿puente de inventario oculto? por proyecto (compartido en Firebase)
 let invAmueblado = {}; // unidades amuebladas del inventario por proyecto
 
 // ── AMENIDADES: configuración por proyecto ──
@@ -2694,18 +2762,27 @@ function renderExecutivePulse(){
   const ym = lat ? monthKeyOf(lat.date) : null;
   const eff = ym ? monthEffective(pid, ym) : null;
 
-  // ENTRADAS = liberaciones (no renov + venta) · SALIDAS = rentas nuevas
-  // Semana (último registro)
+  // ══ ABSORCIÓN: 3 periodos (semana · mes en curso · mes anterior concluido) ══
+  // ENTRADAS = liberaciones (no renov + venta) · SALIDAS = rentas nuevas (por fecha de cierre)
+  // 1) SEMANA (última reportada = último registro)
   const entSem = rNoreno(r)+rVenta(r);
   const salSem = rNuevas(r);
-  const absSem = salSem - entSem;   // absorción neta semana (salidas − entradas del pool)
-  // Mes (acumulado)
-  const entMes = eff ? (eff.noreno+eff.venta) : 0;
-  const salMes = eff ? eff.nuevas : 0;
-  const absMes = salMes - entMes;   // absorción neta del mes
+  const absSem = salSem - entSem;
+  // 2) MES EN CURSO (el mes del último registro, acumulado; salidas por fecha de cierre)
+  const curYm = ym;
+  const flujoCurso = curYm ? flujoInventarioMes(pid, curYm) : null;
+  const entMes = flujoCurso ? flujoCurso.entradas : 0;
+  const salMes = flujoCurso ? flujoCurso.salidas : 0;
+  const absMes = flujoCurso ? flujoCurso.absNeta : 0;
   const absMesCls = absMes>0?"abs-positive":absMes<0?"abs-negative":"";
-  const nuevasMes = eff?eff.nuevas:0;
-  const renovMes = eff?eff.renov:0;
+  // 3) MES ANTERIOR CONCLUIDO (el mes calendario previo al mes en curso)
+  const prevYm = curYm ? mesAnterior(curYm) : null;
+  const flujoPrev = prevYm ? flujoInventarioMes(pid, prevYm) : null;
+  const entPrev = flujoPrev ? flujoPrev.entradas : 0;
+  const salPrev = flujoPrev ? flujoPrev.salidas : 0;
+  const absPrev = flujoPrev ? flujoPrev.absNeta : 0;
+  const hayPrev = flujoPrev && flujoPrev.hayDatos;
+
   const convMes = eff&&eff.citas>0?Math.round(eff.nuevas/eff.citas*100):0;
 
   // Disponibles y en proceso de cierre (de la semana actual)
@@ -2713,6 +2790,10 @@ function renderExecutivePulse(){
 
   // Días promedio en inventario (del acumulado mensual, ya calculado)
   const diasMes = eff ? (eff.dias||0) : 0;
+
+  // Flujo de inventario: mes anterior fin → absorción mes en curso → inventario actual
+  const invPrevFin = flujoPrev ? flujoPrev.invFin : 0;
+  const invActual = disp;
 
   // Estatus habitacional (de masa crítica en amenidades del último registro)
   const amenData = (lat && lat.amenidades) ? lat.amenidades : null;
@@ -2799,15 +2880,53 @@ function renderExecutivePulse(){
           <span class="exec-abs-sub">${absMes>0?"📈 positiva":absMes<0?"📉 negativa":"➖ neutral"}</span>
         </div>
       </div>
-      <!-- Mini tabla: absorción neta primero, luego entradas/salidas -->
-      <table class="exec-flow-table">
-        <thead><tr><th></th><th>Semana</th><th>Mes</th></tr></thead>
-        <tbody>
-          <tr class="eft-neta"><td class="eft-lbl">⚖️ Absorción neta</td><td class="eft-num ${absSem>0?'pos':absSem<0?'neg':''}">${absSem>0?"+":""}${absSem}</td><td class="eft-num ${absMes>0?'pos':absMes<0?'neg':''}">${absMes>0?"+":""}${absMes}</td></tr>
-          <tr><td class="eft-lbl"><span class="eft-dot in"></span>Entradas <span class="eft-hint">liberaciones</span></td><td class="eft-num">${entSem}</td><td class="eft-num">${entMes}</td></tr>
-          <tr><td class="eft-lbl"><span class="eft-dot out"></span>Salidas <span class="eft-hint">rentas nuevas</span></td><td class="eft-num">${salSem}</td><td class="eft-num">${salMes}</td></tr>
-        </tbody>
-      </table>
+      <!-- ★ MINI TABLA DE ABSORCIÓN — corazón del reporte (3 periodos) -->
+      <div class="exec-abs-table-wrap">
+        <table class="exec-abs-table">
+          <thead><tr>
+            <th></th>
+            <th>Semana</th>
+            <th>Mes en curso</th>
+            <th class="col-prev">Mes ant.${hayPrev?`<br><span class="th-sub">${monthName(prevYm).split(' ')[0]}</span>`:''}</th>
+          </tr></thead>
+          <tbody>
+            <tr class="eat-neta">
+              <td class="eat-lbl">⚖️ Absorción neta</td>
+              <td class="eat-num ${absSem>0?'pos':absSem<0?'neg':''}">${absSem>0?"+":""}${absSem}</td>
+              <td class="eat-num ${absMes>0?'pos':absMes<0?'neg':''}">${absMes>0?"+":""}${absMes}</td>
+              <td class="eat-num col-prev ${absPrev>0?'pos':absPrev<0?'neg':''}">${hayPrev?(absPrev>0?"+":"")+absPrev:"—"}</td>
+            </tr>
+            <tr>
+              <td class="eat-lbl"><span class="eft-dot in"></span>Entradas</td>
+              <td class="eat-num">${entSem}</td>
+              <td class="eat-num">${entMes}</td>
+              <td class="eat-num col-prev">${hayPrev?entPrev:"—"}</td>
+            </tr>
+            <tr>
+              <td class="eat-lbl"><span class="eft-dot out"></span>Salidas</td>
+              <td class="eat-num">${salSem}</td>
+              <td class="eat-num">${salMes}</td>
+              <td class="eat-num col-prev">${hayPrev?salPrev:"—"}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="eat-hint-foot">Entradas = liberaciones · Salidas = cierres (por fecha de cierre)</div>
+      </div>
+      <!-- Flujo de inventario (colapsable con flechita discreta) -->
+      <div class="exec-inv-collapse${invBridgeHidden[pid]?' collapsed':''}">
+        <button class="eic-toggle" onclick="toggleInvBridge(this)" aria-label="Mostrar/ocultar">
+          <span class="eic-chevron">⌄</span>
+        </button>
+        <div class="exec-inv-bridge">
+          <div class="eib-stat"><span class="eib-num">${invPrevFin}</span><span class="eib-lbl">📦 Inv. cierre<br>${hayPrev?monthName(prevYm).split(' ')[0]:'mes ant.'}</span></div>
+          <div class="eib-op">
+            <span class="eib-op-sign ${absMes>0?'neg-inv':absMes<0?'pos-inv':''}">${absMes>0?'−'+absMes:absMes<0?'+'+Math.abs(absMes):'±0'}</span>
+            <span class="eib-op-lbl">absorción<br>mes en curso</span>
+          </div>
+          <div class="eib-eq">=</div>
+          <div class="eib-stat eib-actual"><span class="eib-num">${invActual}</span><span class="eib-lbl">📦 Inventario<br>actual</span></div>
+        </div>
+      </div>
       <!-- Disponibles + En proceso + Días en inventario -->
       <div class="exec-rent-trio">
         <div class="exec-pair-card exec-pair-disp">
@@ -2860,6 +2979,15 @@ function renderExecutivePulse(){
       });
     }
   },30);
+}
+
+function toggleInvBridge(btn){
+  const wrap=btn.closest(".exec-inv-collapse");
+  const nowHidden = wrap.classList.toggle("collapsed");
+  invBridgeHidden[currentProject] = nowHidden;
+  // Persistir: localStorage (respaldo) + Firebase (compartido)
+  try{ localStorage.setItem("dp_bridge_hidden", JSON.stringify(invBridgeHidden)); }catch(e){}
+  if(window._fbSaveBridgeState && currentProject){ window._fbSaveBridgeState(currentProject, nowHidden); }
 }
 
 function deltaPill(d){
@@ -3370,6 +3498,54 @@ function monthName(ym){
   const mo=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
   return mo[+m-1]+" "+y;
 }
+
+// ── SALIDAS POR FECHA DE CIERRE (realidad comercial) ──
+// Cuenta rentas nuevas por el mes de su FECHA DE CIERRE, no por el registro semanal.
+// Si un cierre viejo no tiene fecha (dato previo), usa el mes del registro (info viva, no se pierde).
+function salidasCierreMes(pid, ym){
+  let count=0;
+  getHistory(pid).forEach(e=>{
+    if(!e.rentas || !Array.isArray(e.rentas.unidades)) return;
+    const recMonth=monthKeyOf(e.date);
+    e.rentas.unidades.forEach(u=>{
+      if(u.tipo!=="nueva") return;
+      const m = u.cierre ? monthKeyOf(u.cierre) : recMonth;
+      if(m===ym) count++;
+    });
+  });
+  return count;
+}
+
+// ── MES CALENDARIO ANTERIOR a un ym dado ──
+function mesAnterior(ym){
+  const [y,m]=ym.split("-").map(Number);
+  const d=new Date(y, m-1, 1);
+  d.setMonth(d.getMonth()-1);
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");
+}
+
+// ── ÚLTIMO MES CERRADO ── (el mes completo más reciente, anterior al mes en curso)
+function ultimoMesCerrado(pid){
+  const now=new Date();
+  const curYm=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0");
+  const meses=[...new Set(getHistory(pid).filter(e=>e.rentas).map(e=>monthKeyOf(e.date)))].sort();
+  const previos=meses.filter(m=>m<curYm);
+  if(previos.length) return previos[previos.length-1];
+  return meses.length?meses[meses.length-1]:null; // fallback: el más reciente que haya
+}
+
+// ── FLUJO DE INVENTARIO DE UN MES ── (cómo empieza y cómo termina)
+function flujoInventarioMes(pid, ym){
+  const weeks=getHistory(pid).filter(e=>e.rentas && monthKeyOf(e.date)===ym).sort((a,b)=>a.date.localeCompare(b.date));
+  let entradas=0;
+  weeks.forEach(e=>{ entradas += rNoreno(e.rentas)+rVenta(e.rentas); });
+  const salidas = salidasCierreMes(pid, ym);           // por fecha de cierre
+  const invFin = weeks.length ? getDisp(weeks[weeks.length-1].rentas) : 0;
+  const invIni = Math.max(0, invFin - entradas + salidas); // reconstrucción coherente
+  const absNeta = salidas - entradas;                  // + = se rentó más de lo que se liberó
+  return {entradas, salidas, invIni, invFin, absNeta, hayDatos:weeks.length>0};
+}
+
 
 // Acumulado del mes: suma conteos, promedia % y días, toma disponible de la última semana del mes
 function aggregateMonth(pid, ym){
