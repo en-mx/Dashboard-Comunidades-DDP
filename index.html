@@ -383,11 +383,12 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 
 /* ── EXEC RENTAS: entradas/salidas ── */
 .exec-rent-top{display:flex;align-items:center;gap:16px;margin-bottom:14px}
-.exec-abs-hero{flex:1;display:flex;flex-direction:column;gap:2px;padding:12px 16px;border-radius:12px;background:var(--surface-2)}
+.exec-abs-duo{flex:1;display:flex;gap:10px}
+.exec-abs-hero{flex:1;display:flex;flex-direction:column;gap:2px;padding:12px 14px;border-radius:12px;background:var(--surface-2);min-width:0}
 .exec-abs-hero.abs-positive{background:linear-gradient(135deg,#E8F5EE,#F0FAF4);border:1px solid #BFE5CF}
 .exec-abs-hero.abs-negative{background:linear-gradient(135deg,#FBEAE8,#FDF2F0);border:1px solid #F2C4BD}
 .exec-abs-lbl{font-size:11px;color:var(--text-2);font-weight:600}
-.exec-abs-num{font-size:34px;font-weight:700;font-family:'DM Mono',monospace;line-height:1.05;color:var(--text-1)}
+.exec-abs-num{font-size:30px;font-weight:700;font-family:'DM Mono',monospace;line-height:1.05;color:var(--text-1)}
 .exec-abs-hero.abs-positive .exec-abs-num{color:#1A7A4A}
 .exec-abs-hero.abs-negative .exec-abs-num{color:#A8291A}
 .exec-abs-sub{font-size:11px;color:var(--text-2)}
@@ -420,6 +421,14 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .exec-amen-divider{width:1px;align-self:stretch;background:var(--border);min-height:40px}
 
 .exec-rent-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+
+
+.exec-inv-dias{display:flex;align-items:center;gap:12px;background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:11px 15px;margin-bottom:14px}
+.eid-icon{font-size:20px}
+.eid-val{font-size:24px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;color:var(--text-1)}
+.eid-unit{font-size:13px;color:var(--text-3);font-weight:500}
+.eid-lbl{font-size:11px;color:var(--text-2);margin-top:3px}
+.eid-hint{color:var(--text-3)}
 
 .exec-preciom2{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#FFF8E8,#FFFBF0);border:1px solid #F0DFA8;border-radius:12px;padding:12px 16px;margin-bottom:14px}
 .epm-icon{font-size:22px}
@@ -1117,6 +1126,10 @@ window._fbLoadAll = async function(){
                 <label>🛋️ Amueblados disponibles <span class="hint">(de los disponibles, cuántos amueblados)</span></label>
                 <input type="number" id="r-invamueblado" min="0" step="1" placeholder="0" oninput="onInvAmuebladoInput()">
               </div>
+              <div class="rentas-input-group">
+                <label>🕒 Días promedio de inventario <span class="hint">(cuánto llevan los disponibles sin rentarse)</span></label>
+                <input type="number" id="r-diasinv" min="0" step="1" placeholder="0" oninput="onRentaInput()">
+              </div>
             </div>
             <div style="font-size:11px;color:var(--text-3);margin-top:10px">💡 Los <strong>entregados</strong> vienen de la masa crítica. <strong>Rentados</strong> = con intención de renta − disponibles.</div>
           </div>
@@ -1338,7 +1351,7 @@ let pillarConfig = {
 };
 
 const PILLARS = [
-  {key:"vivencial", icon:"⭐", name:"Vivencial / Amenidades",
+  {key:"vivencial", icon:"⭐", name:"Satisfacción vivencial",
    subcats:[{key:"seguridad",label:"Seguridad y accesos"},{key:"limpieza",label:"Limpieza y presentación"},{key:"amenidades",label:"Amenidades en uso"},{key:"comunidad",label:"Comunidad activa"},{key:"tranquilidad",label:"Tranquilidad general"}]},
   {key:"admin", icon:"🏢", name:"Administración",
    subcats:[{key:"respuesta",label:"Tiempo de respuesta"},{key:"mantenimiento",label:"Mantenimiento preventivo"},{key:"comunicacion",label:"Comunicación residentes"},{key:"proveedores",label:"Calidad proveedores"},{key:"transparencia",label:"Transparencia financiera"}]},
@@ -1917,7 +1930,7 @@ function exportExcel(){
       if(!r) return;
       rentRows.push({
         Proyecto:p.name, Fecha:e.date,
-        "Total torre":getTotalTorre(pid), "Con intención renta":getInvTotal(pid), "Disponibles":getDisp(r), "Disp. DDP":(r&&r.dispDDP)||0, "Disp. propietario":Math.max(0,getDisp(r)-((r&&r.dispDDP)||0)), "Amueblados disp.":getInvAmueblado(pid), "En proceso cierre":(r&&r.enproceso)||0,
+        "Total torre":getTotalTorre(pid), "Con intención renta":getInvTotal(pid), "Disponibles":getDisp(r), "Disp. DDP":(r&&r.dispDDP)||0, "Disp. propietario":Math.max(0,getDisp(r)-((r&&r.dispDDP)||0)), "Amueblados disp.":getInvAmueblado(pid), "En proceso cierre":(r&&r.enproceso)||0, "Días prom. inventario":(r&&r.diasinv)||0,
         "Ocupadas":getOcupadas(pid,r), "Ocupación %":ocupacionPct(pid,r),
         "Rentas nuevas":rNuevas(r), "Renovaciones":rRenov(r),
         "Lib. no renov.":rNoreno(r), "Lib. venta":rVenta(r),
@@ -2642,16 +2655,22 @@ function renderAmenChart(){
   const ctx=document.getElementById("chart-amenidades");
   if(!ctx) return;
   destroyChart("amenidades");
-  const catalog=getAmenCatalog(currentProject);
+  const rawCatalog=getAmenCatalog(currentProject);
   const a=amenDraft();
-  if(catalog.length===0) return;
+  if(rawCatalog.length===0) return;
+
+  // % de uso por amenidad
+  const pctOf=(am)=>{ const d=a.data[am.id]||{cap:am.capacidad,usos:0}; const cap=d.cap!==undefined?+d.cap:+am.capacidad; return cap>0?Math.round((+d.usos||0)/cap*100):0; };
+
+  // ── Ordenar de MAYOR a MENOR uso (todo se alinea por índice tras esto) ──
+  const catalog=rawCatalog.slice().sort((x,y)=>pctOf(y)-pctOf(x));
 
   const labels=catalog.map(am=>am.nombre);
-  const pcts=catalog.map(am=>{ const d=a.data[am.id]||{cap:am.capacidad,usos:0}; const cap=d.cap!==undefined?+d.cap:+am.capacidad; return cap>0?Math.round((+d.usos||0)/cap*100):0; });
+  const pcts=catalog.map(am=>pctOf(am));
   const colors=catalog.map(am=>am.tipo==="reservable"?"#8DB63C":"#9A9A9C"); // verde / gris
   const sats=catalog.map(am=>{ const d=a.data[am.id]; return (am.aplica_sat && d && +d.sat>0)?+d.sat:null; });
 
-  // Satisfacción como pares {x:valor, y:indice} para barras horizontales
+  // Satisfacción como pares {x:valor, y:label} — y usa el label del MISMO índice ordenado
   const satPoints=sats.map((s,i)=>s!==null?{x:s,y:labels[i]}:null).filter(x=>x);
 
   // Plugin: dibuja el número de satisfacción centrado dentro de cada bolita
@@ -2723,8 +2742,11 @@ function renderAmenChart(){
       responsive:true,maintainAspectRatio:false,
       layout:{padding:{top:6,bottom:6,right:38}},
       plugins:{legend:{display:false},
-        tooltip:{callbacks:{label:(x)=>{
+        tooltip:{callbacks:{
+          title:(items)=>{ const it=items[0]; if(!it) return ""; if(it.dataset.label==="Satisfacción"){ return it.raw && it.raw.y ? it.raw.y : ""; } return labels[it.dataIndex]||""; },
+          label:(x)=>{
           if(x.dataset.label==="% Uso"){ const am=catalog[x.dataIndex]; const d=a.data[am.id]||{}; return `Uso: ${x.raw}% (${d.usos||0}/${d.cap!==undefined?d.cap:am.capacidad})`; }
+          // Satisfacción: la amenidad correcta es la del label y (no el dataIndex del scatter)
           return "Satisfacción: "+x.raw.x;
         }}}
       },
@@ -2844,6 +2866,9 @@ function renderExecutivePulse(){
   const _cierresSem = (r && Array.isArray(r.unidades)) ? r.unidades.filter(u=>u.tipo==="nueva" && +u.monto>0 && +u.m2>0) : [];
   const precioM2Sem = _cierresSem.length ? Math.round(_cierresSem.reduce((a,u)=>a+(+u.monto/+u.m2),0)/_cierresSem.length) : 0;
   const hayPrecioM2 = _cierresSem.length>0;
+  // Días promedio de inventario de los DISPONIBLES (dato capturado en la semana)
+  const diasInvDisp = r ? (+r.diasinv||0) : 0;
+  const hayDiasInvDisp = diasInvDisp>0;
 
   // Flujo de inventario: mes anterior fin → absorción mes en curso → inventario actual
   const invPrevFin = flujoPrev ? flujoPrev.invFin : 0;
@@ -2928,10 +2953,17 @@ function renderExecutivePulse(){
           <canvas id="exec-donut"></canvas>
           <div class="exec-donut-center"><span class="exec-donut-pct" style="color:${p.color}">${pct}%</span><span class="exec-donut-lbl">Ocupación</span></div>
         </div>
-        <div class="exec-abs-hero ${absMesCls}">
-          <span class="exec-abs-lbl">Absorción neta · ${monthName(curYm).split(' ')[0]}</span>
-          <span class="exec-abs-num">${absMes>0?"+":""}${absMes}</span>
-          <span class="exec-abs-sub">${absMes>0?"📈 positiva":absMes<0?"📉 negativa":"➖ neutral"}</span>
+        <div class="exec-abs-duo">
+          <div class="exec-abs-hero ${absSem>0?'abs-positive':absSem<0?'abs-negative':''}">
+            <span class="exec-abs-lbl">Absorción · semana</span>
+            <span class="exec-abs-num">${absSem>0?"+":""}${absSem}</span>
+            <span class="exec-abs-sub">${absSem>0?"📈 positiva":absSem<0?"📉 negativa":"➖ neutral"}</span>
+          </div>
+          <div class="exec-abs-hero ${absMesCls}">
+            <span class="exec-abs-lbl">Absorción · ${monthName(curYm).split(' ')[0]}</span>
+            <span class="exec-abs-num">${absMes>0?"+":""}${absMes}</span>
+            <span class="exec-abs-sub">${absMes>0?"📈 positiva":absMes<0?"📉 negativa":"➖ neutral"}</span>
+          </div>
         </div>
       </div>
       <!-- ★ MINI TABLA DE ABSORCIÓN — corazón del reporte (3 periodos) -->
@@ -2993,9 +3025,17 @@ function renderExecutivePulse(){
         </div>
         <div class="exec-pair-card exec-pair-dias">
           <span class="exec-pair-icon">📆</span>
-          <div><div class="exec-pair-val">${diasSem}<span class="exec-pair-of"> d</span></div><div class="exec-pair-lbl">Días prom. en inventario · cierres última semana</div></div>
+          <div><div class="exec-pair-val">${diasSem}<span class="exec-pair-of"> d</span></div><div class="exec-pair-lbl">Días prom. para rentarse · cierres última semana</div></div>
         </div>
       </div>
+      ${hayDiasInvDisp?`
+      <div class="exec-inv-dias">
+        <span class="eid-icon">🕒</span>
+        <div class="eid-body">
+          <div class="eid-val">${diasInvDisp>0?diasInvDisp:'—'}<span class="eid-unit"> días</span></div>
+          <div class="eid-lbl">Antigüedad promedio del inventario disponible</div>
+        </div>
+      </div>`:''}
       ${hayPrecioM2?`
       <div class="exec-preciom2">
         <span class="epm-icon">📐</span>
@@ -3471,6 +3511,7 @@ function onRentaInput(){
   r.venta  = +document.getElementById("r-venta").value||0;
   r.citas  = +document.getElementById("r-citas").value||0;
   r.enproceso = +document.getElementById("r-enproceso").value||0;
+  r.diasinv = +document.getElementById("r-diasinv").value||0;
   // Recalcular disponible auto si no está en override manual
   recalcDispAuto();
   renderRentasDashboard2();
@@ -3617,6 +3658,7 @@ function loadRentasInputs(){
   set("r-invtotal", getInvTotal(currentProject));
   set("r-totaltorre", getTotalTorre(currentProject));
   set("r-enproceso", (drafts[currentProject].rentas&&drafts[currentProject].rentas.enproceso)||"");
+  set("r-diasinv", (drafts[currentProject].rentas&&drafts[currentProject].rentas.diasinv)||"");
   const _r=drafts[currentProject].rentas||{};
   set("r-dispddp", _r.dispDDP||"");
   set("r-dispprop", Math.max(0, getDisp(_r)-(+_r.dispDDP||0))||"");
@@ -3727,12 +3769,16 @@ function aggregateMonth(pid, ym){
   });
   const avg=(arr)=>arr.length?+(arr.reduce((a,b)=>a+b,0)/arr.length).toFixed(1):0;
   const lastWeek=weeks[weeks.length-1].rentas;
+  // Promedio de disponibles a lo largo del mes (para días de inventario por rotación)
+  const dispArr=weeks.map(e=>getDisp(e.rentas));
+  const avgDisponible=dispArr.length?+(dispArr.reduce((a,b)=>a+b,0)/dispArr.length).toFixed(1):0;
   return {
     nuevas, renov, noreno, venta, citas,
     dias: diasArr.length?Math.round(diasArr.reduce((a,b)=>a+b,0)/diasArr.length):0,
     incrNuevas: avg(incrNArr), incrRenov: avg(incrRArr),
     incr: avg([...incrNArr,...incrRArr]),
     disponible: getDisp(lastWeek),
+    avgDisponible: avgDisponible,
     semanas: weeks.length
   };
 }
