@@ -420,6 +420,14 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .exec-amen-divider{width:1px;align-self:stretch;background:var(--border);min-height:40px}
 
 .exec-rent-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+
+.exec-preciom2{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#FFF8E8,#FFFBF0);border:1px solid #F0DFA8;border-radius:12px;padding:12px 16px;margin-bottom:14px}
+.epm-icon{font-size:22px}
+.epm-val{font-size:26px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;color:#8A6010}
+.epm-unit{font-size:14px;color:#B08838;font-weight:500}
+.epm-lbl{font-size:11px;color:var(--text-2);margin-top:3px}
+.epm-n{color:var(--text-3)}
+
 .exec-rent-trio{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
 .exec-pair-dias{border-left:3px solid #2563EB}
 .exec-pair-card{display:flex;align-items:center;gap:11px;padding:12px 14px;border-radius:11px;border:1px solid var(--border);background:var(--surface)}
@@ -1154,6 +1162,8 @@ window._fbLoadAll = async function(){
     <div class="big-section-label collapsible" onclick="toggleBigSection('comunidad')"><span class="bsl-chevron" id="chev-comunidad">⌄</span><span>👥 Comunidad — evolución y perfiles</span><span class="section-date-tag" id="sd-comunidad"></span></div>
 
     <div class="big-section-body" id="body-comunidad">
+    <div class="detail-score-row" id="detail-score-row"></div>
+
     <div class="proj-chart-row">
       <div class="chart-card">
         <div class="chart-card-title">Evolución histórica</div>
@@ -1166,8 +1176,6 @@ window._fbLoadAll = async function(){
         <div class="chart-wrap" style="height:200px"><canvas id="chart-proj-radar"></canvas></div>
       </div>
     </div>
-
-    <div class="detail-score-row" id="detail-score-row"></div>
     </div><!-- /body-comunidad -->
 
     <div id="amen-section-wrap">
@@ -1937,7 +1945,7 @@ function exportExcel(){
           "Días en lista":u.tipo==="renovacion"?"":(+u.dias||0),
           "Incremento %":+u.incr||0,
           "Fecha cierre":u.cierre||"", "Inicio contrato":u.inicio||"", "Fin contrato":u.fin||"",
-          "Monto renta":+u.monto||"", "Amueblado":u.amueblado?"Sí":"No",
+          "Monto renta":+u.monto||"", "Tamaño m²":+u.m2||"", "Precio/m²":(+u.m2>0&&+u.monto>0)?Math.round(+u.monto/+u.m2):"", "Amueblado":u.amueblado?"Sí":"No",
           "Canal":u.canal?(({directo:"Directo",asesor:"Asesor DDP",interno:"Broker interno",externo:"Broker externo",otro:"Otro"})[u.canal]||u.canal):"", "Broker/Asesor":u.broker||""
         });
       });
@@ -2831,6 +2839,11 @@ function renderExecutivePulse(){
 
   // Días promedio en inventario (del acumulado mensual, ya calculado)
   const diasMes = eff ? (eff.dias||0) : 0;
+  const diasSem = rDiasProm(r); // días prom. en lista de los cierres de la última semana
+  // Precio por m² de los cierres de la última semana (promedio de monto/m² con m²>0)
+  const _cierresSem = (r && Array.isArray(r.unidades)) ? r.unidades.filter(u=>u.tipo==="nueva" && +u.monto>0 && +u.m2>0) : [];
+  const precioM2Sem = _cierresSem.length ? Math.round(_cierresSem.reduce((a,u)=>a+(+u.monto/+u.m2),0)/_cierresSem.length) : 0;
+  const hayPrecioM2 = _cierresSem.length>0;
 
   // Flujo de inventario: mes anterior fin → absorción mes en curso → inventario actual
   const invPrevFin = flujoPrev ? flujoPrev.invFin : 0;
@@ -2874,19 +2887,6 @@ function renderExecutivePulse(){
         ${comDelta}
       </div>
       ${pillarBars}
-      ${hayHabitacional?`
-      <div class="exec-hab-box">
-        <div class="exec-hab-title">🏘️ Estatus habitacional</div>
-        <div class="exec-hab-row">
-          <div class="exec-hab-stat"><span class="exec-hab-emoji">🔑</span><span class="exec-hab-num">${habEntregados}</span><span class="exec-hab-lbl">Entregados</span></div>
-          <span class="exec-hab-arrow">→</span>
-          <div class="exec-hab-stat"><span class="exec-hab-emoji">🏡</span><span class="exec-hab-num" style="color:#1A7A4A">${habHabitados}</span><span class="exec-hab-lbl">Habitados${habPct?` · ${habPct}%`:''}</span></div>
-          <span class="exec-hab-arrow">→</span>
-          <div class="exec-hab-stat"><span class="exec-hab-emoji">👨‍👩‍👧‍👦</span><span class="exec-hab-num">${habPersonas}</span><span class="exec-hab-lbl">Personas</span></div>
-        </div>
-        ${habEntregados>0?`<div class="exec-hab-bar"><div class="exec-hab-fill" style="width:${habPct}%"></div></div>
-        <div class="exec-hab-foot">${habPct}% de las ${habEntregados} entregas están habitadas</div>`:''}
-      </div>`:''}
       ${amenG?`
       <div class="exec-amen-box">
         <div class="exec-amen-title">🏛️ Pulso de amenidades</div>
@@ -2901,6 +2901,19 @@ function renderExecutivePulse(){
             <div class="exec-amen-lbl">Satisfacción promedio<br><span class="exec-amen-sub">${amenG.totalAmen} amenidades</span></div>
           </div>
         </div>
+      </div>`:''}
+      ${hayHabitacional?`
+      <div class="exec-hab-box">
+        <div class="exec-hab-title">🏘️ Estatus habitacional</div>
+        <div class="exec-hab-row">
+          <div class="exec-hab-stat"><span class="exec-hab-emoji">🔑</span><span class="exec-hab-num">${habEntregados}</span><span class="exec-hab-lbl">Entregados</span></div>
+          <span class="exec-hab-arrow">→</span>
+          <div class="exec-hab-stat"><span class="exec-hab-emoji">🏡</span><span class="exec-hab-num" style="color:#1A7A4A">${habHabitados}</span><span class="exec-hab-lbl">Habitados${habPct?` · ${habPct}%`:''}</span></div>
+          <span class="exec-hab-arrow">→</span>
+          <div class="exec-hab-stat"><span class="exec-hab-emoji">👨‍👩‍👧‍👦</span><span class="exec-hab-num">${habPersonas}</span><span class="exec-hab-lbl">Personas</span></div>
+        </div>
+        ${habEntregados>0?`<div class="exec-hab-bar"><div class="exec-hab-fill" style="width:${habPct}%"></div></div>
+        <div class="exec-hab-foot">${habPct}% de las ${habEntregados} entregas están habitadas</div>`:''}
       </div>`:''}
     </div>
 
@@ -2980,9 +2993,17 @@ function renderExecutivePulse(){
         </div>
         <div class="exec-pair-card exec-pair-dias">
           <span class="exec-pair-icon">📆</span>
-          <div><div class="exec-pair-val">${diasMes}<span class="exec-pair-of"> d</span></div><div class="exec-pair-lbl">Días prom. en inventario · mes</div></div>
+          <div><div class="exec-pair-val">${diasSem}<span class="exec-pair-of"> d</span></div><div class="exec-pair-lbl">Días prom. en inventario · cierres última semana</div></div>
         </div>
       </div>
+      ${hayPrecioM2?`
+      <div class="exec-preciom2">
+        <span class="epm-icon">📐</span>
+        <div class="epm-body">
+          <div class="epm-val">$${precioM2Sem.toLocaleString('es-MX')}<span class="epm-unit"> / m²</span></div>
+          <div class="epm-lbl">Precio por m² · cierres de la última semana <span class="epm-n">(${_cierresSem.length} depto${_cierresSem.length!==1?'s':''})</span></div>
+        </div>
+      </div>`:''}
       ${totalCierres>0?`<div class="exec-cierre-pie">
         <div class="ecp-head">🏆 Quién cerró el mes · ${totalCierres} ${totalCierres===1?'cierre':'cierres'}</div>
         <div class="ecp-body">
@@ -3563,6 +3584,10 @@ function renderUnidadesList(){
       <div class="umid-field">
         <span class="umid-label">💰 Monto de renta mensual</span>
         <div class="umid-money"><span class="umid-currency">$</span><input type="number" min="0" step="100" value="${u.monto||""}" placeholder="0" oninput="updateUnidad(${i},'monto',this.value)"></div>
+      </div>
+      <div class="umid-field">
+        <span class="umid-label">📐 Tamaño del depto</span>
+        <div class="umid-money"><input type="number" min="0" step="0.1" value="${u.m2||""}" placeholder="0" oninput="updateUnidad(${i},'m2',this.value)" style="width:90px"><span class="umid-currency" style="margin-left:6px">m²</span></div>
       </div>
       <div class="umid-field">
         <span class="umid-label">🛋️ ¿Amueblado?</span>
