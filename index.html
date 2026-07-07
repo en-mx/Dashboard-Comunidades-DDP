@@ -516,8 +516,8 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .eib-actual .eib-num{color:#D97706}
 .eib-op{display:flex;flex-direction:column;align-items:center;gap:2px;flex:1}
 .eib-op-sign{font-size:16px;font-weight:700;font-family:'DM Mono',monospace}
-.eib-op-sign.pos-inv{color:#A8291A}
-.eib-op-sign.neg-inv{color:#1A7A4A}
+.eib-op-sign.abs-pos{color:#1A7A4A}
+.eib-op-sign.abs-neg{color:#A8291A}
 .eib-op-lbl{font-size:8.5px;color:var(--text-3);text-align:center;line-height:1.2}
 .eib-eq{font-size:18px;color:var(--text-3);font-weight:700}
 
@@ -596,6 +596,15 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .cap-block-title{font-size:12.5px;font-weight:700;color:var(--text-1);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
 
 /* ── LISTA REAL DE INVENTARIO ── */
+
+.auc-row{display:flex;gap:9px;flex-wrap:wrap}
+.auc-primary{background:var(--text-1);color:var(--bg)}
+.auc-secondary{background:var(--surface);color:var(--text-1);border:1.5px dashed var(--border-md)}
+.auc-hint{font-size:10.5px;color:var(--text-3);margin-top:7px}
+.auc-manual{color:var(--text-2);text-decoration:underline}
+@keyframes invPulse{0%{box-shadow:0 0 0 0 rgba(26,122,74,.45)}70%{box-shadow:0 0 0 12px rgba(26,122,74,0)}100%{box-shadow:0 0 0 0 rgba(26,122,74,0)}}
+.inv-highlight{animation:invPulse 1.1s ease-out 2;border-radius:10px}
+
 .inv-badge{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:20px;padding:0 7px;background:var(--surface-3);border-radius:10px;font-size:11.5px;font-family:'DM Mono',monospace;font-weight:700;color:var(--text-1);margin-left:6px}
 .inv-table-wrap{overflow-x:auto;margin-bottom:12px}
 .inv-table{width:100%;border-collapse:collapse;font-size:12px}
@@ -1233,7 +1242,7 @@ window._fbLoadAll = async function(){
           <div class="cap-block">
             <div class="cap-block-title">🔑 Unidades cerradas esta semana <span style="font-weight:500;color:var(--text-3);font-size:11px">(rentas nuevas y renovaciones)</span></div>
             <div id="unidades-list"></div>
-            <button class="add-unit-btn" onclick="addUnidad()">+ Agregar unidad cerrada</button>
+            <div id="add-unit-actions"></div>
           </div>
 
           <!-- Liberaciones y citas -->
@@ -3216,7 +3225,7 @@ function renderExecutivePulse(){
         <div class="exec-inv-bridge">
           <div class="eib-stat"><span class="eib-num">${invPrevFin}</span><span class="eib-lbl">📦 Inv. cierre<br>${hayPrev?monthName(prevYm).split(' ')[0]:'mes ant.'}</span></div>
           <div class="eib-op">
-            <span class="eib-op-sign ${absMes>0?'neg-inv':absMes<0?'pos-inv':''}">${absMes>0?'−'+absMes:absMes<0?'+'+Math.abs(absMes):'±0'}</span>
+            <span class="eib-op-sign ${absMes>0?'abs-pos':absMes<0?'abs-neg':''}">${absMes>0?'+'+absMes:absMes<0?'−'+Math.abs(absMes):'±0'}</span>
             <span class="eib-op-lbl">absorción<br>mes en curso</span>
           </div>
           <div class="eib-eq">=</div>
@@ -3871,6 +3880,7 @@ function renderInventarioLista(){
   const cont=document.getElementById("inv-lista-body");
   const badge=document.getElementById("inv-lista-count");
   if(!cont) return;
+  if(typeof renderAddUnitActions==="function") renderAddUnitActions();
   const pid=currentProject;
   const lista=getInventarioDisp(pid);
   if(badge) badge.textContent=lista.length;
@@ -3959,11 +3969,49 @@ function refreshCaptureDerived(){
 }
 
 // ── UNIDADES CERRADAS ──
+// Botones de alta de unidad — guiados por el modelo: renta nueva nace de la LISTA, renovación se captura directa
+function renderAddUnitActions(){
+  const cont=document.getElementById("add-unit-actions");
+  if(!cont) return;
+  if(hayLista(currentProject)){
+    cont.innerHTML=`
+      <div class="auc-row">
+        <button class="add-unit-btn auc-primary" onclick="irAListaInventario()">🔑 Renta nueva — elegir de la lista</button>
+        <button class="add-unit-btn auc-secondary" onclick="addUnidadRenovacion()">↻ Renovación</button>
+      </div>
+      <div class="auc-hint">Las rentas nuevas se cierran desde la lista de disponibles (datos y días automáticos). <a href="#" onclick="addUnidad();return false" class="auc-manual">Captura manual</a> solo para excepciones.</div>`;
+  } else {
+    cont.innerHTML=`<button class="add-unit-btn" onclick="addUnidad()">+ Agregar unidad cerrada</button>`;
+  }
+}
+
+function addUnidadRenovacion(){
+  if(!drafts[currentProject].rentas) drafts[currentProject].rentas={};
+  const r=drafts[currentProject].rentas;
+  if(!Array.isArray(r.unidades)) r.unidades=[];
+  r.unidades.push({id:"", tipo:"renovacion", dias:0, incr:0, cierre:today(), inicio:"", fin:"", canal:"directo", broker:"", monto:0, m2:0, precioVenta:0, amueblado:false});
+  renderUnidadesList();
+  recalcDispAuto();
+  renderRentasDashboard2();
+}
+
+// Lleva al usuario a la lista de disponibles y la resalta
+function irAListaInventario(){
+  const el=document.querySelector(".inv-table-wrap");
+  if(!el) return;
+  el.scrollIntoView({behavior:"smooth", block:"center"});
+  el.classList.remove("inv-highlight");
+  void el.offsetWidth; // reinicia la animación
+  el.classList.add("inv-highlight");
+  setTimeout(()=>el.classList.remove("inv-highlight"), 2200);
+  showToast("Elige el depto y dale 🔑 Rentar");
+}
+
 function addUnidad(){
   if(!drafts[currentProject].rentas) drafts[currentProject].rentas={};
   const r=drafts[currentProject].rentas;
   if(!Array.isArray(r.unidades)) r.unidades=[];
-  r.unidades.push({id:"", tipo:"nueva", dias:0, incr:0, cierre:"", inicio:"", fin:"", canal:"directo", broker:"", monto:0, amueblado:false});
+  r.unidades.push({id:"", tipo:"nueva", dias:0, incr:0, cierre:"", inicio:"", fin:"", canal:"directo", broker:"", monto:0, m2:0, precioVenta:0, amueblado:false});
   renderUnidadesList();
   recalcDispAuto();
   renderRentasDashboard2();
@@ -4081,6 +4129,7 @@ function loadRentasInputs(){
   set("r-enproceso", (drafts[currentProject].rentas&&drafts[currentProject].rentas.enproceso)||"");
   set("r-diasinv", (drafts[currentProject].rentas&&drafts[currentProject].rentas.diasinv)||"");
   renderInventarioLista();
+  renderAddUnitActions();
   const invNewDesde=document.getElementById("inv-new-desde"); if(invNewDesde && !invNewDesde.value) invNewDesde.value=today();
   // Si hay lista y el draft es el registro vigente (no una semana histórica), autollenar campos desde la lista
   if(hayLista(currentProject)){
