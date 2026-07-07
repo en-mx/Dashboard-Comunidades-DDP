@@ -349,24 +349,24 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .big-section-label{display:flex;align-items:center;gap:12px;margin:1.75rem 0 1rem;font-size:13px;font-weight:700;letter-spacing:.02em;color:var(--text-1)}
 .big-section-label span{display:flex;align-items:center;gap:8px}
 .big-section-label::after{content:"";flex:1;height:2px;background:linear-gradient(90deg,var(--border-md),transparent)}
-.exec-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.exec-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-2xl);padding:1.4rem 1.5rem;position:relative;overflow:hidden}
+.exec-grid{display:grid;grid-template-columns:0.82fr 1.35fr;gap:14px;align-items:start}
+.exec-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-2xl);padding:1.15rem 1.25rem;position:relative;overflow:hidden}
 .exec-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem}
 .exec-card-title{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);font-weight:700}
-.exec-hero-row{display:flex;align-items:flex-end;gap:14px;margin-bottom:1.1rem}
-.exec-hero-num{font-size:46px;font-weight:700;font-family:'DM Mono',monospace;line-height:.9}
+.exec-hero-row{display:flex;align-items:flex-end;gap:12px;margin-bottom:.85rem}
+.exec-hero-num{font-size:37px;font-weight:700;font-family:'DM Mono',monospace;line-height:.9}
 .exec-hero-max{font-size:15px;color:var(--text-3);font-weight:500;margin-bottom:6px}
 .exec-delta{font-size:12px;font-weight:700;padding:3px 9px;border-radius:20px;margin-bottom:8px}
 .exec-delta.up{background:var(--green-bg);color:var(--green)}
 .exec-delta.down{background:var(--red-bg);color:var(--red)}
 .exec-delta.flat{background:var(--surface-3);color:var(--text-2)}
 /* community pillar bars */
-.exec-pillar{margin-bottom:11px}
+.exec-pillar{margin-bottom:8px}
 .exec-pillar:last-child{margin-bottom:0}
 .exec-pillar-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
-.exec-pillar-name{font-size:13px;color:var(--text-2);font-weight:500}
-.exec-pillar-val{font-size:17px;font-family:'DM Mono',monospace;font-weight:700;color:var(--text-1)}
-.exec-pillar-track{height:7px;background:var(--surface-3);border-radius:4px;overflow:hidden}
+.exec-pillar-name{font-size:11.5px;color:var(--text-2);font-weight:500}
+.exec-pillar-val{font-size:15px;font-family:'DM Mono',monospace;font-weight:700;color:var(--text-1)}
+.exec-pillar-track{height:6px;background:var(--surface-3);border-radius:4px;overflow:hidden}
 .exec-pillar-fill{height:100%;border-radius:4px;transition:width .4s}
 .exec-pillar-na{font-size:11px;color:var(--text-3);font-style:italic}
 /* rent mini grid */
@@ -395,26 +395,26 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 
 
 
-.exec-hab-box{margin-top:14px;padding-top:14px;border-top:1px dashed var(--border-md)}
+.exec-hab-box{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border-md)}
 .exec-hab-title{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-3);font-weight:700;margin-bottom:11px}
 .exec-hab-row{display:flex;align-items:center;justify-content:space-between;gap:6px}
 .exec-hab-stat{display:flex;flex-direction:column;align-items:center;gap:2px;flex:1}
 .exec-hab-emoji{font-size:18px;margin-bottom:2px}
-.exec-hab-num{font-size:26px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;color:var(--text-1)}
+.exec-hab-num{font-size:21px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;color:var(--text-1)}
 .exec-hab-lbl{font-size:10px;color:var(--text-2);text-align:center}
 .exec-hab-arrow{color:var(--text-3);font-size:14px;flex-shrink:0}
 .exec-hab-bar{height:8px;background:var(--surface-3);border-radius:5px;overflow:hidden;margin-top:12px}
 .exec-hab-fill{height:100%;background:linear-gradient(90deg,#1A7A4A,#27AE60);border-radius:5px;transition:width .4s}
 .exec-hab-foot{font-size:10.5px;color:var(--text-3);margin-top:6px;text-align:center}
 
-.exec-amen-box{margin-top:14px;padding-top:14px;border-top:1px dashed var(--border-md)}
+.exec-amen-box{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border-md)}
 .exec-amen-title{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-3);font-weight:700;margin-bottom:11px}
 .exec-amen-stats{display:flex;align-items:center;gap:16px}
 .exec-amen-stat{display:flex;align-items:center;gap:11px;flex:1}
-.exec-amen-circle{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative}
+.exec-amen-circle{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative}
 .exec-amen-circle::before{content:"";position:absolute;inset:6px;background:var(--surface);border-radius:50%}
 .exec-amen-circle span{position:relative;font-size:14px;font-weight:700;font-family:'DM Mono',monospace;color:var(--text-1)}
-.exec-amen-sat-num{font-size:30px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;flex-shrink:0}
+.exec-amen-sat-num{font-size:24px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;flex-shrink:0}
 .exec-amen-sat-max{font-size:13px;color:var(--text-3);font-weight:500}
 .exec-amen-lbl{font-size:11.5px;font-weight:600;color:var(--text-1);line-height:1.3}
 .exec-amen-sub{font-size:10px;color:var(--text-3);font-weight:400}
@@ -424,7 +424,7 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 
 
 
-.exec-metrics-duo{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.exec-metrics-duo{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
 .exec-metrics-duo .exec-preciom2{margin-bottom:0}
 .exec-rend{background:linear-gradient(135deg,#E8F5EE,#F0FAF4);border-color:#BFE5CF}
 .eid-refs{font-size:10px;color:var(--text-3);margin-top:5px}
@@ -444,6 +444,15 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .epm-lbl{font-size:11px;color:var(--text-2);margin-top:3px}
 .epm-n{color:var(--text-3)}
 
+
+.exec-rent-cols{display:grid;grid-template-columns:1.02fr 0.98fr;gap:12px;margin-bottom:12px;align-items:start}
+.erc-left,.erc-right{min-width:0;display:flex;flex-direction:column}
+.erc-left .exec-abs-table-wrap{margin-bottom:10px}
+.erc-right .exec-rent-trio{grid-template-columns:1fr;gap:8px;margin-bottom:10px}
+.erc-right .exec-pair-card{padding:9px 12px}
+.erc-right .exec-inv-dias{margin-bottom:0;padding:10px 13px}
+@media(max-width:1150px){.exec-rent-cols{grid-template-columns:1fr}}
+
 .exec-rent-trio{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
 .exec-pair-dias{border-left:3px solid #2563EB}
 .exec-pair-card{display:flex;align-items:center;gap:11px;padding:12px 14px;border-radius:11px;border:1px solid var(--border);background:var(--surface)}
@@ -454,14 +463,14 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .exec-pair-of{font-size:13px;color:var(--text-3);font-weight:500}
 .exec-pair-lbl{font-size:10.5px;color:var(--text-2);margin-top:3px}
 @media(max-width:900px){
-.exec-amen-box{margin-top:14px;padding-top:14px;border-top:1px dashed var(--border-md)}
+.exec-amen-box{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border-md)}
 .exec-amen-title{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-3);font-weight:700;margin-bottom:11px}
 .exec-amen-stats{display:flex;align-items:center;gap:16px}
 .exec-amen-stat{display:flex;align-items:center;gap:11px;flex:1}
-.exec-amen-circle{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative}
+.exec-amen-circle{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative}
 .exec-amen-circle::before{content:"";position:absolute;inset:6px;background:var(--surface);border-radius:50%}
 .exec-amen-circle span{position:relative;font-size:14px;font-weight:700;font-family:'DM Mono',monospace;color:var(--text-1)}
-.exec-amen-sat-num{font-size:30px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;flex-shrink:0}
+.exec-amen-sat-num{font-size:24px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;flex-shrink:0}
 .exec-amen-sat-max{font-size:13px;color:var(--text-3);font-weight:500}
 .exec-amen-lbl{font-size:11.5px;font-weight:600;color:var(--text-1);line-height:1.3}
 .exec-amen-sub{font-size:10px;color:var(--text-3);font-weight:400}
@@ -550,7 +559,7 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .efv-divider{width:1px;align-self:stretch;background:var(--border)}
 .efv-legend{display:flex;flex-direction:column;gap:6px;font-size:10.5px;color:var(--text-2);justify-content:center}
 .efv-legend span{display:inline-flex;align-items:center;gap:6px}
-.exec-cierre-pie{padding-top:12px;border-top:1px dashed var(--border-md)}
+.exec-cierre-pie{padding-top:10px;border-top:1px dashed var(--border-md)}
 
 .ecp-duo{display:flex;gap:14px;align-items:flex-start}
 .ecp-half{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;min-width:0}
@@ -1212,8 +1221,8 @@ window._fbLoadAll = async function(){
                 <input type="date" id="inv-new-desde" title="Disponible desde">
                 <select id="inv-new-motivo" title="Motivo de la entrada">
                   <option value="inicial">Carga inicial (no registra entrada)</option>
-                  <option value="noreno">Liberación · no renovación</option>
-                  <option value="venta">Liberación · por venta</option>
+                  <option value="noreno">Entrada · no renovación</option>
+                  <option value="venta">Entrada · por venta</option>
                 </select>
                 <button class="inv-add-btn" onclick="addDeptoInventario()">Agregar</button>
               </div>
@@ -1488,7 +1497,7 @@ async function syncFromFirebase(){
           try{ sectionsCollapsed[pid] = (typeof cfg.sectionsCollapsed==="string") ? JSON.parse(cfg.sectionsCollapsed) : cfg.sectionsCollapsed; }catch(e){ sectionsCollapsed[pid]={}; }
         }
         if(cfg.inventarioDisp!==undefined && cfg.inventarioDisp!==null){
-          try{ const li=(typeof cfg.inventarioDisp==="string")?JSON.parse(cfg.inventarioDisp):cfg.inventarioDisp; if(Array.isArray(li)) inventarioDisp[pid]=li; }catch(e){}
+          try{ const li=(typeof cfg.inventarioDisp==="string")?JSON.parse(cfg.inventarioDisp):cfg.inventarioDisp; if(Array.isArray(li)){ inventarioDisp[pid]=li; _invFromFB[pid]=true; } }catch(e){}
         }
         if(cfg.invAmueblado!==undefined && cfg.invAmueblado!==null){
           invAmueblado[pid] = cfg.invAmueblado;
@@ -1526,6 +1535,14 @@ async function syncFromFirebase(){
   } catch(e){
     showSyncStatus("Modo local", "warn");
   }
+  // Precarga inicial del inventario (una sola vez por proyecto; después manda Firebase)
+  PROJ_KEYS.forEach(pid=>{
+    if(!_invFromFB[pid] && (!inventarioDisp[pid] || !inventarioDisp[pid].length) && INV_DEFAULTS[pid] && INV_DEFAULTS[pid].length){
+      inventarioDisp[pid] = INV_DEFAULTS[pid].map(u=>({...u}));
+      if(window._fbSaveInventario) window._fbSaveInventario(pid, inventarioDisp[pid]);
+    }
+  });
+  try{ localStorage.setItem("dp_inventario_disp", JSON.stringify(inventarioDisp)); }catch(e){}
   renderNavButtons();
   renderDashboard();
   updateSidebarScores();
@@ -1565,6 +1582,9 @@ let totalTorre = {}; // total de unidades de la torre por proyecto
 let invBridgeHidden = {}; // ¿puente de inventario oculto? por proyecto (compartido en Firebase)
 let sectionsCollapsed = {}; // secciones retraídas por proyecto: {pid:{rentas:true,comunidad:false,...}}
 let inventarioDisp = {}; // LISTA REAL de deptos disponibles por proyecto [{uid,id,m2,precioRenta,precioVenta,amueblado,origen,desde}]
+let _invFromFB = {}; // pids cuya lista ya vino de Firebase (no aplicar precarga)
+// Precarga inicial de disponibilidad (semana 06-jul-2026) — solo se aplica si Firebase nunca ha tenido lista del proyecto
+const INV_DEFAULTS = {"agwa":[{"uid":"agwa_ini1","id":"402","m2":138.15,"precioRenta":42854.0,"precioVenta":6869703.97,"amueblado":false,"origen":"ddp","desde":"2026-05-01"},{"uid":"agwa_ini2","id":"1001","m2":105.55,"precioRenta":38000.0,"precioVenta":4334990.93,"amueblado":false,"origen":"prop","desde":"2026-06-08"},{"uid":"agwa_ini3","id":"1002","m2":138.15,"precioRenta":52000.0,"precioVenta":5779968.31,"amueblado":true,"origen":"prop","desde":"2026-02-05"},{"uid":"agwa_ini4","id":"1503","m2":179.02,"precioRenta":57938.0,"precioVenta":11048793.36,"amueblado":false,"origen":"ddp","desde":"2026-05-01"},{"uid":"agwa_ini5","id":"1703","m2":179.02,"precioRenta":58146.0,"precioVenta":11102720.36,"amueblado":false,"origen":"ddp","desde":"2026-05-01"},{"uid":"agwa_ini6","id":"1803","m2":179.02,"precioRenta":58250.0,"precioVenta":11138796.82,"amueblado":false,"origen":"ddp","desde":"2026-05-01"},{"uid":"agwa_ini7","id":"3705","m2":125.6,"precioRenta":43500.0,"precioVenta":3974719.75,"amueblado":false,"origen":"prop","desde":"2026-07-01"},{"uid":"agwa_ini8","id":"4303","m2":132.84,"precioRenta":50000.0,"precioVenta":10304556.5,"amueblado":false,"origen":"ddp","desde":"2026-05-01"}],"upsf":[{"uid":"upsf_ini1","id":"601","m2":83.32,"precioRenta":30000.0,"precioVenta":4917863.9,"amueblado":false,"origen":"prop","desde":"2026-05-01"},{"uid":"upsf_ini2","id":"1303","m2":34.07,"precioRenta":21000.0,"precioVenta":2224773.0,"amueblado":true,"origen":"prop","desde":"2026-07-01"},{"uid":"upsf_ini3","id":"2406","m2":47.98,"precioRenta":21663.0,"precioVenta":3555014.8,"amueblado":false,"origen":"prop","desde":"2026-04-15"},{"uid":"upsf_ini4","id":"2407","m2":64.2,"precioRenta":25500.0,"precioVenta":3908700.27,"amueblado":false,"origen":"prop","desde":"2026-06-15"},{"uid":"upsf_ini5","id":"2505","m2":47.91,"precioRenta":21673.0,"precioVenta":3572932.0,"amueblado":false,"origen":"prop","desde":"2026-06-15"},{"uid":"upsf_ini6","id":"2506","m2":47.91,"precioRenta":22000.0,"precioVenta":2062033.39,"amueblado":false,"origen":"prop","desde":"2026-01-02"},{"uid":"upsf_ini7","id":"2605","m2":47.91,"precioRenta":22126.0,"precioVenta":2614398.24,"amueblado":false,"origen":"prop","desde":"2026-01-07"},{"uid":"upsf_ini8","id":"2704","m2":64.11,"precioRenta":28000.0,"precioVenta":4729826.58,"amueblado":false,"origen":"prop","desde":"2026-05-18"},{"uid":"upsf_ini9","id":"2802","m2":49.42,"precioRenta":21000.0,"precioVenta":3511931.0,"amueblado":false,"origen":"prop","desde":"2026-04-01"}],"ut":[{"uid":"ut_ini1","id":"1609","m2":64.77,"precioRenta":49000.0,"precioVenta":6474800.0,"amueblado":false,"origen":"prop","desde":"2026-03-01"},{"uid":"ut_ini2","id":"1806","m2":47.22,"precioRenta":38000.0,"precioVenta":3282621.0,"amueblado":true,"origen":"prop","desde":"2026-04-01"},{"uid":"ut_ini3","id":"1807","m2":75.46,"precioRenta":60000.0,"precioVenta":9353199.0,"amueblado":true,"origen":"prop","desde":"2026-07-06"},{"uid":"ut_ini4","id":"1901","m2":47.22,"precioRenta":44026.0,"precioVenta":6347687.0,"amueblado":true,"origen":"prop","desde":"2026-07-04"},{"uid":"ut_ini5","id":"2006","m2":45.06,"precioRenta":42772.11,"precioVenta":3844961.0,"amueblado":true,"origen":"prop","desde":"2026-02-01"},{"uid":"ut_ini6","id":"2010","m2":66.9,"precioRenta":56014.11,"precioVenta":4963019.0,"amueblado":true,"origen":"prop","desde":"2026-05-01"},{"uid":"ut_ini7","id":"2106","m2":47.22,"precioRenta":44611.79,"precioVenta":5434650.0,"amueblado":true,"origen":"prop","desde":"2025-12-01"},{"uid":"ut_ini8","id":"2201","m2":46.01,"precioRenta":46601.0,"precioVenta":3149088.0,"amueblado":true,"origen":"prop","desde":"2026-01-01"},{"uid":"ut_ini9","id":"2306","m2":46.01,"precioRenta":39683.46,"precioVenta":5465533.0,"amueblado":false,"origen":"prop","desde":"2026-05-01"},{"uid":"ut_ini10","id":"2311","m2":46.01,"precioRenta":39683.46,"precioVenta":2722505.0,"amueblado":false,"origen":"prop","desde":"2026-06-01"},{"uid":"ut_ini11","id":"2508B","m2":30.01,"precioRenta":30107.0,"precioVenta":1851310.0,"amueblado":false,"origen":"prop","desde":"2026-02-01"},{"uid":"ut_ini12","id":"2708C","m2":36.86,"precioRenta":38357.0,"precioVenta":5515539.0,"amueblado":true,"origen":"prop","desde":"2026-07-06"},{"uid":"ut_ini13","id":"2801","m2":47.56,"precioRenta":42241.27,"precioVenta":3009601.0,"amueblado":false,"origen":"prop","desde":"2026-03-01"},{"uid":"ut_ini14","id":"2802","m2":140.2,"precioRenta":89000.0,"precioVenta":14353437.0,"amueblado":false,"origen":"prop","desde":"2026-07-06"},{"uid":"ut_ini15","id":"2811","m2":47.2,"precioRenta":46720.0,"precioVenta":3161726.0,"amueblado":true,"origen":"prop","desde":"2026-01-01"},{"uid":"ut_ini16","id":"2902","m2":64.16,"precioRenta":55500.0,"precioVenta":6000061.0,"amueblado":true,"origen":"prop","desde":"2026-03-01"},{"uid":"ut_ini17","id":"3007","m2":75.72,"precioRenta":56889.18,"precioVenta":6999740.0,"amueblado":false,"origen":"prop","desde":"2026-04-01"},{"uid":"ut_ini18","id":"3107","m2":75.72,"precioRenta":64930.68,"precioVenta":8500000.0,"amueblado":true,"origen":"prop","desde":"2026-04-01"},{"uid":"ut_ini19","id":"3109","m2":64.17,"precioRenta":52372.21,"precioVenta":5823764.64,"amueblado":false,"origen":"prop","desde":"2026-07-06"},{"uid":"ut_ini20","id":"3203","m2":72.92,"precioRenta":64147.93,"precioVenta":13832847.86,"amueblado":true,"origen":"prop","desde":"2026-03-01"},{"uid":"ut_ini21","id":"3204","m2":72.92,"precioRenta":64148.0,"precioVenta":10299774.0,"amueblado":true,"origen":"prop","desde":"2026-07-06"},{"uid":"ut_ini22","id":"3209","m2":64.22,"precioRenta":59233.21,"precioVenta":5352635.0,"amueblado":true,"origen":"prop","desde":"2026-02-01"},{"uid":"ut_ini23","id":"3202B","m2":30.95,"precioRenta":34156.16,"precioVenta":4081277.0,"amueblado":true,"origen":"prop","desde":"2026-03-01"},{"uid":"ut_ini24","id":"3207A","m2":34.04,"precioRenta":36840.43,"precioVenta":4333473.0,"amueblado":true,"origen":"prop","desde":"2026-07-06"},{"uid":"ut_ini25","id":"3402A","m2":33.35,"precioRenta":33350.02,"precioVenta":2500242.0,"amueblado":false,"origen":"prop","desde":"2026-02-01"},{"uid":"ut_ini26","id":"3501","m2":45.0,"precioRenta":47140.35,"precioVenta":4043364.0,"amueblado":true,"origen":"prop","desde":"2026-04-01"},{"uid":"ut_ini27","id":"3503","m2":72.92,"precioRenta":65504.35,"precioVenta":7253027.0,"amueblado":false,"origen":"prop","desde":"2026-02-01"},{"uid":"ut_ini28","id":"3609","m2":64.0,"precioRenta":54559.0,"precioVenta":7248808.0,"amueblado":false,"origen":"prop","desde":"2026-07-06"},{"uid":"ut_ini29","id":"3902","m2":62.91,"precioRenta":55135.14,"precioVenta":4623457.0,"amueblado":false,"origen":"prop","desde":"2026-05-01"},{"uid":"ut_ini30","id":"2305","m2":63.71,"precioRenta":55547.14,"precioVenta":6090312.0,"amueblado":true,"origen":"prop","desde":"2026-02-01"},{"uid":"ut_ini31","id":"2410","m2":56.27,"precioRenta":51508.99,"precioVenta":5992118.0,"amueblado":true,"origen":"prop","desde":"2026-04-01"},{"uid":"ut_ini32","id":"3305","m2":62.77,"precioRenta":58954.22,"precioVenta":5374846.0,"amueblado":true,"origen":"prop","desde":"2026-04-01"},{"uid":"ut_ini33","id":"3307","m2":45.62,"precioRenta":50000.0,"precioVenta":4052948.0,"amueblado":true,"origen":"prop","desde":"2026-04-01"},{"uid":"ut_ini34","id":"3310","m2":67.37,"precioRenta":58954.0,"precioVenta":5506600.0,"amueblado":true,"origen":"prop","desde":"2026-05-01"}]};
 let invAmueblado = {}; // unidades amuebladas del inventario por proyecto
 
 // ── AMENIDADES: configuración por proyecto ──
@@ -3003,7 +3023,10 @@ function renderExecutivePulse(){
   // ── RENTAS ──
   const r=lat?rentaData(lat):null;
   const total=getInvTotal(pid);
-  const disp=getDisp(r), ocup=getOcupadas(pid,r), pct=ocupacionPct(pid,r);
+  // ★ FUENTE DE VERDAD: si hay lista real, disponibles = lista (no el registro guardado)
+  const disp = hayLista(pid) ? getInventarioDisp(pid).length : getDisp(r);
+  const ocup = Math.max(0, getInvTotal(pid) - disp);
+  const pct = getInvTotal(pid)>0 ? Math.round(ocup/getInvTotal(pid)*100) : 0;
   const ym = lat ? monthKeyOf(lat.date) : null;
   const eff = ym ? monthEffective(pid, ym) : null;
 
@@ -3050,9 +3073,10 @@ function renderExecutivePulse(){
   const rendAnualSem = _cierresRend.length ? +( _cierresRend.reduce((a,u)=>a+((+u.monto*12)/(+u.precioVenta)*100),0)/_cierresRend.length ).toFixed(1) : 0;
   const hayRendAnual = _cierresRend.length>0;
 
-  // Flujo de inventario: mes anterior fin → absorción mes en curso → inventario actual
-  const invPrevFin = flujoPrev ? flujoPrev.invFin : 0;
+  // Flujo de inventario FORZADO al mismo idioma: la lista actual es la verdad.
+  // Inv. cierre mes anterior = inventario actual + salidas del mes − entradas del mes (derivado, cuadra por construcción)
   const invActual = disp;
+  const invPrevFin = invActual + absMes; // invPrev − absNeta(curso) = invActual  ⇔  invPrev = invActual + absNeta
 
   // Estatus habitacional (de masa crítica en amenidades del último registro)
   const amenData = (lat && lat.amenidades) ? lat.amenidades : null;
@@ -3150,6 +3174,8 @@ function renderExecutivePulse(){
           </div>
         </div>
       </div>
+      <div class="exec-rent-cols">
+      <div class="erc-left">
       <!-- ★ MINI TABLA DE ABSORCIÓN — corazón del reporte (3 periodos) -->
       <div class="exec-abs-table-wrap">
         <table class="exec-abs-table">
@@ -3180,7 +3206,7 @@ function renderExecutivePulse(){
             </tr>
           </tbody>
         </table>
-        <div class="eat-hint-foot">Entradas = liberaciones · Salidas = cierres (por fecha de cierre)</div>
+        <div class="eat-hint-foot">Entradas = deptos que entran a renta · Salidas = cierres (por fecha de cierre)</div>
       </div>
       <!-- Flujo de inventario (colapsable con flechita discreta) -->
       <div class="exec-inv-collapse${invBridgeHidden[pid]?' collapsed':''}">
@@ -3197,6 +3223,8 @@ function renderExecutivePulse(){
           <div class="eib-stat eib-actual"><span class="eib-num">${invActual}</span><span class="eib-lbl">📦 Inventario<br>actual</span></div>
         </div>
       </div>
+      </div><!-- /erc-left -->
+      <div class="erc-right">
       <!-- Disponibles + En proceso + Días en inventario -->
       <div class="exec-rent-trio">
         <div class="exec-pair-card exec-pair-disp">
@@ -3221,6 +3249,8 @@ function renderExecutivePulse(){
           ${_invStats?`<div class="eid-refs">🔴 Más antiguo: <strong>${_invStats.max.id}</strong> · ${_invStats.max.dias}d &nbsp;·&nbsp; 🟢 Más reciente: <strong>${_invStats.min.id}</strong> · ${_invStats.min.dias}d</div>`:''}
         </div>
       </div>`:''}
+      </div><!-- /erc-right -->
+      </div><!-- /exec-rent-cols -->
       ${(hayPrecioM2||hayRendAnual)?`
       <div class="exec-metrics-duo">
         ${hayPrecioM2?`<div class="exec-preciom2">
@@ -3724,7 +3754,11 @@ function antiguedadStats(pid){
 // La lista escribe en los campos que ya existen (conceptos intactos, origen automatizado)
 function syncInventarioToFields(){
   const pid=currentProject;
-  if(!hayLista(pid)) return; // sin lista → todo sigue manual como antes
+  if(!pid || !hayLista(pid)) return; // sin lista → todo sigue manual como antes
+  if(!drafts[pid]) return; // draft aún no inicializado
+  // Protección de históricos: solo escribir en el draft si es el registro vigente (fecha >= último guardado)
+  const _lat=getLatest(pid);
+  if(_lat && drafts[pid].date && drafts[pid].date < _lat.date){ renderRentasDashboard2(); return; }
   const lista=getInventarioDisp(pid);
   if(!drafts[pid].rentas) drafts[pid].rentas={};
   const r=drafts[pid].rentas;
@@ -3745,6 +3779,12 @@ function syncInventarioToFields(){
   renderRentasDashboard2();
 }
 
+// ¿El draft abierto es una semana histórica? (movimientos de lista deberían ir al registro vigente)
+function _draftEsHistorico(pid){
+  const lat=getLatest(pid);
+  return !!(lat && drafts[pid] && drafts[pid].date && drafts[pid].date < lat.date);
+}
+
 // ── ALTA de depto (entrada) — el motivo registra la entrada en la semana ──
 function addDeptoInventario(){
   const pid=currentProject;
@@ -3757,6 +3797,9 @@ function addDeptoInventario(){
   const desde=document.getElementById("inv-new-desde").value||today();
   const motivo=document.getElementById("inv-new-motivo").value;
   if(!id){ showToast("Pon el número de depto"); return; }
+  if(motivo!=="inicial" && _draftEsHistorico(pid)){
+    if(!confirm("Estás viendo un registro de una semana pasada ("+drafts[pid].date+"). La entrada se registraría en ESA semana. ¿Continuar? (Para registrarla en la semana actual, primero cambia la fecha del registro)")) return;
+  }
   if(!inventarioDisp[pid]) inventarioDisp[pid]=[];
   inventarioDisp[pid].push({uid:"u"+Date.now().toString(36), id, m2, precioRenta:pr, precioVenta:pv, amueblado:amue, origen, desde});
   // Registrar la ENTRADA en la semana según el motivo (carga inicial no cuenta)
@@ -3780,6 +3823,9 @@ function cerrarDesdeLista(uid){
   const idx=lista.findIndex(u=>u.uid===uid);
   if(idx<0) return;
   const u=lista[idx];
+  if(_draftEsHistorico(pid)){
+    if(!confirm("Estás viendo un registro de una semana pasada ("+drafts[pid].date+"). El cierre se registraría en ESA semana. ¿Continuar? (Para registrarlo en la semana actual, primero cambia la fecha del registro)")) return;
+  }
   if(!confirm("¿Registrar cierre de renta del depto "+(u.id||"")+"? Se sacará de la lista y se creará su registro de cierre con los datos precargados.")) return;
   if(!drafts[pid].rentas) drafts[pid].rentas={};
   const r=drafts[pid].rentas;
@@ -3790,7 +3836,7 @@ function cerrarDesdeLista(uid){
   syncInventarioToFields();
   renderInventarioLista();
   renderUnidadesList();
-  showToast("Cierre registrado: depto "+(u.id||"")+" ✓ Completa canal y fechas de contrato");
+  showToast("Cierre registrado: depto "+(u.id||"")+" ✓ Completa canal/contrato y guarda el registro");
 }
 
 // ── RETIRO sin cierre (no es renta; ej. el propietario lo retiró) ──
@@ -4036,6 +4082,12 @@ function loadRentasInputs(){
   set("r-diasinv", (drafts[currentProject].rentas&&drafts[currentProject].rentas.diasinv)||"");
   renderInventarioLista();
   const invNewDesde=document.getElementById("inv-new-desde"); if(invNewDesde && !invNewDesde.value) invNewDesde.value=today();
+  // Si hay lista y el draft es el registro vigente (no una semana histórica), autollenar campos desde la lista
+  if(hayLista(currentProject)){
+    const latD=getLatest(currentProject);
+    const draftDate=drafts[currentProject]?drafts[currentProject].date:null;
+    if(!latD || (draftDate && draftDate>=latD.date)) syncInventarioToFields();
+  }
   const _r=drafts[currentProject].rentas||{};
   set("r-dispddp", _r.dispDDP||"");
   set("r-dispprop", Math.max(0, getDisp(_r)-(+_r.dispDDP||0))||"");
@@ -4330,14 +4382,17 @@ function renderRentasDashboard2(){
   const r = drafts[pid] && drafts[pid].rentas ? drafts[pid].rentas : null;
   const total=getInvTotal(pid);
 
-  // ¿Hay algo que mostrar?
-  const hasWeek = r && (rNuevas(r)+rRenov(r)+rNoreno(r)+rVenta(r)+getDisp(r) > 0);
+  // ¿Hay algo que mostrar? (la lista real también cuenta)
+  const hasWeek = (r && (rNuevas(r)+rRenov(r)+rNoreno(r)+rVenta(r)+getDisp(r) > 0)) || hayLista(pid);
   if(!total && !hasWeek){
     cont.innerHTML='<div class="rentas-empty">Configura el inventario total y registra la primera semana para ver el dashboard de absorción.</div>';
     return;
   }
 
-  const disp=getDisp(r), ocup=getOcupadas(pid,r), pct=ocupacionPct(pid,r);
+  // ★ Anclado a la lista real cuando existe
+  const disp = hayLista(pid) ? getInventarioDisp(pid).length : getDisp(r);
+  const ocup = Math.max(0, getInvTotal(pid) - disp);
+  const pct = getInvTotal(pid)>0 ? Math.round(ocup/getInvTotal(pid)*100) : 0;
   const nuevas=rNuevas(r), renov=rRenov(r), noreno=rNoreno(r), venta=rVenta(r);
   const absR=absNetaRenta(r), absT=absNetaTotal(r);
   const absRcls=absR>0?"abs-positive":absR<0?"abs-negative":"";
@@ -4403,7 +4458,7 @@ function renderRentasDashboard2(){
 
   // ── SECCIÓN 0.5: DISTINTIVO DE DISPONIBLES + VISITAS + EN PROCESO ──
   {
-    const dispDDP = r?(+r.dispDDP||0):0;
+    const dispDDP = hayLista(pid) ? getInventarioDisp(pid).filter(u=>u.origen==="ddp").length : (r?(+r.dispDDP||0):0);
     const dispProp = Math.max(0, disp - dispDDP);
     const pctDDP = disp>0?Math.round(dispDDP/disp*100):0;
     const pctProp = disp>0?Math.round(dispProp/disp*100):0;
@@ -4467,7 +4522,7 @@ function renderRentasDashboard2(){
       <div class="rd-stat"><div class="rd-stat-lbl">Ocupadas</div><div class="rd-stat-val">${ocup}</div><div class="rd-stat-sub">${pct}% del inventario</div></div>
       <div class="rd-stat"><div class="rd-stat-lbl">Disponibles</div><div class="rd-stat-val">${disp}</div><div class="rd-stat-sub">vacías por rentar</div></div>
     </div>
-    ${(()=>{ const amue=getInvAmueblado(pid); const sinAmue=Math.max(0,disp-amue); const pctAmue=disp>0?Math.round(amue/disp*100):0; if(disp===0&&amue===0) return ""; return `
+    ${(()=>{ const amue=hayLista(pid)?getInventarioDisp(pid).filter(u=>u.amueblado).length:getInvAmueblado(pid); const sinAmue=Math.max(0,disp-amue); const pctAmue=disp>0?Math.round(amue/disp*100):0; if(disp===0&&amue===0) return ""; return `
     <div class="rd-amueblado-row">
       <div style="font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);font-weight:700;width:100%;margin-bottom:2px">🔑 De los ${disp} disponibles para renta:</div>
       <div class="rd-amue-card amueblado"><span class="rd-amue-icon">🛋️</span><div><div class="rd-amue-val">${amue}</div><div class="rd-amue-lbl">Amueblados · ${pctAmue}%</div></div></div>
