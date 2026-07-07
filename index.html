@@ -442,6 +442,13 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .epm-val{font-size:26px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;color:#8A6010}
 .epm-unit{font-size:14px;color:#B08838;font-weight:500}
 .epm-lbl{font-size:11px;color:var(--text-2);margin-top:3px}
+.epm-dual{display:flex;gap:14px;align-items:flex-start}
+.epm-col{flex:1;min-width:0}
+.epm-col+.epm-col{border-left:1px solid rgba(0,0,0,.08);padding-left:14px}
+.epm-col-val{font-size:22px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;color:#8A6010}
+.exec-rend .epm-col-val{color:#1A7A4A}
+.epm-col-lbl{font-size:10px;color:var(--text-3);margin-top:4px;white-space:nowrap}
+.epm-dash{color:var(--text-3);font-weight:600}
 .epm-n{color:var(--text-3)}
 
 
@@ -640,6 +647,9 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .inv-table th{font-size:9.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-3);font-weight:700;padding:6px 6px;text-align:left;border-bottom:1.5px solid var(--border-md);white-space:nowrap}
 .inv-table td{padding:5px 6px;border-bottom:1px solid var(--border)}
 .inv-table input[type=text],.inv-table input[type=number],.inv-table input[type=date],.inv-table select{padding:5px 7px;border:1px solid var(--border-md);border-radius:6px;font-size:11.5px;font-family:'DM Mono',monospace;background:var(--surface);color:var(--text-1);outline:none;box-sizing:border-box}
+.inv-proc-toggle{border:1px solid var(--border-md);background:var(--surface);color:var(--text-3);border-radius:999px;font-size:10.5px;font-weight:600;padding:3px 10px;cursor:pointer;white-space:nowrap;transition:all .12s ease;font-family:inherit}
+.inv-proc-toggle:hover{border-color:#F59F00;color:#8A6010}
+.inv-proc-toggle.on{background:#FFF4E0;border-color:#F59F00;color:#8A6010;font-weight:700}
 .inv-act{padding:5px 9px;border:1px solid var(--border-md);border-radius:7px;background:var(--surface);font-size:10.5px;font-family:HelveticaNow,sans-serif;cursor:pointer;margin-right:4px}
 .inv-act-close{color:#1A7A4A;border-color:#BFE5CF;font-weight:700}
 .inv-act-close:hover{background:#E8F5EE}
@@ -1243,7 +1253,7 @@ window._fbLoadAll = async function(){
             <div style="font-size:11px;color:var(--text-3);margin-bottom:12px">La lista manda: al agregar (entrada) o rentar (salida) un depto, los números de disponibles, origen, amueblados y antigüedad se actualizan solos.</div>
             <div class="inv-table-wrap">
               <table class="inv-table">
-                <thead><tr><th>Depto</th><th>m²</th><th>Renta $</th><th>Venta $</th><th>$/m²</th><th>🛋️</th><th>Origen</th><th>Disponible desde</th><th>Días</th><th></th></tr></thead>
+                <thead><tr><th>Depto</th><th>m²</th><th>Renta $</th><th>Venta $</th><th>$/m²</th><th title="Amueblado">🛋️</th><th title="Electrodomésticos">🍳</th><th>Origen</th><th>Disponible desde</th><th>Días</th><th>⏳ En proceso</th><th></th></tr></thead>
                 <tbody id="inv-lista-body"></tbody>
               </table>
             </div>
@@ -1255,6 +1265,7 @@ window._fbLoadAll = async function(){
                 <input type="number" id="inv-new-renta" min="0" step="100" placeholder="Precio renta $">
                 <input type="number" id="inv-new-venta" min="0" step="1000" placeholder="Precio venta $">
                 <label class="inv-add-check"><input type="checkbox" id="inv-new-amue"> Amueblado</label>
+                <label class="inv-add-check"><input type="checkbox" id="inv-new-electro"> Electrodom.</label>
                 <select id="inv-new-origen"><option value="ddp">DDP</option><option value="prop">Propietario</option></select>
                 <input type="date" id="inv-new-desde" title="Disponible desde">
                 <select id="inv-new-motivo" title="Motivo de la entrada">
@@ -2148,7 +2159,7 @@ function exportExcel(){
       if(!r) return;
       rentRows.push({
         Proyecto:p.name, Fecha:e.date,
-        "Total torre":getTotalTorre(pid), "Con intención renta":getInvTotal(pid), "Disponibles":getDisp(r), "Disp. DDP":(r&&r.dispDDP)||0, "Disp. propietario":Math.max(0,getDisp(r)-((r&&r.dispDDP)||0)), "Amueblados disp.":getInvAmueblado(pid), "En proceso cierre":(r&&r.enproceso)||0, "Días prom. inventario":(r&&r.diasinv)||0,
+        "Total torre":getTotalTorre(pid), "Con intención renta":getInvTotal(pid), "Disponibles":getDisp(r), "Disp. DDP":(r&&r.dispDDP)||0, "Disp. propietario":Math.max(0,getDisp(r)-((r&&r.dispDDP)||0)), "Amueblados disp.":getInvAmueblado(pid), "En proceso cierre":(hayLista(pid)?enProcesoLista(pid):((r&&r.enproceso)||0)), "Días prom. inventario":(r&&r.diasinv)||0,
         "Ocupadas":getOcupadas(pid,r), "Ocupación %":ocupacionPct(pid,r),
         "Rentas nuevas":rNuevas(r), "Renovaciones":rRenov(r),
         "Lib. no renov.":rNoreno(r), "Lib. venta":rVenta(r),
@@ -2176,7 +2187,7 @@ function exportExcel(){
           "Días en lista":u.tipo==="renovacion"?"":(+u.dias||0),
           "Incremento %":+u.incr||0,
           "Fecha cierre":u.cierre||"", "Inicio contrato":u.inicio||"", "Fin contrato":u.fin||"",
-          "Monto renta":+u.monto||"", "Tamaño m²":+u.m2||"", "Precio/m²":(+u.m2>0&&+u.monto>0)?Math.round(+u.monto/+u.m2):"", "Amueblado":u.amueblado?"Sí":"No",
+          "Monto renta":+u.monto||"", "Tamaño m²":+u.m2||"", "Precio/m²":(+u.m2>0&&+u.monto>0)?Math.round(+u.monto/+u.m2):"", "Amueblado":u.amueblado?"Sí":"No", "Electrodomésticos":u.electro?"Sí":"No",
           "Canal":u.canal?(({directo:"Directo",asesor:"Asesor DDP",interno:"Broker interno",externo:"Broker externo",otro:"Otro"})[u.canal]||u.canal):"", "Broker/Asesor":u.broker||""
         });
       });
@@ -2188,16 +2199,17 @@ function exportExcel(){
   // Hoja: Inventario disponible (lista real)
   const invRows=[];
   PROJ_KEYS.forEach(pid=>{
-    getInventarioDisp(pid).forEach(u=>{
+    getInventarioDisp(pid).slice().sort(_cmpDepto).forEach(u=>{
       invRows.push({
         Proyecto:PROJECTS[pid].name, Depto:u.id||"", "m²":+u.m2||"", "Precio renta":+u.precioRenta||"",
         "Precio venta":+u.precioVenta||"", "$/m²":(+u.m2>0&&+u.precioRenta>0)?Math.round(u.precioRenta/u.m2):"",
-        Amueblado:u.amueblado?"Sí":"No", Origen:u.origen==="ddp"?"DDP":"Propietario",
+        Amueblado:u.amueblado?"Sí":"No", Electrodomésticos:u.electro?"Sí":"No", Origen:u.origen==="ddp"?"DDP":"Propietario",
+        "En proceso":u.enproceso?"Sí":"No",
         "Disponible desde":u.desde||"", "Días disponible":u.desde?diasDesde(u.desde):""
       });
     });
   });
-  const wsInv=XLSX.utils.json_to_sheet(invRows.length?invRows:[{Proyecto:"",Depto:"","m²":"","Precio renta":"","Precio venta":"","$/m²":"",Amueblado:"",Origen:"","Disponible desde":"","Días disponible":""}]);
+  const wsInv=XLSX.utils.json_to_sheet(invRows.length?invRows:[{Proyecto:"",Depto:"","m²":"","Precio renta":"","Precio venta":"","$/m²":"",Amueblado:"",Electrodomésticos:"",Origen:"","En proceso":"","Disponible desde":"","Días disponible":""}]);
   XLSX.utils.book_append_sheet(wb,wsInv,"Inventario disponible");
 
   // ─ Hoja 4: AMENIDADES ─
@@ -3092,8 +3104,8 @@ function renderExecutivePulse(){
 
   const convMes = eff&&eff.citas>0?Math.round(eff.nuevas/eff.citas*100):0;
 
-  // Disponibles y en proceso de cierre (de la semana actual)
-  const enProcesoSem = r?(+r.enproceso||0):0;
+  // Disponibles y en proceso de cierre — de la LISTA cuando existe, si no del campo capturado
+  const enProcesoSem = hayLista(pid) ? enProcesoLista(pid) : (r?(+r.enproceso||0):0);
 
   // Días promedio en inventario (del acumulado mensual, ya calculado)
   const diasMes = eff ? (eff.dias||0) : 0;
@@ -3128,6 +3140,13 @@ function renderExecutivePulse(){
   const cierresMes = cierresUnidadesMes(pid, curYm);
   const mixMes = mixCanal(cierresMes);
   const totalCierres = cierresMes.length;
+  // Precio/m² y rendimiento anual — MES EN CURSO (mismos criterios que la semana, sobre cierres del mes)
+  const _cierresMesM2 = cierresMes.filter(u=>+u.monto>0 && +u.m2>0);
+  const precioM2Mes = _cierresMesM2.length ? Math.round(_cierresMesM2.reduce((a,u)=>a+(+u.monto/+u.m2),0)/_cierresMesM2.length) : 0;
+  const hayPrecioM2Mes = _cierresMesM2.length>0;
+  const _cierresMesRend = cierresMes.filter(u=>+u.monto>0 && +u.precioVenta>0);
+  const rendAnualMes = _cierresMesRend.length ? +(_cierresMesRend.reduce((a,u)=>a+((+u.monto*12)/(+u.precioVenta)*100),0)/_cierresMesRend.length).toFixed(1) : 0;
+  const hayRendMes = _cierresMesRend.length>0;
   // Y de la ÚLTIMA SEMANA (unidades del último registro)
   const cierresSem_ = (r && Array.isArray(r.unidades)) ? r.unidades.filter(u=>u.tipo==="nueva") : [];
   const mixSem = mixCanal(cierresSem_);
@@ -3289,20 +3308,38 @@ function renderExecutivePulse(){
       </div>`:''}
       </div><!-- /erc-right -->
       </div><!-- /exec-rent-cols -->
-      ${(hayPrecioM2||hayRendAnual)?`
+      ${(hayPrecioM2||hayPrecioM2Mes||hayRendAnual||hayRendMes)?`
       <div class="exec-metrics-duo">
-        ${hayPrecioM2?`<div class="exec-preciom2">
+        ${(hayPrecioM2||hayPrecioM2Mes)?`<div class="exec-preciom2">
           <span class="epm-icon">📐</span>
-          <div class="epm-body">
-            <div class="epm-val">$${precioM2Sem.toLocaleString('es-MX')}<span class="epm-unit"> / m²</span></div>
-            <div class="epm-lbl">Precio por m² · cierres última semana <span class="epm-n">(${_cierresSem.length})</span></div>
+          <div class="epm-body" style="flex:1">
+            <div class="epm-lbl" style="margin:0 0 6px">Precio por m² · cierres</div>
+            <div class="epm-dual">
+              <div class="epm-col">
+                <div class="epm-col-val">${hayPrecioM2?`$${precioM2Sem.toLocaleString('es-MX')}<span class="epm-unit"> /m²</span>`:'<span class="epm-dash">—</span>'}</div>
+                <div class="epm-col-lbl">Semana ${hayPrecioM2?`<span class="epm-n">(${_cierresSem.length})</span>`:''}</div>
+              </div>
+              <div class="epm-col">
+                <div class="epm-col-val">${hayPrecioM2Mes?`$${precioM2Mes.toLocaleString('es-MX')}<span class="epm-unit"> /m²</span>`:'<span class="epm-dash">—</span>'}</div>
+                <div class="epm-col-lbl">${monthName(curYm).split(' ')[0]} ${hayPrecioM2Mes?`<span class="epm-n">(${_cierresMesM2.length})</span>`:''}</div>
+              </div>
+            </div>
           </div>
         </div>`:''}
-        ${hayRendAnual?`<div class="exec-preciom2 exec-rend">
+        ${(hayRendAnual||hayRendMes)?`<div class="exec-preciom2 exec-rend">
           <span class="epm-icon">📈</span>
-          <div class="epm-body">
-            <div class="epm-val" style="color:#1A7A4A">${rendAnualSem}<span class="epm-unit" style="color:#5BA07A">%</span></div>
-            <div class="epm-lbl">Rendimiento anual · cierres última semana <span class="epm-n">(${_cierresRend.length})</span></div>
+          <div class="epm-body" style="flex:1">
+            <div class="epm-lbl" style="margin:0 0 6px">Rendimiento anual · cierres</div>
+            <div class="epm-dual">
+              <div class="epm-col">
+                <div class="epm-col-val" style="color:#1A7A4A">${hayRendAnual?`${rendAnualSem}<span class="epm-unit" style="color:#5BA07A">%</span>`:'<span class="epm-dash">—</span>'}</div>
+                <div class="epm-col-lbl">Semana ${hayRendAnual?`<span class="epm-n">(${_cierresRend.length})</span>`:''}</div>
+              </div>
+              <div class="epm-col">
+                <div class="epm-col-val" style="color:#1A7A4A">${hayRendMes?`${rendAnualMes}<span class="epm-unit" style="color:#5BA07A">%</span>`:'<span class="epm-dash">—</span>'}</div>
+                <div class="epm-col-lbl">${monthName(curYm).split(' ')[0]} ${hayRendMes?`<span class="epm-n">(${_cierresMesRend.length})</span>`:''}</div>
+              </div>
+            </div>
           </div>
         </div>`:''}
       </div>`:''}
@@ -3766,6 +3803,9 @@ function onDisponibleManual(){
 // ══════════════════════════════════════════════
 function getInventarioDisp(pid){ return Array.isArray(inventarioDisp[pid]) ? inventarioDisp[pid] : []; }
 function hayLista(pid){ return getInventarioDisp(pid).length>0; }
+function enProcesoLista(pid){ return getInventarioDisp(pid).filter(u=>u.enproceso).length; }
+// Orden natural por número de depto (1806 < 1809 < 1902; 9 < 10) — solo para mostrar/exportar, no muta lo guardado
+function _cmpDepto(a,b){ return ((a&&a.id)||"").toString().localeCompare(((b&&b.id)||"").toString(), "es", {numeric:true, sensitivity:"base"}); }
 
 function persistInventario(){
   try{ localStorage.setItem("dp_inventario_disp", JSON.stringify(inventarioDisp)); }catch(e){}
@@ -3806,6 +3846,7 @@ function syncInventarioToFields(){
   const st=antiguedadStats(pid);
   if(st) r.diasinv = st.prom;
   invAmueblado[pid] = lista.filter(u=>u.amueblado).length;
+  r.enproceso = lista.filter(u=>u.enproceso).length; // ★ en proceso derivado de la lista
   persistInvConfig();
   // Refrescar inputs visibles
   const set=(id,v)=>{const el=document.getElementById(id); if(el) el.value=(v!==undefined&&v!==null&&v!=="")?v:"";};
@@ -3813,6 +3854,7 @@ function syncInventarioToFields(){
   set("r-dispddp", r.dispDDP);
   set("r-dispprop", Math.max(0, r.disponible-(+r.dispDDP||0)));
   set("r-invamueblado", invAmueblado[pid]);
+  set("r-enproceso", r.enproceso);
   set("r-diasinv", r.diasinv||"");
   renderRentasDashboard2();
 }
@@ -3831,6 +3873,7 @@ function addDeptoInventario(){
   const pr=+document.getElementById("inv-new-renta").value||0;
   const pv=+document.getElementById("inv-new-venta").value||0;
   const amue=document.getElementById("inv-new-amue").checked;
+  const electro=document.getElementById("inv-new-electro").checked;
   const origen=document.getElementById("inv-new-origen").value;
   const desde=document.getElementById("inv-new-desde").value||today();
   const motivo=document.getElementById("inv-new-motivo").value;
@@ -3839,7 +3882,7 @@ function addDeptoInventario(){
     if(!confirm("Estás viendo un registro de una semana pasada ("+drafts[pid].date+"). La entrada se registraría en ESA semana. ¿Continuar? (Para registrarla en la semana actual, primero cambia la fecha del registro)")) return;
   }
   if(!inventarioDisp[pid]) inventarioDisp[pid]=[];
-  inventarioDisp[pid].push({uid:"u"+Date.now().toString(36), id, m2, precioRenta:pr, precioVenta:pv, amueblado:amue, origen, desde});
+  inventarioDisp[pid].push({uid:"u"+Date.now().toString(36), id, m2, precioRenta:pr, precioVenta:pv, amueblado:amue, electro, origen, desde});
   // Registrar la ENTRADA en la semana según el motivo (carga inicial no cuenta)
   if(!drafts[pid].rentas) drafts[pid].rentas={};
   const r=drafts[pid].rentas;
@@ -3851,6 +3894,7 @@ function addDeptoInventario(){
   // Limpiar el form
   ["inv-new-id","inv-new-m2","inv-new-renta","inv-new-venta"].forEach(i=>{const el=document.getElementById(i); if(el) el.value="";});
   document.getElementById("inv-new-amue").checked=false;
+  document.getElementById("inv-new-electro").checked=false;
   showToast("Depto "+id+" agregado al inventario ✓"+(motivo!=="inicial"?" · entrada registrada":""));
 }
 
@@ -3879,6 +3923,7 @@ function abrirCierreModal(uid){
   document.getElementById("cm-canal").value="directo";
   document.getElementById("cm-broker").value="";
   document.getElementById("cm-amue").checked=!!u.amueblado;
+  document.getElementById("cm-electro").checked=!!u.electro;
   document.getElementById("cierre-modal").style.display="flex";
 }
 function cerrarCierreModal(){
@@ -3898,13 +3943,14 @@ function confirmarCierreModal(){
   const canal=document.getElementById("cm-canal").value||"directo";
   const broker=(document.getElementById("cm-broker").value||"").trim();
   const amue=document.getElementById("cm-amue").checked;
+  const electro=document.getElementById("cm-electro").checked;
   if(monto<=0){ showToast("Pon el precio de cierre"); return; }
   // Días en lista = de "disponible desde" a la FECHA DE CIERRE elegida
   const dias=(u.desde&&cierre)?Math.max(0,Math.round((new Date(cierre+"T00:00:00")-new Date(u.desde+"T00:00:00"))/86400000)):diasDesde(u.desde);
   if(!drafts[pid].rentas) drafts[pid].rentas={};
   const r=drafts[pid].rentas;
   if(!Array.isArray(r.unidades)) r.unidades=[];
-  r.unidades.push({id:u.id||"", tipo:"nueva", dias, incr:0, cierre, inicio, fin, canal, broker, monto, m2:+u.m2||0, precioVenta:+u.precioVenta||0, amueblado:amue});
+  r.unidades.push({id:u.id||"", tipo:"nueva", dias, incr:0, cierre, inicio, fin, canal, broker, monto, m2:+u.m2||0, precioVenta:+u.precioVenta||0, amueblado:amue, electro});
   lista.splice(idx,1);
   persistInventario();
   cerrarCierreModal(); // cerrar el modal ANTES de los renders (a prueba de fallos)
@@ -3930,7 +3976,7 @@ function _cerrarDesdeLista_legacy(uid){
   if(!drafts[pid].rentas) drafts[pid].rentas={};
   const r=drafts[pid].rentas;
   if(!Array.isArray(r.unidades)) r.unidades=[];
-  r.unidades.push({id:u.id||"", tipo:"nueva", dias:diasDesde(u.desde), incr:0, cierre:today(), inicio:"", fin:"", canal:"directo", broker:"", monto:+u.precioRenta||0, m2:+u.m2||0, precioVenta:+u.precioVenta||0, amueblado:!!u.amueblado});
+  r.unidades.push({id:u.id||"", tipo:"nueva", dias:diasDesde(u.desde), incr:0, cierre:today(), inicio:"", fin:"", canal:"directo", broker:"", monto:+u.precioRenta||0, m2:+u.m2||0, precioVenta:+u.precioVenta||0, amueblado:!!u.amueblado, electro:!!u.electro});
   lista.splice(idx,1);
   persistInventario();
   syncInventarioToFields();
@@ -3960,10 +4006,12 @@ function updateInvDepto(uid, field, val){
   if(!u) return;
   if(field==="id"||field==="desde"||field==="origen") u[field]=val;
   else if(field==="amueblado") u.amueblado=!!val;
+  else if(field==="electro") u.electro=!!val;
+  else if(field==="enproceso") u.enproceso=!!val;
   else u[field]=+val||0;
   persistInventario();
-  if(field==="amueblado"||field==="origen"||field==="desde") syncInventarioToFields();
-  if(field==="desde") renderInventarioLista();
+  if(field==="amueblado"||field==="origen"||field==="desde"||field==="enproceso") syncInventarioToFields();
+  if(field==="desde"||field==="enproceso") renderInventarioLista();
 }
 
 // ── RENDER de la tabla de inventario ──
@@ -3973,10 +4021,10 @@ function renderInventarioLista(){
   if(!cont) return;
   if(typeof renderAddUnitActions==="function") renderAddUnitActions();
   const pid=currentProject;
-  const lista=getInventarioDisp(pid);
+  const lista=getInventarioDisp(pid).slice().sort(_cmpDepto);
   if(badge) badge.textContent=lista.length;
   if(!lista.length){
-    cont.innerHTML='<tr><td colspan="10" style="text-align:center;color:var(--text-3);font-style:italic;padding:16px">Sin deptos en la lista. Agrega los disponibles actuales con motivo "Carga inicial".</td></tr>';
+    cont.innerHTML='<tr><td colspan="12" style="text-align:center;color:var(--text-3);font-style:italic;padding:16px">Sin deptos en la lista. Agrega los disponibles actuales con motivo "Carga inicial".</td></tr>';
     return;
   }
   cont.innerHTML=lista.map(u=>{
@@ -3990,9 +4038,11 @@ function renderInventarioLista(){
       <td><input type="number" min="0" step="1000" value="${u.precioVenta||""}" oninput="updateInvDepto('${u.uid}','precioVenta',this.value)" style="width:100px"></td>
       <td style="font-family:'DM Mono',monospace;font-size:11.5px;color:var(--text-2);text-align:center">${pm2?("$"+pm2.toLocaleString("es-MX")):"—"}</td>
       <td style="text-align:center"><input type="checkbox" ${u.amueblado?"checked":""} onchange="updateInvDepto('${u.uid}','amueblado',this.checked)"></td>
+      <td style="text-align:center"><input type="checkbox" ${u.electro?"checked":""} onchange="updateInvDepto('${u.uid}','electro',this.checked)"></td>
       <td><select onchange="updateInvDepto('${u.uid}','origen',this.value)" style="font-size:11px"><option value="ddp" ${u.origen==="ddp"?"selected":""}>DDP</option><option value="prop" ${u.origen!=="ddp"?"selected":""}>Propietario</option></select></td>
       <td><input type="date" value="${u.desde||""}" oninput="updateInvDepto('${u.uid}','desde',this.value)" style="width:120px;font-size:11px"></td>
       <td style="text-align:center;font-family:'DM Mono',monospace;font-size:12px;${diasCls}">${dias}d</td>
+      <td style="text-align:center"><button class="inv-proc-toggle${u.enproceso?' on':''}" onclick="updateInvDepto('${u.uid}','enproceso',${u.enproceso?'false':'true'})" title="Marcar/quitar como en proceso de cierre (negociación en curso)">${u.enproceso?'⏳ En proceso':'Marcar'}</button></td>
       <td style="white-space:nowrap"><button class="inv-act inv-act-close" onclick="abrirCierreModal('${u.uid}')" title="Se rentó — registrar cierre">🔑 Rentar</button><button class="inv-act inv-act-del" onclick="retirarDeLista('${u.uid}')" title="Retirar sin cierre">✕</button></td>
     </tr>`;
   }).join("");
@@ -4549,7 +4599,7 @@ function renderRentasDashboard2(){
   const enRenta=total;                       // inventario DDP en renta
   const rentados=ocup;                        // = inv DDP − disponibles
   const propietario=aAmen.hab_propietario||0;
-  const enProceso=r?(+r.enproceso||0):0;
+  const enProceso = hayLista(pid) ? enProcesoLista(pid) : (r?(+r.enproceso||0):0);
 
   // ── SECCIÓN 0: COMPOSICIÓN DE LA TORRE (embudo) ──
   if(torreTotal>0 || entregados>0){
@@ -5057,11 +5107,18 @@ function goFromModal(){
   closeModal();
   // Nueva semana: limpiar draft a cero
   drafts[pid]={vivencial:{},admin:{},comite:{},vivencial_score:0,admin_score:0,comite_score:0,notes:"",date:date,rentas:{},amenidades:{personas:0,viviendas:0,data:{}}};
-  // Pre-cargar masa crítica de la última semana (la población no se reinicia)
+  // Pre-cargar masa crítica de la última semana (la población y el estatus habitacional NO se reinician)
   const lastAmen=getLatest(pid);
   if(lastAmen && lastAmen.amenidades){
-    drafts[pid].amenidades.personas=lastAmen.amenidades.personas||0;
-    drafts[pid].amenidades.viviendas=lastAmen.amenidades.viviendas||0;
+    const la=lastAmen.amenidades;
+    drafts[pid].amenidades.personas=la.personas||0;
+    // Estatus habitacional: se HEREDA del registro anterior — solo se actualiza, nunca arranca en ceros
+    drafts[pid].amenidades.entregados=la.entregados||0;
+    drafts[pid].amenidades.hab_propietario=la.hab_propietario||0;
+    drafts[pid].amenidades.hab_larga=la.hab_larga||0;
+    drafts[pid].amenidades.hab_corta=la.hab_corta||0;
+    const _compSum=(la.hab_propietario||0)+(la.hab_larga||0)+(la.hab_corta||0);
+    drafts[pid].amenidades.viviendas = _compSum>0 ? _compSum : (la.viviendas||0);
     // Heredar satisfacción y capacidad de la semana anterior; usos arrancan en 0
     if(lastAmen.amenidades.data){
       Object.keys(lastAmen.amenidades.data).forEach(id=>{
@@ -5120,6 +5177,10 @@ if(document.readyState==="loading"){
       <div class="cm-field">
         <label>🛋️ Amueblado</label>
         <label class="cm-check"><input type="checkbox" id="cm-amue"> Sí, amueblado</label>
+      </div>
+      <div class="cm-field">
+        <label>🍳 Electrodomésticos</label>
+        <label class="cm-check"><input type="checkbox" id="cm-electro"> Sí, con electrodomésticos</label>
       </div>
       <div class="cm-field">
         <label>📄 Inicio de contrato</label>
