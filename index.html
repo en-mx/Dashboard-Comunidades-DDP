@@ -605,6 +605,35 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 @keyframes invPulse{0%{box-shadow:0 0 0 0 rgba(26,122,74,.45)}70%{box-shadow:0 0 0 12px rgba(26,122,74,0)}100%{box-shadow:0 0 0 0 rgba(26,122,74,0)}}
 .inv-highlight{animation:invPulse 1.1s ease-out 2;border-radius:10px}
 
+
+/* ── MODAL DE CIERRE ── */
+.cm-overlay{position:fixed;inset:0;background:rgba(17,17,16,.55);z-index:9000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(2px)}
+.cm-box{background:var(--surface);border-radius:18px;max-width:520px;width:100%;padding:22px 24px;box-shadow:0 24px 64px rgba(0,0,0,.28);max-height:92vh;overflow-y:auto}
+.cm-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.cm-head span{font-size:16px;font-weight:700;color:var(--text-1)}
+.cm-x{border:none;background:var(--surface-2);width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:13px;color:var(--text-2)}
+.cm-x:hover{background:var(--surface-3)}
+.cm-resumen{display:flex;gap:12px;flex-wrap:wrap;font-size:11.5px;color:var(--text-2);background:var(--surface-2);border-radius:10px;padding:9px 12px;margin-bottom:14px}
+.cm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cm-full{grid-column:1/-1}
+.cm-field label{display:block;font-size:10.5px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.03em;margin-bottom:5px}
+.cm-field input[type=number],.cm-field input[type=date],.cm-field input[type=text],.cm-field select{width:100%;padding:9px 11px;border:1px solid var(--border-md);border-radius:9px;font-size:13px;font-family:'DM Mono',monospace;background:var(--surface);color:var(--text-1);outline:none;box-sizing:border-box}
+.cm-field input:focus,.cm-field select:focus{border-color:var(--text-2)}
+.cm-money{display:flex;align-items:center;gap:7px}
+.cm-money span{font-size:15px;font-weight:700;color:var(--text-2)}
+.cm-money input{font-size:17px !important;font-weight:700}
+.cm-check{display:flex !important;align-items:center;gap:7px;font-size:12.5px !important;text-transform:none !important;letter-spacing:0 !important;font-weight:500 !important;color:var(--text-1) !important;padding:9px 0}
+.cm-actions{display:flex;gap:10px;margin-top:16px}
+.cm-btn{flex:1;padding:11px;border:none;border-radius:10px;font-size:13px;font-weight:700;font-family:HelveticaNow,sans-serif;cursor:pointer}
+.cm-cancel{background:var(--surface-2);color:var(--text-2)}
+.cm-cancel:hover{background:var(--surface-3)}
+.cm-confirm{background:#1A7A4A;color:#fff}
+.cm-confirm:hover{background:#166B41}
+.cm-foot{font-size:10.5px;color:var(--text-3);margin-top:11px;text-align:center;line-height:1.5}
+/* Chip del depto en la lista */
+.inv-id-chip{border:1.5px solid var(--border-md);background:var(--surface);padding:6px 12px;border-radius:8px;font-size:12.5px;font-weight:700;font-family:'DM Mono',monospace;color:var(--text-1);cursor:pointer;transition:all .12s}
+.inv-id-chip:hover{border-color:#1A7A4A;color:#1A7A4A;background:#E8F5EE}
+
 .inv-badge{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:20px;padding:0 7px;background:var(--surface-3);border-radius:10px;font-size:11.5px;font-family:'DM Mono',monospace;font-weight:700;color:var(--text-1);margin-left:6px}
 .inv-table-wrap{overflow-x:auto;margin-bottom:12px}
 .inv-table{width:100%;border-collapse:collapse;font-size:12px}
@@ -3825,8 +3854,70 @@ function addDeptoInventario(){
   showToast("Depto "+id+" agregado al inventario ✓"+(motivo!=="inicial"?" · entrada registrada":""));
 }
 
+// ══════════════════════════════════════════════
+// MODAL DE CIERRE — clic al depto en la lista abre el menú de cierre completo
+// ══════════════════════════════════════════════
+let _cierreUid=null;
+function abrirCierreModal(uid){
+  const pid=currentProject;
+  const u=getInventarioDisp(pid).find(x=>x.uid===uid);
+  if(!u) return;
+  if(_draftEsHistorico(pid)){
+    if(!confirm("Estás viendo un registro de una semana pasada ("+drafts[pid].date+"). El cierre se registraría en ESA semana. ¿Continuar? (Para registrarlo en la semana actual, primero cambia la fecha del registro)")) return;
+  }
+  _cierreUid=uid;
+  const hoy=today();
+  const fin=(d=>{const x=new Date(d+"T00:00:00");x.setFullYear(x.getFullYear()+1);return x.toISOString().slice(0,10);})(hoy);
+  const pm2=(+u.m2>0&&+u.precioRenta>0)?Math.round(u.precioRenta/u.m2):0;
+  document.getElementById("cm-title").textContent="🔑 Cerrar renta · Depto "+(u.id||"—");
+  document.getElementById("cm-resumen").innerHTML=
+    `<span>📐 ${u.m2||"—"} m²</span><span>💵 Lista: $${(+u.precioRenta||0).toLocaleString("es-MX")}/mes${pm2?` · $${pm2.toLocaleString("es-MX")}/m²`:""}</span><span>🕒 ${diasDesde(u.desde)} días disponible</span><span>${u.origen==="ddp"?"🏢 DDP":"🏠 Propietario"}</span>`;
+  document.getElementById("cm-monto").value=+u.precioRenta||"";
+  document.getElementById("cm-cierre").value=hoy;
+  document.getElementById("cm-inicio").value=hoy;
+  document.getElementById("cm-fin").value=fin;
+  document.getElementById("cm-canal").value="directo";
+  document.getElementById("cm-broker").value="";
+  document.getElementById("cm-amue").checked=!!u.amueblado;
+  document.getElementById("cierre-modal").style.display="flex";
+}
+function cerrarCierreModal(){
+  document.getElementById("cierre-modal").style.display="none";
+  _cierreUid=null;
+}
+function confirmarCierreModal(){
+  const pid=currentProject;
+  const lista=getInventarioDisp(pid);
+  const idx=lista.findIndex(x=>x.uid===_cierreUid);
+  if(idx<0){ cerrarCierreModal(); return; }
+  const u=lista[idx];
+  const monto=+document.getElementById("cm-monto").value||0;
+  const cierre=document.getElementById("cm-cierre").value||today();
+  const inicio=document.getElementById("cm-inicio").value||"";
+  const fin=document.getElementById("cm-fin").value||"";
+  const canal=document.getElementById("cm-canal").value||"directo";
+  const broker=(document.getElementById("cm-broker").value||"").trim();
+  const amue=document.getElementById("cm-amue").checked;
+  if(monto<=0){ showToast("Pon el precio de cierre"); return; }
+  // Días en lista = de "disponible desde" a la FECHA DE CIERRE elegida
+  const dias=(u.desde&&cierre)?Math.max(0,Math.round((new Date(cierre+"T00:00:00")-new Date(u.desde+"T00:00:00"))/86400000)):diasDesde(u.desde);
+  if(!drafts[pid].rentas) drafts[pid].rentas={};
+  const r=drafts[pid].rentas;
+  if(!Array.isArray(r.unidades)) r.unidades=[];
+  r.unidades.push({id:u.id||"", tipo:"nueva", dias, incr:0, cierre, inicio, fin, canal, broker, monto, m2:+u.m2||0, precioVenta:+u.precioVenta||0, amueblado:amue});
+  lista.splice(idx,1);
+  persistInventario();
+  cerrarCierreModal(); // cerrar el modal ANTES de los renders (a prueba de fallos)
+  try{ syncInventarioToFields(); }catch(e){ console.error(e); }
+  try{ renderInventarioLista(); }catch(e){ console.error(e); }
+  try{ renderUnidadesList(); }catch(e){ console.error(e); }
+  showToast("Cierre del depto "+(u.id||"")+" registrado ✓ Guarda el registro de la semana");
+}
+// El flujo viejo redirige al modal (compatibilidad)
+
 // ── CIERRE desde la lista (salida): precarga la unidad cerrada y saca el depto ──
-function cerrarDesdeLista(uid){
+function cerrarDesdeLista(uid){ abrirCierreModal(uid); }
+function _cerrarDesdeLista_legacy(uid){
   const pid=currentProject;
   const lista=getInventarioDisp(pid);
   const idx=lista.findIndex(u=>u.uid===uid);
@@ -3893,7 +3984,7 @@ function renderInventarioLista(){
     const pm2=(+u.m2>0&&+u.precioRenta>0)?Math.round(u.precioRenta/u.m2):0;
     const diasCls=dias>=90?"color:#A8291A;font-weight:700":dias>=45?"color:#8A6010;font-weight:700":"color:var(--text-2)";
     return `<tr>
-      <td><input type="text" value="${(u.id||"").replace(/"/g,'&quot;')}" oninput="updateInvDepto('${u.uid}','id',this.value)" style="width:70px"></td>
+      <td><button class="inv-id-chip" onclick="abrirCierreModal('${u.uid}')" title="Clic para cerrar la renta de este depto">${(u.id||"—").replace(/</g,'&lt;')}</button></td>
       <td><input type="number" min="0" step="0.1" value="${u.m2||""}" oninput="updateInvDepto('${u.uid}','m2',this.value)" style="width:64px"></td>
       <td><input type="number" min="0" step="100" value="${u.precioRenta||""}" oninput="updateInvDepto('${u.uid}','precioRenta',this.value)" style="width:88px"></td>
       <td><input type="number" min="0" step="1000" value="${u.precioVenta||""}" oninput="updateInvDepto('${u.uid}','precioVenta',this.value)" style="width:100px"></td>
@@ -3902,7 +3993,7 @@ function renderInventarioLista(){
       <td><select onchange="updateInvDepto('${u.uid}','origen',this.value)" style="font-size:11px"><option value="ddp" ${u.origen==="ddp"?"selected":""}>DDP</option><option value="prop" ${u.origen!=="ddp"?"selected":""}>Propietario</option></select></td>
       <td><input type="date" value="${u.desde||""}" oninput="updateInvDepto('${u.uid}','desde',this.value)" style="width:120px;font-size:11px"></td>
       <td style="text-align:center;font-family:'DM Mono',monospace;font-size:12px;${diasCls}">${dias}d</td>
-      <td style="white-space:nowrap"><button class="inv-act inv-act-close" onclick="cerrarDesdeLista('${u.uid}')" title="Se rentó — registrar cierre">🔑 Rentar</button><button class="inv-act inv-act-del" onclick="retirarDeLista('${u.uid}')" title="Retirar sin cierre">✕</button></td>
+      <td style="white-space:nowrap"><button class="inv-act inv-act-close" onclick="abrirCierreModal('${u.uid}')" title="Se rentó — registrar cierre">🔑 Rentar</button><button class="inv-act inv-act-del" onclick="retirarDeLista('${u.uid}')" title="Retirar sin cierre">✕</button></td>
     </tr>`;
   }).join("");
 }
@@ -5008,5 +5099,59 @@ if(document.readyState==="loading"){
   _bootPanel();
 }
 </script>
+
+<!-- ═══ MODAL DE CIERRE DE RENTA (desde la lista) ═══ -->
+<div id="cierre-modal" class="cm-overlay" style="display:none" onclick="if(event.target===this)cerrarCierreModal()">
+  <div class="cm-box">
+    <div class="cm-head">
+      <span id="cm-title">🔑 Cerrar renta</span>
+      <button class="cm-x" onclick="cerrarCierreModal()">✕</button>
+    </div>
+    <div class="cm-resumen" id="cm-resumen"></div>
+    <div class="cm-grid">
+      <div class="cm-field cm-full">
+        <label>💰 Precio de cierre final (renta mensual)</label>
+        <div class="cm-money"><span>$</span><input type="number" id="cm-monto" min="0" step="100" placeholder="0"></div>
+      </div>
+      <div class="cm-field">
+        <label>🤝 Fecha de cierre</label>
+        <input type="date" id="cm-cierre">
+      </div>
+      <div class="cm-field">
+        <label>🛋️ Amueblado</label>
+        <label class="cm-check"><input type="checkbox" id="cm-amue"> Sí, amueblado</label>
+      </div>
+      <div class="cm-field">
+        <label>📄 Inicio de contrato</label>
+        <input type="date" id="cm-inicio">
+      </div>
+      <div class="cm-field">
+        <label>📄 Fin de contrato</label>
+        <input type="date" id="cm-fin">
+      </div>
+      <div class="cm-field">
+        <label>Canal de cierre</label>
+        <select id="cm-canal">
+          <option value="directo">🏢 Directo</option>
+          <option value="asesor">⭐ Asesor DDP</option>
+          <option value="propietario">🏠 Propietario</option>
+          <option value="interno">🤝 Broker interno</option>
+          <option value="externo">🌐 Broker externo</option>
+          <option value="otro">Otro</option>
+        </select>
+      </div>
+      <div class="cm-field">
+        <label>Broker / Asesor (nombre)</label>
+        <input type="text" id="cm-broker" placeholder="Opcional">
+      </div>
+    </div>
+    <div class="cm-actions">
+      <button class="cm-btn cm-cancel" onclick="cerrarCierreModal()">Cancelar</button>
+      <button class="cm-btn cm-confirm" onclick="confirmarCierreModal()">🔑 Confirmar cierre</button>
+    </div>
+    <div class="cm-foot">El depto saldrá de la lista de disponibles y su cierre quedará en "Unidades cerradas esta semana" (editable ahí después si hace falta).</div>
+  </div>
+</div>
+
 </body>
 </html>
