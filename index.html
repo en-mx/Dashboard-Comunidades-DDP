@@ -442,13 +442,6 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .epm-val{font-size:26px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;color:#8A6010}
 .epm-unit{font-size:14px;color:#B08838;font-weight:500}
 .epm-lbl{font-size:11px;color:var(--text-2);margin-top:3px}
-.epm-dual{display:flex;gap:14px;align-items:flex-start}
-.epm-col{flex:1;min-width:0}
-.epm-col+.epm-col{border-left:1px solid rgba(0,0,0,.08);padding-left:14px}
-.epm-col-val{font-size:22px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;color:#8A6010}
-.exec-rend .epm-col-val{color:#1A7A4A}
-.epm-col-lbl{font-size:10px;color:var(--text-3);margin-top:4px;white-space:nowrap}
-.epm-dash{color:var(--text-3);font-weight:600}
 .epm-n{color:var(--text-3)}
 
 
@@ -462,6 +455,10 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 
 .exec-rent-trio{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
 .exec-pair-dias{border-left:3px solid #2563EB}
+.epd-duo{display:flex;align-items:center;gap:10px}
+.epd-item{display:inline-flex;align-items:baseline;gap:5px}
+.epd-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--text-3)}
+.epd-sep{width:1px;height:18px;background:var(--border-md)}
 .exec-pair-card{display:flex;align-items:center;gap:11px;padding:12px 14px;border-radius:11px;border:1px solid var(--border);background:var(--surface)}
 .exec-pair-disp{border-left:3px solid #F59E0B}
 .exec-pair-proceso{border-left:3px solid #8B5CF6}
@@ -604,6 +601,7 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 
 /* ── LISTA REAL DE INVENTARIO ── */
 
+.auto-tag{display:inline-block;background:#E8F5EE;color:#1A7A4A;border:1px solid #BFE5CF;font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:2px 6px;border-radius:5px;vertical-align:middle;margin-left:4px}
 .auc-row{display:flex;gap:9px;flex-wrap:wrap}
 .auc-primary{background:var(--text-1);color:var(--bg)}
 .auc-secondary{background:var(--surface);color:var(--text-1);border:1.5px dashed var(--border-md)}
@@ -612,6 +610,46 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 @keyframes invPulse{0%{box-shadow:0 0 0 0 rgba(26,122,74,.45)}70%{box-shadow:0 0 0 12px rgba(26,122,74,0)}100%{box-shadow:0 0 0 0 rgba(26,122,74,0)}}
 .inv-highlight{animation:invPulse 1.1s ease-out 2;border-radius:10px}
 
+
+
+/* ── ASISTENTE SEMANAL ── */
+#wizard-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:8500;background:#1B1B1A;color:#fff;border-radius:16px;padding:12px 16px;display:flex;align-items:center;gap:18px;box-shadow:0 12px 40px rgba(0,0,0,.35);max-width:860px;width:calc(100% - 40px);flex-wrap:wrap}
+.wiz-info{flex:1;min-width:220px;display:flex;flex-direction:column;gap:2px}
+.wiz-step-count{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.55)}
+.wiz-step-title{font-size:14px;font-weight:700}
+.wiz-step-hint{font-size:11px;color:rgba(255,255,255,.7);line-height:1.4}
+.wiz-actions{display:flex;align-items:center;gap:8px}
+.wiz-btn{padding:9px 14px;border:none;border-radius:9px;font-size:12px;font-weight:700;font-family:HelveticaNow,sans-serif;cursor:pointer;background:rgba(255,255,255,.12);color:#fff}
+.wiz-btn:hover{background:rgba(255,255,255,.22)}
+.wiz-btn:disabled{opacity:.35;cursor:default}
+.wiz-next{background:#fff;color:#1B1B1A}
+.wiz-next:hover{background:#E8E6E1}
+.wiz-save{background:#1A7A4A}
+.wiz-save:hover{background:#166B41}
+.wiz-x{border:none;background:transparent;color:rgba(255,255,255,.5);font-size:13px;cursor:pointer;padding:6px}
+.wiz-x:hover{color:#fff}
+@keyframes wizPulse{0%{box-shadow:0 0 0 0 rgba(37,99,235,.45)}70%{box-shadow:0 0 0 14px rgba(37,99,235,0)}100%{box-shadow:0 0 0 0 rgba(37,99,235,0)}}
+.wiz-highlight{animation:wizPulse 1.2s ease-out 2;border-radius:12px}
+@media(max-width:700px){#wizard-bar{bottom:8px;padding:10px 12px;gap:10px}.wiz-step-hint{display:none}}
+
+
+/* ── HISTORIAL DE CIERRES ── */
+.hc-filtros{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 10px}
+.hc-pill{padding:6px 13px;border:1.5px solid var(--border-md);border-radius:20px;background:var(--surface);font-size:11.5px;font-weight:700;font-family:HelveticaNow,sans-serif;cursor:pointer;color:var(--text-2)}
+.hc-pill.active{background:var(--text-1);color:var(--bg);border-color:var(--text-1)}
+.hc-resumen{display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--text-2);background:var(--surface-2);border-radius:10px;padding:9px 13px;margin-bottom:10px}
+.hc-resumen strong{font-family:'DM Mono',monospace;color:var(--text-1)}
+.hc-table-wrap{overflow:auto;max-height:430px;border:1px solid var(--border);border-radius:11px}
+.hc-table{width:100%;border-collapse:collapse;font-size:11.5px;min-width:980px}
+.hc-table th{position:sticky;top:0;background:var(--surface-2);font-size:9px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-3);font-weight:700;padding:8px 8px;text-align:left;border-bottom:1.5px solid var(--border-md);white-space:nowrap;z-index:2}
+.hc-table td{padding:7px 8px;border-bottom:1px solid var(--border);white-space:nowrap}
+.hc-table tr:hover td{background:var(--surface-2)}
+.hc-num{font-family:'DM Mono',monospace}
+.hc-proj-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:middle}
+.hc-tipo{font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:5px}
+.hc-tipo.nueva{background:#E8F5EE;color:#1A7A4A}
+.hc-tipo.renov{background:#EEF2FF;color:#4B5FD6}
+.hc-empty{text-align:center;color:var(--text-3);font-style:italic;padding:22px}
 
 /* ── MODAL DE CIERRE ── */
 .cm-overlay{position:fixed;inset:0;background:rgba(17,17,16,.55);z-index:9000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(2px)}
@@ -647,9 +685,6 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .inv-table th{font-size:9.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-3);font-weight:700;padding:6px 6px;text-align:left;border-bottom:1.5px solid var(--border-md);white-space:nowrap}
 .inv-table td{padding:5px 6px;border-bottom:1px solid var(--border)}
 .inv-table input[type=text],.inv-table input[type=number],.inv-table input[type=date],.inv-table select{padding:5px 7px;border:1px solid var(--border-md);border-radius:6px;font-size:11.5px;font-family:'DM Mono',monospace;background:var(--surface);color:var(--text-1);outline:none;box-sizing:border-box}
-.inv-proc-toggle{border:1px solid var(--border-md);background:var(--surface);color:var(--text-3);border-radius:999px;font-size:10.5px;font-weight:600;padding:3px 10px;cursor:pointer;white-space:nowrap;transition:all .12s ease;font-family:inherit}
-.inv-proc-toggle:hover{border-color:#F59F00;color:#8A6010}
-.inv-proc-toggle.on{background:#FFF4E0;border-color:#F59F00;color:#8A6010;font-weight:700}
 .inv-act{padding:5px 9px;border:1px solid var(--border-md);border-radius:7px;background:var(--surface);font-size:10.5px;font-family:HelveticaNow,sans-serif;cursor:pointer;margin-right:4px}
 .inv-act-close{color:#1A7A4A;border-color:#BFE5CF;font-weight:700}
 .inv-act-close:hover{background:#E8F5EE}
@@ -1159,6 +1194,20 @@ window._fbLoadAll = async function(){
       </div>
     </div>
 
+    <!-- Fila 2.7: Historial de cierres -->
+    <div class="chart-card" style="margin-bottom:14px">
+      <div class="chart-card-title">📜 Historial de cierres</div>
+      <div class="chart-card-sub">Todos los cierres registrados, del más reciente al más antiguo. Los datos vienen automáticos de la lista de inventario al rentar.</div>
+      <div class="hc-filtros" id="hc-filtros"></div>
+      <div class="hc-resumen" id="hc-resumen"></div>
+      <div class="hc-table-wrap">
+        <table class="hc-table">
+          <thead><tr><th>Cierre</th><th>Proyecto</th><th>Depto</th><th>Tipo</th><th>m²</th><th>Renta</th><th>$/m²</th><th>Precio venta</th><th>Rend.</th><th>Días</th><th>Canal</th><th>Broker / Asesor</th><th>🛋️</th></tr></thead>
+          <tbody id="hc-body"></tbody>
+        </table>
+      </div>
+    </div>
+
     <!-- Fila 3: Alertas -->
     <div class="chart-card" style="margin-bottom:1.5rem">
       <div class="chart-card-title">⚡ Alertas y puntos de atención</div>
@@ -1199,7 +1248,7 @@ window._fbLoadAll = async function(){
           <span class="rentas-icon">🏠</span>
           <h3>Dashboard de rentas</h3>
         </div>
-        <button class="rentas-capture-toggle" onclick="toggleCaptureForm()" id="capture-toggle-btn">📥 Registrar / editar semana</button>
+        <button class="rentas-capture-toggle" onclick="toggleCaptureForm()" id="capture-toggle-btn">📥 Registrar / editar semana</button> <button class="rentas-capture-toggle" onclick="startWizard()" title="Guía paso a paso de la captura semanal" style="margin-left:6px">🧭 Guía</button>
       </div>
 
       <!-- ═══ FORMULARIO DE CAPTURA (colapsable) ═══ -->
@@ -1253,7 +1302,7 @@ window._fbLoadAll = async function(){
             <div style="font-size:11px;color:var(--text-3);margin-bottom:12px">La lista manda: al agregar (entrada) o rentar (salida) un depto, los números de disponibles, origen, amueblados y antigüedad se actualizan solos.</div>
             <div class="inv-table-wrap">
               <table class="inv-table">
-                <thead><tr><th>Depto</th><th>m²</th><th>Renta $</th><th>Venta $</th><th>$/m²</th><th title="Amueblado">🛋️</th><th title="Electrodomésticos">🍳</th><th>Origen</th><th>Disponible desde</th><th>Días</th><th>⏳ En proceso</th><th></th></tr></thead>
+                <thead><tr><th>Depto</th><th>m²</th><th>Renta $</th><th>Venta $</th><th>$/m²</th><th>🛋️</th><th>Origen</th><th>Disponible desde</th><th>Días</th><th></th></tr></thead>
                 <tbody id="inv-lista-body"></tbody>
               </table>
             </div>
@@ -1265,13 +1314,13 @@ window._fbLoadAll = async function(){
                 <input type="number" id="inv-new-renta" min="0" step="100" placeholder="Precio renta $">
                 <input type="number" id="inv-new-venta" min="0" step="1000" placeholder="Precio venta $">
                 <label class="inv-add-check"><input type="checkbox" id="inv-new-amue"> Amueblado</label>
-                <label class="inv-add-check"><input type="checkbox" id="inv-new-electro"> Electrodom.</label>
                 <select id="inv-new-origen"><option value="ddp">DDP</option><option value="prop">Propietario</option></select>
                 <input type="date" id="inv-new-desde" title="Disponible desde">
                 <select id="inv-new-motivo" title="Motivo de la entrada">
                   <option value="inicial">Carga inicial (no registra entrada)</option>
                   <option value="noreno">Entrada · no renovación</option>
-                  <option value="venta">Entrada · por venta</option>
+                  <option value="venta">Entrada · por venta (ya estaba en renta)</option>
+                  <option value="nuevo">Entrada · depto NUEVO al programa de renta</option>
                 </select>
                 <button class="inv-add-btn" onclick="addDeptoInventario()">Agregar</button>
               </div>
@@ -1287,7 +1336,7 @@ window._fbLoadAll = async function(){
 
           <!-- Liberaciones y citas -->
           <div class="cap-block">
-            <div class="cap-block-title">📤 Liberaciones y tráfico</div>
+            <div class="cap-block-title" id="block-trafico">📤 Liberaciones y tráfico</div>
             <div class="rentas-inputs">
               <div class="rentas-input-group">
                 <label>Liberaciones por no renovación <span class="hint">(salidas naturales)</span></label>
@@ -1353,7 +1402,7 @@ window._fbLoadAll = async function(){
             <span class="rentas-icon">🏛️</span>
             <h3>Uso y satisfacción de amenidades</h3>
           </div>
-          <button class="rentas-capture-toggle" onclick="toggleAmenCapture()" id="amen-capture-btn">📥 Registrar semana</button>
+          <button class="rentas-capture-toggle" onclick="toggleAmenCapture()" id="amen-capture-btn">📥 Capturar amenidades</button>
         </div>
 
         <!-- Masa crítica -->
@@ -1381,7 +1430,7 @@ window._fbLoadAll = async function(){
                   <input type="number" id="am-propietario" min="0" step="1" placeholder="0" oninput="onMasaInput()">
                 </div>
                 <div class="rentas-input-group">
-                  <label>📋 Renta larga estancia</label>
+                  <label>📋 Renta larga estancia <span class="auto-tag" title="Se calcula solo: universo de renta − disponibles de la lista. Puedes corregir casos raros.">auto</span></label>
                   <input type="number" id="am-larga" min="0" step="1" placeholder="0" oninput="onMasaInput()">
                 </div>
                 <div class="rentas-input-group">
@@ -1614,17 +1663,38 @@ function persist(){
   clearTimeout(window._persistTimer);
   window._persistTimer = setTimeout(async ()=>{
     if(window._fbSaveProject){
-      // Solo guardar proyectos que tienen datos
-      const saves = Object.keys(db).map(pid =>
-        db[pid] && db[pid].length > 0 ? window._fbSaveProject(pid, db[pid]) : Promise.resolve()
-      );
-      await Promise.all(saves);
+      try{
+        // Solo guardar proyectos que tienen datos
+        const saves = Object.keys(db).map(pid =>
+          db[pid] && db[pid].length > 0 ? window._fbSaveProject(pid, db[pid]) : Promise.resolve()
+        );
+        await Promise.all(saves);
+        showSyncStatus("Sincronizado ✓", "ok");
+      } catch(e){
+        console.error("Firebase persist error:", e);
+        showSyncStatus("⚠️ Sin sincronizar", "warn");
+        showToast("⚠️ No se pudo sincronizar con la nube — tus cambios están guardados SOLO en esta computadora. Revisa tu conexión.");
+      }
     }
   }, 600);
 }
 
 let currentProject = null;
 let drafts = {}; // borrador por proyecto, independiente
+let _dirty = {}; // cambios sin guardar por proyecto
+function markDirty(){ if(currentProject){ _dirty[currentProject]=true; _updateDirtyHint(); } }
+function clearDirty(pid){ _dirty[pid]=false; _updateDirtyHint(); }
+function _updateDirtyHint(){
+  const h=document.getElementById("save-hint");
+  if(h && currentProject && _dirty[currentProject]) h.innerHTML='<span style="color:#A8291A;font-weight:700">● Cambios sin guardar</span>';
+}
+// Cualquier edición dentro de la vista del proyecto marca el borrador como sucio
+document.addEventListener("input", e=>{ const v=document.getElementById("view-project"); if(v && v.contains(e.target)) markDirty(); }, true);
+document.addEventListener("change", e=>{ const v=document.getElementById("view-project"); if(v && v.contains(e.target)) markDirty(); }, true);
+// Aviso del navegador si se intenta salir con cambios sin guardar
+window.addEventListener("beforeunload", e=>{
+  if(Object.keys(_dirty).some(k=>_dirty[k])){ e.preventDefault(); e.returnValue=""; }
+});
 let monthOverrides = {}; // overrides manuales del acumulado mensual por proyecto/mes
 let invConfig = {}; // inventario total de renta por proyecto
 let totalTorre = {}; // total de unidades de la torre por proyecto
@@ -1813,6 +1883,88 @@ function rendPromedio(units){
 }
 
 // Comparativa de rendimiento de cierres entre proyectos (semana vs mes)
+// ══════════════════════════════════════════════
+// HISTORIAL DE CIERRES — activo comercial acumulado
+// ══════════════════════════════════════════════
+let _histFiltro="all";
+
+// Todos los cierres históricos de un proyecto, con fecha efectiva (cierre o fecha del registro)
+function cierresHistoricos(pid){
+  const out=[];
+  getHistory(pid).forEach(e=>{
+    if(!e.rentas || !Array.isArray(e.rentas.unidades)) return;
+    e.rentas.unidades.forEach(u=>{
+      out.push({...u, fecha:(u.cierre||e.date), pid});
+    });
+  });
+  return out;
+}
+
+function setHistFiltro(f){ _histFiltro=f; renderHistorialCierres(); }
+
+function renderHistorialCierres(){
+  const body=document.getElementById("hc-body");
+  const filtros=document.getElementById("hc-filtros");
+  const resumen=document.getElementById("hc-resumen");
+  if(!body) return;
+
+  // Pills de filtro (respetan el orden arrastrable)
+  if(filtros){
+    filtros.innerHTML=[`<button class="hc-pill ${_histFiltro==="all"?"active":""}" onclick="setHistFiltro('all')">Todos</button>`]
+      .concat(projectOrder.map(pid=>`<button class="hc-pill ${_histFiltro===pid?"active":""}" onclick="setHistFiltro('${pid}')">${PROJECTS[pid].short}</button>`)).join("");
+  }
+
+  const pids=_histFiltro==="all"?projectOrder:[_histFiltro];
+  let rows=[];
+  pids.forEach(pid=>{ rows=rows.concat(cierresHistoricos(pid)); });
+  rows.sort((a,b)=>(b.fecha||"").localeCompare(a.fecha||""));
+
+  if(!rows.length){
+    body.innerHTML='<tr><td colspan="13" class="hc-empty">Sin cierres registrados aún.</td></tr>';
+    if(resumen) resumen.innerHTML="";
+    return;
+  }
+
+  // Resumen del filtro activo
+  const nuevas=rows.filter(u=>u.tipo==="nueva");
+  const conM2=nuevas.filter(u=>+u.m2>0&&+u.monto>0);
+  const conRend=nuevas.filter(u=>+u.precioVenta>0&&+u.monto>0);
+  const prom=(arr,fn)=>arr.length?arr.reduce((a,u)=>a+fn(u),0)/arr.length:0;
+  const rentaProm=Math.round(prom(nuevas.filter(u=>+u.monto>0),u=>+u.monto));
+  const pm2Prom=conM2.length?Math.round(prom(conM2,u=>u.monto/u.m2)):0;
+  const rendProm=conRend.length?+(prom(conRend,u=>(u.monto*12/u.precioVenta)*100)).toFixed(1):0;
+  const diasProm=nuevas.filter(u=>+u.dias>0).length?Math.round(prom(nuevas.filter(u=>+u.dias>0),u=>+u.dias)):0;
+  if(resumen){
+    resumen.innerHTML=`<span>Cierres: <strong>${rows.length}</strong> (${nuevas.length} nuevas · ${rows.length-nuevas.length} renov.)</span>`+
+      (rentaProm?`<span>Renta prom.: <strong>$${rentaProm.toLocaleString("es-MX")}</strong></span>`:"")+
+      (pm2Prom?`<span>$/m² prom.: <strong>$${pm2Prom.toLocaleString("es-MX")}</strong></span>`:"")+
+      (rendProm?`<span>Rend. prom.: <strong>${rendProm}%</strong></span>`:"")+
+      (diasProm?`<span>Días prom.: <strong>${diasProm}d</strong></span>`:"");
+  }
+
+  body.innerHTML=rows.slice(0,300).map(u=>{
+    const p=PROJECTS[u.pid];
+    const pm2=(+u.m2>0&&+u.monto>0)?Math.round(u.monto/u.m2):0;
+    const rend=(+u.precioVenta>0&&+u.monto>0)?((u.monto*12/u.precioVenta)*100).toFixed(1):null;
+    const ci=CANAL_INFO[u.canal]||CANAL_INFO.otro;
+    return `<tr>
+      <td class="hc-num">${u.fecha||"—"}</td>
+      <td><span class="hc-proj-dot" style="background:${p.color}"></span>${p.short}</td>
+      <td class="hc-num" style="font-weight:700">${u.id||"—"}</td>
+      <td><span class="hc-tipo ${u.tipo==="nueva"?"nueva":"renov"}">${u.tipo==="nueva"?"Nueva":"Renov."}</span></td>
+      <td class="hc-num">${+u.m2>0?u.m2:"—"}</td>
+      <td class="hc-num">${+u.monto>0?"$"+(+u.monto).toLocaleString("es-MX"):"—"}</td>
+      <td class="hc-num">${pm2?"$"+pm2.toLocaleString("es-MX"):"—"}</td>
+      <td class="hc-num">${+u.precioVenta>0?"$"+(+u.precioVenta).toLocaleString("es-MX"):"—"}</td>
+      <td class="hc-num" style="${rend?"color:#1A7A4A;font-weight:700":""}">${rend?rend+"%":"—"}</td>
+      <td class="hc-num">${u.tipo==="nueva"&&+u.dias>0?u.dias+"d":"—"}</td>
+      <td style="color:${ci.color};font-weight:600">${ci.icon} ${ci.label.replace("Broker ","")}</td>
+      <td>${(u.broker||"—").replace(/</g,"&lt;")}</td>
+      <td style="text-align:center">${u.amueblado?"🛋️":"—"}</td>
+    </tr>`;
+  }).join("") + (rows.length>300?`<tr><td colspan="13" class="hc-empty">Mostrando los 300 más recientes de ${rows.length}. El Excel exporta todos.</td></tr>`:"");
+}
+
 function renderRendimientoComparativo(){
   const ctx=document.getElementById("chart-rend-comp");
   if(!ctx) return;
@@ -1884,6 +2036,7 @@ function renderDashboard(){
   renderRentasDashboard();
   renderWaterfallDash();
   renderRendimientoComparativo();
+  renderHistorialCierres();
   updateSidebarScores();
 }
 
@@ -2159,7 +2312,7 @@ function exportExcel(){
       if(!r) return;
       rentRows.push({
         Proyecto:p.name, Fecha:e.date,
-        "Total torre":getTotalTorre(pid), "Con intención renta":getInvTotal(pid), "Disponibles":getDisp(r), "Disp. DDP":(r&&r.dispDDP)||0, "Disp. propietario":Math.max(0,getDisp(r)-((r&&r.dispDDP)||0)), "Amueblados disp.":getInvAmueblado(pid), "En proceso cierre":(hayLista(pid)?enProcesoLista(pid):((r&&r.enproceso)||0)), "Días prom. inventario":(r&&r.diasinv)||0,
+        "Total torre":getTotalTorre(pid), "Con intención renta":getInvTotal(pid), "Disponibles":getDisp(r), "Disp. DDP":(r&&r.dispDDP)||0, "Disp. propietario":Math.max(0,getDisp(r)-((r&&r.dispDDP)||0)), "Amueblados disp.":getInvAmueblado(pid), "En proceso cierre":(r&&r.enproceso)||0, "Días prom. inventario":(r&&r.diasinv)||0,
         "Ocupadas":getOcupadas(pid,r), "Ocupación %":ocupacionPct(pid,r),
         "Rentas nuevas":rNuevas(r), "Renovaciones":rRenov(r),
         "Lib. no renov.":rNoreno(r), "Lib. venta":rVenta(r),
@@ -2187,7 +2340,7 @@ function exportExcel(){
           "Días en lista":u.tipo==="renovacion"?"":(+u.dias||0),
           "Incremento %":+u.incr||0,
           "Fecha cierre":u.cierre||"", "Inicio contrato":u.inicio||"", "Fin contrato":u.fin||"",
-          "Monto renta":+u.monto||"", "Tamaño m²":+u.m2||"", "Precio/m²":(+u.m2>0&&+u.monto>0)?Math.round(+u.monto/+u.m2):"", "Amueblado":u.amueblado?"Sí":"No", "Electrodomésticos":u.electro?"Sí":"No",
+          "Monto renta":+u.monto||"", "Tamaño m²":+u.m2||"", "Precio/m²":(+u.m2>0&&+u.monto>0)?Math.round(+u.monto/+u.m2):"", "Amueblado":u.amueblado?"Sí":"No",
           "Canal":u.canal?(({directo:"Directo",asesor:"Asesor DDP",interno:"Broker interno",externo:"Broker externo",otro:"Otro"})[u.canal]||u.canal):"", "Broker/Asesor":u.broker||""
         });
       });
@@ -2199,17 +2352,16 @@ function exportExcel(){
   // Hoja: Inventario disponible (lista real)
   const invRows=[];
   PROJ_KEYS.forEach(pid=>{
-    getInventarioDisp(pid).slice().sort(_cmpDepto).forEach(u=>{
+    getInventarioDisp(pid).forEach(u=>{
       invRows.push({
         Proyecto:PROJECTS[pid].name, Depto:u.id||"", "m²":+u.m2||"", "Precio renta":+u.precioRenta||"",
         "Precio venta":+u.precioVenta||"", "$/m²":(+u.m2>0&&+u.precioRenta>0)?Math.round(u.precioRenta/u.m2):"",
-        Amueblado:u.amueblado?"Sí":"No", Electrodomésticos:u.electro?"Sí":"No", Origen:u.origen==="ddp"?"DDP":"Propietario",
-        "En proceso":u.enproceso?"Sí":"No",
+        Amueblado:u.amueblado?"Sí":"No", Origen:u.origen==="ddp"?"DDP":"Propietario",
         "Disponible desde":u.desde||"", "Días disponible":u.desde?diasDesde(u.desde):""
       });
     });
   });
-  const wsInv=XLSX.utils.json_to_sheet(invRows.length?invRows:[{Proyecto:"",Depto:"","m²":"","Precio renta":"","Precio venta":"","$/m²":"",Amueblado:"",Electrodomésticos:"",Origen:"","En proceso":"","Disponible desde":"","Días disponible":""}]);
+  const wsInv=XLSX.utils.json_to_sheet(invRows.length?invRows:[{Proyecto:"",Depto:"","m²":"","Precio renta":"","Precio venta":"","$/m²":"",Amueblado:"",Origen:"","Disponible desde":"","Días disponible":""}]);
   XLSX.utils.book_append_sheet(wb,wsInv,"Inventario disponible");
 
   // ─ Hoja 4: AMENIDADES ─
@@ -2311,7 +2463,7 @@ function toggleAmenCapture(){
     cap.style.display="block"; btn.classList.add("active"); btn.textContent="✕ Cerrar captura";
     renderAmenCaptureTable();
   } else {
-    cap.style.display="none"; btn.classList.remove("active"); btn.textContent="📥 Registrar semana";
+    cap.style.display="none"; btn.classList.remove("active"); btn.textContent="📥 Capturar amenidades";
   }
 }
 
@@ -2682,6 +2834,9 @@ function loadAmenInputs(){
     setVal("am-larga", a.hab_larga);
     setVal("am-corta", a.hab_corta);
     setVal("am-habtotal", a.viviendas);
+    // Si la captura está abierta, refrescar su tabla con el draft actual (evita datos de otra semana en pantalla)
+    const _amCap=document.getElementById("amen-capture");
+    if(_amCap && getComputedStyle(_amCap).display!=="none") renderAmenCaptureTable();
     renderAmenidades();
   } else {
     // Aunque esté apagado, mostrar el catálogo para configurarlo
@@ -3104,12 +3259,15 @@ function renderExecutivePulse(){
 
   const convMes = eff&&eff.citas>0?Math.round(eff.nuevas/eff.citas*100):0;
 
-  // Disponibles y en proceso de cierre — de la LISTA cuando existe, si no del campo capturado
-  const enProcesoSem = hayLista(pid) ? enProcesoLista(pid) : (r?(+r.enproceso||0):0);
+  // Disponibles y en proceso de cierre (de la semana actual)
+  const enProcesoSem = r?(+r.enproceso||0):0;
 
   // Días promedio en inventario (del acumulado mensual, ya calculado)
   const diasMes = eff ? (eff.dias||0) : 0;
   const diasSem = rDiasProm(r); // días prom. en lista de los cierres de la última semana
+  // Días prom. de los cierres del MES EN CURSO (por fecha de cierre, consistente con la mini tabla)
+  const _cierresMesD = cierresUnidadesMes(pid, curYm).filter(u=>+u.dias>0);
+  const diasMesCierres = _cierresMesD.length ? Math.round(_cierresMesD.reduce((a,u)=>a+(+u.dias),0)/_cierresMesD.length) : 0;
   // Precio por m² de los cierres de la última semana (promedio de monto/m² con m²>0)
   const _cierresSem = (r && Array.isArray(r.unidades)) ? r.unidades.filter(u=>u.tipo==="nueva" && +u.monto>0 && +u.m2>0) : [];
   const precioM2Sem = _cierresSem.length ? Math.round(_cierresSem.reduce((a,u)=>a+(+u.monto/+u.m2),0)/_cierresSem.length) : 0;
@@ -3140,13 +3298,6 @@ function renderExecutivePulse(){
   const cierresMes = cierresUnidadesMes(pid, curYm);
   const mixMes = mixCanal(cierresMes);
   const totalCierres = cierresMes.length;
-  // Precio/m² y rendimiento anual — MES EN CURSO (mismos criterios que la semana, sobre cierres del mes)
-  const _cierresMesM2 = cierresMes.filter(u=>+u.monto>0 && +u.m2>0);
-  const precioM2Mes = _cierresMesM2.length ? Math.round(_cierresMesM2.reduce((a,u)=>a+(+u.monto/+u.m2),0)/_cierresMesM2.length) : 0;
-  const hayPrecioM2Mes = _cierresMesM2.length>0;
-  const _cierresMesRend = cierresMes.filter(u=>+u.monto>0 && +u.precioVenta>0);
-  const rendAnualMes = _cierresMesRend.length ? +(_cierresMesRend.reduce((a,u)=>a+((+u.monto*12)/(+u.precioVenta)*100),0)/_cierresMesRend.length).toFixed(1) : 0;
-  const hayRendMes = _cierresMesRend.length>0;
   // Y de la ÚLTIMA SEMANA (unidades del último registro)
   const cierresSem_ = (r && Array.isArray(r.unidades)) ? r.unidades.filter(u=>u.tipo==="nueva") : [];
   const mixSem = mixCanal(cierresSem_);
@@ -3294,7 +3445,10 @@ function renderExecutivePulse(){
         </div>
         <div class="exec-pair-card exec-pair-dias">
           <span class="exec-pair-icon">📆</span>
-          <div><div class="exec-pair-val">${diasSem}<span class="exec-pair-of"> d</span></div><div class="exec-pair-lbl">Días prom. para rentarse · cierres última semana</div></div>
+          <div style="min-width:0">
+            <div class="epd-duo"><span class="epd-item"><span class="exec-pair-val">${diasSem}<span class="exec-pair-of"> d</span></span><span class="epd-tag">semana</span></span><span class="epd-sep"></span><span class="epd-item"><span class="exec-pair-val">${diasMesCierres}<span class="exec-pair-of"> d</span></span><span class="epd-tag">${monthName(curYm).split(' ')[0].toLowerCase()}</span></span></div>
+            <div class="exec-pair-lbl">Días prom. para rentarse · cierres</div>
+          </div>
         </div>
       </div>
       ${hayDiasInvDisp?`
@@ -3308,38 +3462,20 @@ function renderExecutivePulse(){
       </div>`:''}
       </div><!-- /erc-right -->
       </div><!-- /exec-rent-cols -->
-      ${(hayPrecioM2||hayPrecioM2Mes||hayRendAnual||hayRendMes)?`
+      ${(hayPrecioM2||hayRendAnual)?`
       <div class="exec-metrics-duo">
-        ${(hayPrecioM2||hayPrecioM2Mes)?`<div class="exec-preciom2">
+        ${hayPrecioM2?`<div class="exec-preciom2">
           <span class="epm-icon">📐</span>
-          <div class="epm-body" style="flex:1">
-            <div class="epm-lbl" style="margin:0 0 6px">Precio por m² · cierres</div>
-            <div class="epm-dual">
-              <div class="epm-col">
-                <div class="epm-col-val">${hayPrecioM2?`$${precioM2Sem.toLocaleString('es-MX')}<span class="epm-unit"> /m²</span>`:'<span class="epm-dash">—</span>'}</div>
-                <div class="epm-col-lbl">Semana ${hayPrecioM2?`<span class="epm-n">(${_cierresSem.length})</span>`:''}</div>
-              </div>
-              <div class="epm-col">
-                <div class="epm-col-val">${hayPrecioM2Mes?`$${precioM2Mes.toLocaleString('es-MX')}<span class="epm-unit"> /m²</span>`:'<span class="epm-dash">—</span>'}</div>
-                <div class="epm-col-lbl">${monthName(curYm).split(' ')[0]} ${hayPrecioM2Mes?`<span class="epm-n">(${_cierresMesM2.length})</span>`:''}</div>
-              </div>
-            </div>
+          <div class="epm-body">
+            <div class="epm-val">$${precioM2Sem.toLocaleString('es-MX')}<span class="epm-unit"> / m²</span></div>
+            <div class="epm-lbl">Precio por m² · cierres última semana <span class="epm-n">(${_cierresSem.length})</span></div>
           </div>
         </div>`:''}
-        ${(hayRendAnual||hayRendMes)?`<div class="exec-preciom2 exec-rend">
+        ${hayRendAnual?`<div class="exec-preciom2 exec-rend">
           <span class="epm-icon">📈</span>
-          <div class="epm-body" style="flex:1">
-            <div class="epm-lbl" style="margin:0 0 6px">Rendimiento anual · cierres</div>
-            <div class="epm-dual">
-              <div class="epm-col">
-                <div class="epm-col-val" style="color:#1A7A4A">${hayRendAnual?`${rendAnualSem}<span class="epm-unit" style="color:#5BA07A">%</span>`:'<span class="epm-dash">—</span>'}</div>
-                <div class="epm-col-lbl">Semana ${hayRendAnual?`<span class="epm-n">(${_cierresRend.length})</span>`:''}</div>
-              </div>
-              <div class="epm-col">
-                <div class="epm-col-val" style="color:#1A7A4A">${hayRendMes?`${rendAnualMes}<span class="epm-unit" style="color:#5BA07A">%</span>`:'<span class="epm-dash">—</span>'}</div>
-                <div class="epm-col-lbl">${monthName(curYm).split(' ')[0]} ${hayRendMes?`<span class="epm-n">(${_cierresMesRend.length})</span>`:''}</div>
-              </div>
-            </div>
+          <div class="epm-body">
+            <div class="epm-val" style="color:#1A7A4A">${rendAnualSem}<span class="epm-unit" style="color:#5BA07A">%</span></div>
+            <div class="epm-lbl">Rendimiento anual · cierres última semana <span class="epm-n">(${_cierresRend.length})</span></div>
           </div>
         </div>`:''}
       </div>`:''}
@@ -3415,7 +3551,8 @@ function renderNavButtons(){
     </button>`;
   }).join("");
   // Reactivar el estado "active" y refrescar scores
-  if(currentView==="project" && currentProject){
+  const _vp=document.getElementById("view-project");
+  if(_vp && _vp.classList.contains("active") && currentProject){
     const b=document.getElementById("nav-"+currentProject);
     if(b) b.classList.add("active");
   }
@@ -3565,12 +3702,19 @@ function renderProjCharts(){
   const hist=getHistory(currentProject).slice(0,10).reverse();
   const linectx=document.getElementById("chart-proj-line");
   const radarctx=document.getElementById("chart-proj-radar");
+  if(!linectx || !radarctx) return; // vista no montada — nunca tronar
 
-  if(!hist.length){
-    linectx.parentElement.innerHTML='<p style="color:var(--text-3);font-size:13px;padding:2rem;text-align:center">Sin historial aún</p>';
-    radarctx.parentElement.innerHTML='<p style="color:var(--text-3);font-size:13px;padding:2rem;text-align:center">Sin historial aún</p>';
-    return;
-  }
+  // Placeholder sin destruir el canvas (destruirlo rompía el siguiente render)
+  const setEmpty=(cv,empty)=>{
+    cv.style.display=empty?"none":"block";
+    let ph=cv.parentElement.querySelector(".chart-empty-ph");
+    if(empty){
+      if(!ph){ ph=document.createElement("p"); ph.className="chart-empty-ph"; ph.style.cssText="color:var(--text-3);font-size:13px;padding:2rem;text-align:center"; ph.textContent="Sin historial aún"; cv.parentElement.appendChild(ph); }
+      ph.style.display="block";
+    } else if(ph){ ph.style.display="none"; }
+  };
+  if(!hist.length){ setEmpty(linectx,true); setEmpty(radarctx,true); return; }
+  setEmpty(linectx,false); setEmpty(radarctx,false);
   const labels=hist.map(e=>fmtDate(e.date));
   const pillarColors=["#5C7CFA","#20C997","#F59F00"];
   charts["projline"]=new Chart(linectx,{type:"line",data:{labels,datasets:PILLARS.map((pl,i)=>({label:pl.name,data:hist.map(e=>sc(e,pl.key)||null),borderColor:pillarColors[i],backgroundColor:pillarColors[i]+"22",tension:.35,pointRadius:4,spanGaps:false,fill:false}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"bottom",labels:{font:{family:"HelveticaNow",size:11},boxWidth:10,padding:12}}},scales:{y:{min:0,max:10,grid:{color:"rgba(0,0,0,.06)"},ticks:{font:{family:"DM Mono",size:11}}},x:{grid:{display:false},ticks:{font:{family:"HelveticaNow",size:11},maxRotation:25}}}}});
@@ -3803,9 +3947,6 @@ function onDisponibleManual(){
 // ══════════════════════════════════════════════
 function getInventarioDisp(pid){ return Array.isArray(inventarioDisp[pid]) ? inventarioDisp[pid] : []; }
 function hayLista(pid){ return getInventarioDisp(pid).length>0; }
-function enProcesoLista(pid){ return getInventarioDisp(pid).filter(u=>u.enproceso).length; }
-// Orden natural por número de depto (1806 < 1809 < 1902; 9 < 10) — solo para mostrar/exportar, no muta lo guardado
-function _cmpDepto(a,b){ return ((a&&a.id)||"").toString().localeCompare(((b&&b.id)||"").toString(), "es", {numeric:true, sensitivity:"base"}); }
 
 function persistInventario(){
   try{ localStorage.setItem("dp_inventario_disp", JSON.stringify(inventarioDisp)); }catch(e){}
@@ -3846,7 +3987,6 @@ function syncInventarioToFields(){
   const st=antiguedadStats(pid);
   if(st) r.diasinv = st.prom;
   invAmueblado[pid] = lista.filter(u=>u.amueblado).length;
-  r.enproceso = lista.filter(u=>u.enproceso).length; // ★ en proceso derivado de la lista
   persistInvConfig();
   // Refrescar inputs visibles
   const set=(id,v)=>{const el=document.getElementById(id); if(el) el.value=(v!==undefined&&v!==null&&v!=="")?v:"";};
@@ -3854,9 +3994,18 @@ function syncInventarioToFields(){
   set("r-dispddp", r.dispDDP);
   set("r-dispprop", Math.max(0, r.disponible-(+r.dispDDP||0)));
   set("r-invamueblado", invAmueblado[pid]);
-  set("r-enproceso", r.enproceso);
   set("r-diasinv", r.diasinv||"");
+  set("r-invtotal", (invConfig[pid]!==undefined&&invConfig[pid]!==0)?invConfig[pid]:"");
+  // ★ Habitados por RENTA LARGA = universo − disponibles (auto, corregible por la PM)
+  if((+invConfig[pid]||0)>0 && drafts[pid].amenidades){
+    const a=drafts[pid].amenidades;
+    a.hab_larga=Math.max(0,(+invConfig[pid]||0)-lista.length);
+    a.viviendas=(+a.hab_propietario||0)+(+a.hab_larga||0)+(+a.hab_corta||0);
+    const el=document.getElementById("am-larga"); if(el) el.value=a.hab_larga;
+    const ht=document.getElementById("am-habtotal"); if(ht) ht.value=a.viviendas;
+  }
   renderRentasDashboard2();
+  try{ renderExecutivePulse(); }catch(e){} // pantallazo siempre al día con la lista
 }
 
 // ¿El draft abierto es una semana histórica? (movimientos de lista deberían ir al registro vigente)
@@ -3873,7 +4022,6 @@ function addDeptoInventario(){
   const pr=+document.getElementById("inv-new-renta").value||0;
   const pv=+document.getElementById("inv-new-venta").value||0;
   const amue=document.getElementById("inv-new-amue").checked;
-  const electro=document.getElementById("inv-new-electro").checked;
   const origen=document.getElementById("inv-new-origen").value;
   const desde=document.getElementById("inv-new-desde").value||today();
   const motivo=document.getElementById("inv-new-motivo").value;
@@ -3882,20 +4030,26 @@ function addDeptoInventario(){
     if(!confirm("Estás viendo un registro de una semana pasada ("+drafts[pid].date+"). La entrada se registraría en ESA semana. ¿Continuar? (Para registrarla en la semana actual, primero cambia la fecha del registro)")) return;
   }
   if(!inventarioDisp[pid]) inventarioDisp[pid]=[];
-  inventarioDisp[pid].push({uid:"u"+Date.now().toString(36), id, m2, precioRenta:pr, precioVenta:pv, amueblado:amue, electro, origen, desde});
+  inventarioDisp[pid].push({uid:"u"+Date.now().toString(36), id, m2, precioRenta:pr, precioVenta:pv, amueblado:amue, origen, desde});
   // Registrar la ENTRADA en la semana según el motivo (carga inicial no cuenta)
   if(!drafts[pid].rentas) drafts[pid].rentas={};
   const r=drafts[pid].rentas;
   if(motivo==="noreno"){ r.noreno=(+r.noreno||0)+1; const el=document.getElementById("r-noreno"); if(el) el.value=r.noreno; }
   else if(motivo==="venta"){ r.venta=(+r.venta||0)+1; const el=document.getElementById("r-venta"); if(el) el.value=r.venta; }
+  else if(motivo==="nuevo"){
+    // Depto NUEVO al programa: cuenta como entrada (venta) Y el universo "Con intención de renta" crece
+    r.venta=(+r.venta||0)+1; const el=document.getElementById("r-venta"); if(el) el.value=r.venta;
+    invConfig[pid]=(+invConfig[pid]||0)+1; persistInvConfig();
+    const it=document.getElementById("r-invtotal"); if(it) it.value=invConfig[pid];
+  }
   persistInventario();
   syncInventarioToFields();
   renderInventarioLista();
+  markDirty();
   // Limpiar el form
   ["inv-new-id","inv-new-m2","inv-new-renta","inv-new-venta"].forEach(i=>{const el=document.getElementById(i); if(el) el.value="";});
   document.getElementById("inv-new-amue").checked=false;
-  document.getElementById("inv-new-electro").checked=false;
-  showToast("Depto "+id+" agregado al inventario ✓"+(motivo!=="inicial"?" · entrada registrada":""));
+  showToast("Depto "+id+" agregado ✓"+(motivo==="nuevo"?" · entrada registrada · universo de renta +1":(motivo!=="inicial"?" · entrada registrada":"")));
 }
 
 // ══════════════════════════════════════════════
@@ -3923,7 +4077,6 @@ function abrirCierreModal(uid){
   document.getElementById("cm-canal").value="directo";
   document.getElementById("cm-broker").value="";
   document.getElementById("cm-amue").checked=!!u.amueblado;
-  document.getElementById("cm-electro").checked=!!u.electro;
   document.getElementById("cierre-modal").style.display="flex";
 }
 function cerrarCierreModal(){
@@ -3943,17 +4096,17 @@ function confirmarCierreModal(){
   const canal=document.getElementById("cm-canal").value||"directo";
   const broker=(document.getElementById("cm-broker").value||"").trim();
   const amue=document.getElementById("cm-amue").checked;
-  const electro=document.getElementById("cm-electro").checked;
   if(monto<=0){ showToast("Pon el precio de cierre"); return; }
   // Días en lista = de "disponible desde" a la FECHA DE CIERRE elegida
   const dias=(u.desde&&cierre)?Math.max(0,Math.round((new Date(cierre+"T00:00:00")-new Date(u.desde+"T00:00:00"))/86400000)):diasDesde(u.desde);
   if(!drafts[pid].rentas) drafts[pid].rentas={};
   const r=drafts[pid].rentas;
   if(!Array.isArray(r.unidades)) r.unidades=[];
-  r.unidades.push({id:u.id||"", tipo:"nueva", dias, incr:0, cierre, inicio, fin, canal, broker, monto, m2:+u.m2||0, precioVenta:+u.precioVenta||0, amueblado:amue, electro});
+  r.unidades.push({id:u.id||"", tipo:"nueva", dias, incr:0, cierre, inicio, fin, canal, broker, monto, m2:+u.m2||0, precioVenta:+u.precioVenta||0, amueblado:amue});
   lista.splice(idx,1);
   persistInventario();
   cerrarCierreModal(); // cerrar el modal ANTES de los renders (a prueba de fallos)
+  markDirty();
   try{ syncInventarioToFields(); }catch(e){ console.error(e); }
   try{ renderInventarioLista(); }catch(e){ console.error(e); }
   try{ renderUnidadesList(); }catch(e){ console.error(e); }
@@ -3976,7 +4129,7 @@ function _cerrarDesdeLista_legacy(uid){
   if(!drafts[pid].rentas) drafts[pid].rentas={};
   const r=drafts[pid].rentas;
   if(!Array.isArray(r.unidades)) r.unidades=[];
-  r.unidades.push({id:u.id||"", tipo:"nueva", dias:diasDesde(u.desde), incr:0, cierre:today(), inicio:"", fin:"", canal:"directo", broker:"", monto:+u.precioRenta||0, m2:+u.m2||0, precioVenta:+u.precioVenta||0, amueblado:!!u.amueblado, electro:!!u.electro});
+  r.unidades.push({id:u.id||"", tipo:"nueva", dias:diasDesde(u.desde), incr:0, cierre:today(), inicio:"", fin:"", canal:"directo", broker:"", monto:+u.precioRenta||0, m2:+u.m2||0, precioVenta:+u.precioVenta||0, amueblado:!!u.amueblado});
   lista.splice(idx,1);
   persistInventario();
   syncInventarioToFields();
@@ -3992,12 +4145,18 @@ function retirarDeLista(uid){
   const idx=lista.findIndex(u=>u.uid===uid);
   if(idx<0) return;
   const u=lista[idx];
-  if(!confirm("¿Retirar el depto "+(u.id||"")+" de la lista SIN registrar renta? (ej. el propietario lo retiró de comercialización)")) return;
+  if(!confirm("¿Retirar el depto "+(u.id||"")+" de la lista SIN registrar renta?")) return;
+  // Regla de oro: ¿sale del programa de renta o es solo corrección de captura?
+  const saleDelPrograma = confirm("¿El propietario retira este depto del PROGRAMA de renta?\n\n· Aceptar = Sí, sale del programa (baja \"Con intención de renta\")\n· Cancelar = Solo corrección de captura (el universo no cambia)");
   lista.splice(idx,1);
+  if(saleDelPrograma){
+    invConfig[pid]=Math.max(0,(+invConfig[pid]||0)-1); persistInvConfig();
+    const it=document.getElementById("r-invtotal"); if(it) it.value=invConfig[pid];
+  }
   persistInventario();
   syncInventarioToFields();
   renderInventarioLista();
-  showToast("Depto "+(u.id||"")+" retirado de la lista");
+  showToast("Depto "+(u.id||"")+" retirado"+(saleDelPrograma?" · universo de renta −1":" (corrección, universo sin cambio)"));
 }
 
 function updateInvDepto(uid, field, val){
@@ -4006,12 +4165,10 @@ function updateInvDepto(uid, field, val){
   if(!u) return;
   if(field==="id"||field==="desde"||field==="origen") u[field]=val;
   else if(field==="amueblado") u.amueblado=!!val;
-  else if(field==="electro") u.electro=!!val;
-  else if(field==="enproceso") u.enproceso=!!val;
   else u[field]=+val||0;
   persistInventario();
-  if(field==="amueblado"||field==="origen"||field==="desde"||field==="enproceso") syncInventarioToFields();
-  if(field==="desde"||field==="enproceso") renderInventarioLista();
+  if(field==="amueblado"||field==="origen"||field==="desde") syncInventarioToFields();
+  if(field==="desde") renderInventarioLista();
 }
 
 // ── RENDER de la tabla de inventario ──
@@ -4021,10 +4178,10 @@ function renderInventarioLista(){
   if(!cont) return;
   if(typeof renderAddUnitActions==="function") renderAddUnitActions();
   const pid=currentProject;
-  const lista=getInventarioDisp(pid).slice().sort(_cmpDepto);
+  const lista=getInventarioDisp(pid);
   if(badge) badge.textContent=lista.length;
   if(!lista.length){
-    cont.innerHTML='<tr><td colspan="12" style="text-align:center;color:var(--text-3);font-style:italic;padding:16px">Sin deptos en la lista. Agrega los disponibles actuales con motivo "Carga inicial".</td></tr>';
+    cont.innerHTML='<tr><td colspan="10" style="text-align:center;color:var(--text-3);font-style:italic;padding:16px">Sin deptos en la lista. Agrega los disponibles actuales con motivo "Carga inicial".</td></tr>';
     return;
   }
   cont.innerHTML=lista.map(u=>{
@@ -4038,11 +4195,9 @@ function renderInventarioLista(){
       <td><input type="number" min="0" step="1000" value="${u.precioVenta||""}" oninput="updateInvDepto('${u.uid}','precioVenta',this.value)" style="width:100px"></td>
       <td style="font-family:'DM Mono',monospace;font-size:11.5px;color:var(--text-2);text-align:center">${pm2?("$"+pm2.toLocaleString("es-MX")):"—"}</td>
       <td style="text-align:center"><input type="checkbox" ${u.amueblado?"checked":""} onchange="updateInvDepto('${u.uid}','amueblado',this.checked)"></td>
-      <td style="text-align:center"><input type="checkbox" ${u.electro?"checked":""} onchange="updateInvDepto('${u.uid}','electro',this.checked)"></td>
       <td><select onchange="updateInvDepto('${u.uid}','origen',this.value)" style="font-size:11px"><option value="ddp" ${u.origen==="ddp"?"selected":""}>DDP</option><option value="prop" ${u.origen!=="ddp"?"selected":""}>Propietario</option></select></td>
       <td><input type="date" value="${u.desde||""}" oninput="updateInvDepto('${u.uid}','desde',this.value)" style="width:120px;font-size:11px"></td>
       <td style="text-align:center;font-family:'DM Mono',monospace;font-size:12px;${diasCls}">${dias}d</td>
-      <td style="text-align:center"><button class="inv-proc-toggle${u.enproceso?' on':''}" onclick="updateInvDepto('${u.uid}','enproceso',${u.enproceso?'false':'true'})" title="Marcar/quitar como en proceso de cierre (negociación en curso)">${u.enproceso?'⏳ En proceso':'Marcar'}</button></td>
       <td style="white-space:nowrap"><button class="inv-act inv-act-close" onclick="abrirCierreModal('${u.uid}')" title="Se rentó — registrar cierre">🔑 Rentar</button><button class="inv-act inv-act-del" onclick="retirarDeLista('${u.uid}')" title="Retirar sin cierre">✕</button></td>
     </tr>`;
   }).join("");
@@ -4599,7 +4754,7 @@ function renderRentasDashboard2(){
   const enRenta=total;                       // inventario DDP en renta
   const rentados=ocup;                        // = inv DDP − disponibles
   const propietario=aAmen.hab_propietario||0;
-  const enProceso = hayLista(pid) ? enProcesoLista(pid) : (r?(+r.enproceso||0):0);
+  const enProceso=r?(+r.enproceso||0):0;
 
   // ── SECCIÓN 0: COMPOSICIÓN DE LA TORRE (embudo) ──
   if(torreTotal>0 || entregados>0){
@@ -5022,16 +5177,132 @@ function resetMonthOverride(){
 }
 
 
+// ══════════════════════════════════════════════
+// ASISTENTE DE REGISTRO SEMANAL — guía paso a paso sobre la captura real
+// ══════════════════════════════════════════════
+let _wizIdx=0, _wizSteps=[];
+
+function _wizBuildSteps(pid){
+  const steps=[
+    {t:"📋 Inventario y movimientos", h:"Registra las entradas (deptos que se liberan) y salidas (🔑 clic al depto que se rentó). Disponibles, origen, amueblados y antigüedad se calculan solos.",
+     go:()=>{ _wizOpenRentas(); _wizScroll(".inv-table-wrap"); }},
+    {t:"📤 Tráfico de la semana", h:"Captura citas de la semana y ajusta 'en proceso de cierre' (viene precargado de la semana pasada).",
+     go:()=>{ _wizOpenRentas(); _wizScroll("#block-trafico"); }}
+  ];
+  if(amenEnabled[pid]){
+    steps.push({t:"🏘️ Masa crítica y habitación", h:"Confirma los números precargados de la semana pasada (entregados, propietario, corta estancia, personas). Renta larga ya viene automática.",
+     go:()=>{ _wizOpenAmen(); _wizScroll("#am-larga"); }});
+  }
+  steps.push({t:"👥 Salud de comunidad", h:"Califica los pilares de la semana: satisfacción vivencial (5 conceptos), administración"+(pillarConfig[pid]&&pillarConfig[pid].comite===false?"":" y comité")+".",
+     go:()=>{ _wizExpandSection("comunidad"); _wizScroll("#detail-score-row"); }});
+  if(amenEnabled[pid]){
+    steps.push({t:"🏛️ Uso de amenidades", h:"Registra los usos de la semana por amenidad (la satisfacción viene heredada; ajústala si cambió).",
+     go:()=>{ _wizOpenAmen(); _wizScroll("#amen-capture"); }});
+  }
+  steps.push({t:"✅ Revisar y guardar", h:"Checa el pantallazo: absorción, puente de inventario y calificaciones. Si todo cuadra, guarda el registro.",
+     go:()=>{ _wizScroll("#exec-pulse"); }});
+  return steps;
+}
+
+// ¿Elemento realmente visible? (computed, no solo style inline)
+function _wizHidden(el){
+  if(!el) return true;
+  return getComputedStyle(el).display==="none";
+}
+// Garantiza TODO el contexto de rentas: sección expandida + formulario de captura abierto
+function _wizOpenRentas(){
+  _wizExpandSection("rentas");
+  const cap=document.getElementById("rentas-capture");
+  if(cap && _wizHidden(cap)) toggleCaptureForm();
+}
+// Garantiza TODO el contexto de amenidades: sección expandida + formulario de captura abierto
+function _wizOpenAmen(){
+  if(!amenEnabled[currentProject]) return;
+  _wizExpandSection("amenidades");
+  const cap=document.getElementById("amen-capture");
+  if(cap && _wizHidden(cap)) toggleAmenCapture();
+}
+function _wizExpandSection(key){
+  const pid=currentProject;
+  if(sectionsCollapsed[pid] && sectionsCollapsed[pid][key]) toggleBigSection(key);
+}
+function _wizScroll(sel){
+  // Espera la transición de secciones (max-height .3s) antes de scrollear
+  setTimeout(()=>{
+    const el=document.querySelector(sel);
+    if(!el) return;
+    el.scrollIntoView({behavior:"smooth", block:"center"});
+    el.classList.remove("wiz-highlight"); void el.offsetWidth;
+    el.classList.add("wiz-highlight");
+    setTimeout(()=>el.classList.remove("wiz-highlight"), 2500);
+  }, 320);
+}
+
+function startWizard(){
+  if(!currentProject) return;
+  _wizSteps=_wizBuildSteps(currentProject);
+  _wizIdx=0;
+  document.getElementById("wizard-bar").style.display="flex";
+  _wizRender();
+  _wizSteps[0].go();
+}
+function closeWizard(){ document.getElementById("wizard-bar").style.display="none"; }
+function wizGo(d){
+  _wizIdx=Math.max(0, Math.min(_wizSteps.length-1, _wizIdx+d));
+  _wizRender();
+  _wizSteps[_wizIdx].go();
+}
+function _wizRender(){
+  const last=_wizIdx===_wizSteps.length-1;
+  document.getElementById("wiz-count").textContent="Paso "+(_wizIdx+1)+" de "+_wizSteps.length;
+  document.getElementById("wiz-title").textContent=_wizSteps[_wizIdx].t;
+  document.getElementById("wiz-hint").textContent=_wizSteps[_wizIdx].h;
+  document.getElementById("wiz-prev").disabled=_wizIdx===0;
+  document.getElementById("wiz-next").style.display=last?"none":"inline-block";
+  document.getElementById("wiz-save").style.display=last?"inline-block":"none";
+}
+function wizFinish(){
+  closeWizard();
+  saveEntry();
+}
+
+// Validador de coherencia — avisa (no bloquea) antes de guardar números imposibles
+function _validarCoherencia(pid, entry){
+  const avisos=[];
+  const r=entry.rentas||{};
+  const a=entry.amenidades||{};
+  const uni=+invConfig[pid]||0, torre=+totalTorre[pid]||0;
+  const disp=(r.disponible!==undefined)?+r.disponible:0;
+  if(uni>0 && disp>uni) avisos.push("Disponibles ("+disp+") es MAYOR que el universo Con intención de renta ("+uni+")");
+  if(torre>0 && uni>torre) avisos.push("Con intención de renta ("+uni+") es mayor que el total de la torre ("+torre+")");
+  if(a.entregados>0 && (+a.viviendas||0)>(+a.entregados)) avisos.push("Viviendas habitadas ("+a.viviendas+") supera a los entregados ("+a.entregados+")");
+  if(entry.date && entry.date>today()) avisos.push("La fecha del registro ("+entry.date+") está en el futuro");
+  if(Array.isArray(r.unidades)){
+    r.unidades.forEach(u=>{
+      if(u.tipo==="nueva" && (!u.monto || +u.monto<=0)) avisos.push("El cierre del depto "+(u.id||"(sin número)")+" no tiene monto de renta");
+      if(u.id==="" ) avisos.push("Hay una unidad cerrada sin número de depto");
+      if(u.tipo==="nueva" && (!u.m2 || +u.m2<=0)) avisos.push("El cierre del depto "+(u.id||"(sin número)")+" no tiene m² (no se podrá calcular $/m² ni comparar)");
+      if((u.canal==="interno"||u.canal==="externo") && !(u.broker||"").trim()) avisos.push("El cierre del depto "+(u.id||"(sin número)")+" es por broker pero falta el nombre");
+    });
+  }
+  return avisos;
+}
+
 function saveEntry(){
   if(!currentProject) return;
   const entry=JSON.parse(JSON.stringify(drafts[currentProject]));
   entry.date=entry.date||today();
+  const _avisos=_validarCoherencia(currentProject, entry);
+  if(_avisos.length){
+    if(!confirm("⚠️ Revisa antes de guardar:\n\n· "+_avisos.join("\n· ")+"\n\n¿Guardar de todos modos?")) return;
+  }
   entry.saved_at=new Date().toISOString();
   if(!db[currentProject]) db[currentProject]=[];
   const idx=db[currentProject].findIndex(e=>e.date===entry.date);
   if(idx>=0) db[currentProject][idx]=entry; else db[currentProject].push(entry);
   persist();
   const wasEditing = !!window._editingDate;
+  clearDirty(currentProject);
   delete window._editingDate;
   showToast(wasEditing ? "Registro actualizado ✓" : "Registro guardado ✓");
   // Asegurar que la vista de proyecto está activa antes de renderizar historial
@@ -5099,7 +5370,14 @@ function deleteEntry(pid,date){
 }
 
 // MODAL
-window.openModal = function openModal(){ document.getElementById("modal-date").value=today(); if(currentProject) document.getElementById("modal-project").value=currentProject; document.getElementById("modal").classList.remove("hidden"); }
+// Viernes de la semana en curso (convención de junta viernes a viernes)
+function viernesDeLaSemana(){
+  const d=new Date(); const dow=d.getDay(); // 0=dom
+  const diff = dow===0 ? -2 : (5-dow); // domingo → viernes pasado; resto → viernes de esta semana
+  d.setDate(d.getDate()+diff);
+  return d.toISOString().slice(0,10);
+}
+window.openModal = function openModal(){ document.getElementById("modal-date").value=viernesDeLaSemana(); if(currentProject) document.getElementById("modal-project").value=currentProject; document.getElementById("modal").classList.remove("hidden"); }
 function closeModal(){ document.getElementById("modal").classList.add("hidden"); }
 function goFromModal(){
   const pid=document.getElementById("modal-project").value;
@@ -5107,18 +5385,16 @@ function goFromModal(){
   closeModal();
   // Nueva semana: limpiar draft a cero
   drafts[pid]={vivencial:{},admin:{},comite:{},vivencial_score:0,admin_score:0,comite_score:0,notes:"",date:date,rentas:{},amenidades:{personas:0,viviendas:0,data:{}}};
-  // Pre-cargar masa crítica de la última semana (la población y el estatus habitacional NO se reinician)
+  // Pre-cargar masa crítica de la última semana (la población no se reinicia)
   const lastAmen=getLatest(pid);
   if(lastAmen && lastAmen.amenidades){
-    const la=lastAmen.amenidades;
-    drafts[pid].amenidades.personas=la.personas||0;
-    // Estatus habitacional: se HEREDA del registro anterior — solo se actualiza, nunca arranca en ceros
-    drafts[pid].amenidades.entregados=la.entregados||0;
-    drafts[pid].amenidades.hab_propietario=la.hab_propietario||0;
-    drafts[pid].amenidades.hab_larga=la.hab_larga||0;
-    drafts[pid].amenidades.hab_corta=la.hab_corta||0;
-    const _compSum=(la.hab_propietario||0)+(la.hab_larga||0)+(la.hab_corta||0);
-    drafts[pid].amenidades.viviendas = _compSum>0 ? _compSum : (la.viviendas||0);
+    drafts[pid].amenidades.personas=lastAmen.amenidades.personas||0;
+    drafts[pid].amenidades.viviendas=lastAmen.amenidades.viviendas||0;
+    // Carry-forward de masa crítica: estos números casi no cambian semana a semana
+    drafts[pid].amenidades.entregados=lastAmen.amenidades.entregados||0;
+    drafts[pid].amenidades.hab_propietario=lastAmen.amenidades.hab_propietario||0;
+    drafts[pid].amenidades.hab_larga=lastAmen.amenidades.hab_larga||0;
+    drafts[pid].amenidades.hab_corta=lastAmen.amenidades.hab_corta||0;
     // Heredar satisfacción y capacidad de la semana anterior; usos arrancan en 0
     if(lastAmen.amenidades.data){
       Object.keys(lastAmen.amenidades.data).forEach(id=>{
@@ -5131,9 +5407,13 @@ function goFromModal(){
       });
     }
   }
+  // Carry-forward de rentas: "en proceso de cierre" suele continuar entre semanas
+  const lastR=getLatest(pid);
+  if(lastR && lastR.rentas && lastR.rentas.enproceso){ drafts[pid].rentas.enproceso=+lastR.rentas.enproceso||0; }
   delete window._editingDate;
   window._newWeek=true;
   showProject(pid, date);
+  setTimeout(()=>{ try{ startWizard(); }catch(e){} }, 700); // asistente paso a paso para la semana nueva
 }
 document.getElementById("modal").addEventListener("click",e=>{ if(e.target.id==="modal") closeModal(); });
 
@@ -5179,10 +5459,6 @@ if(document.readyState==="loading"){
         <label class="cm-check"><input type="checkbox" id="cm-amue"> Sí, amueblado</label>
       </div>
       <div class="cm-field">
-        <label>🍳 Electrodomésticos</label>
-        <label class="cm-check"><input type="checkbox" id="cm-electro"> Sí, con electrodomésticos</label>
-      </div>
-      <div class="cm-field">
         <label>📄 Inicio de contrato</label>
         <input type="date" id="cm-inicio">
       </div>
@@ -5211,6 +5487,22 @@ if(document.readyState==="loading"){
       <button class="cm-btn cm-confirm" onclick="confirmarCierreModal()">🔑 Confirmar cierre</button>
     </div>
     <div class="cm-foot">El depto saldrá de la lista de disponibles y su cierre quedará en "Unidades cerradas esta semana" (editable ahí después si hace falta).</div>
+  </div>
+</div>
+
+
+<!-- ═══ ASISTENTE DE REGISTRO SEMANAL ═══ -->
+<div id="wizard-bar" style="display:none">
+  <div class="wiz-info">
+    <span class="wiz-step-count" id="wiz-count">Paso 1 de 6</span>
+    <span class="wiz-step-title" id="wiz-title"></span>
+    <span class="wiz-step-hint" id="wiz-hint"></span>
+  </div>
+  <div class="wiz-actions">
+    <button class="wiz-btn" id="wiz-prev" onclick="wizGo(-1)">← Anterior</button>
+    <button class="wiz-btn wiz-next" id="wiz-next" onclick="wizGo(1)">Siguiente →</button>
+    <button class="wiz-btn wiz-save" id="wiz-save" onclick="wizFinish()" style="display:none">💾 Guardar registro</button>
+    <button class="wiz-x" onclick="closeWizard()" title="Cerrar guía">✕</button>
   </div>
 </div>
 
