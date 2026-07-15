@@ -1186,8 +1186,8 @@ window._fbLoadAll = async function(){
 
     <!-- Fila 2.6: Rendimiento de cierres comparativo -->
     <div class="chart-card" style="margin-bottom:14px">
-      <div class="chart-card-title">📈 Rendimiento anual de cierres — comparativa</div>
-      <div class="chart-card-sub">Renta anualizada ÷ precio de venta, promedio de los cierres con datos. Semana = última reportada · Mes = acumulado del mes en curso (por fecha de cierre).</div>
+      <div class="chart-card-title">📈 Rendimiento BRUTO anual de cierres — comparativa</div>
+      <div class="chart-card-sub">Rendimiento bruto: renta anualizada ÷ precio de venta (sin gastos), promedio de los cierres con datos. Semana = última reportada · Mes = acumulado del mes en curso (por fecha de cierre).</div>
       <div id="rend-comp-wrap" style="margin-top:1rem">
         <div class="chart-wrap" style="height:230px;max-width:760px;margin:0 auto"><canvas id="chart-rend-comp"></canvas></div>
         <div id="rend-comp-empty" style="display:none;text-align:center;color:var(--text-3);font-style:italic;font-size:12px;padding:20px 0">Sin cierres con precio de venta capturado aún. Captura monto y precio de venta en los cierres para ver el rendimiento.</div>
@@ -1202,7 +1202,7 @@ window._fbLoadAll = async function(){
       <div class="hc-resumen" id="hc-resumen"></div>
       <div class="hc-table-wrap">
         <table class="hc-table">
-          <thead><tr><th>Cierre</th><th>Proyecto</th><th>Depto</th><th>Tipo</th><th>m²</th><th>Renta</th><th>$/m²</th><th>Precio venta</th><th>Rend.</th><th>Días</th><th>Canal</th><th>Broker / Asesor</th><th>🛋️</th></tr></thead>
+          <thead><tr><th>Cierre</th><th>Proyecto</th><th>Depto</th><th>Tipo</th><th>m²</th><th>Renta</th><th>$/m²</th><th>Precio venta</th><th>Rend. bruto</th><th>Días</th><th>Canal</th><th>Broker / Asesor</th><th>🛋️</th></tr></thead>
           <tbody id="hc-body"></tbody>
         </table>
       </div>
@@ -1302,7 +1302,7 @@ window._fbLoadAll = async function(){
             <div style="font-size:11px;color:var(--text-3);margin-bottom:12px">La lista manda: al agregar (entrada) o rentar (salida) un depto, los números de disponibles, origen, amueblados y antigüedad se actualizan solos.</div>
             <div class="inv-table-wrap">
               <table class="inv-table">
-                <thead><tr><th>Depto</th><th>m²</th><th>Renta $</th><th>Venta $</th><th>$/m²</th><th>🛋️</th><th>Origen</th><th>Disponible desde</th><th>Días</th><th></th></tr></thead>
+                <thead><tr><th>Depto</th><th>m²</th><th>Renta $</th><th>Venta $</th><th>$/m²</th><th>🛋️</th><th title="En proceso de cierre">🤝</th><th>Origen</th><th>Disponible desde</th><th>Días</th><th></th></tr></thead>
                 <tbody id="inv-lista-body"></tbody>
               </table>
             </div>
@@ -1317,10 +1317,10 @@ window._fbLoadAll = async function(){
                 <select id="inv-new-origen"><option value="ddp">DDP</option><option value="prop">Propietario</option></select>
                 <input type="date" id="inv-new-desde" title="Disponible desde">
                 <select id="inv-new-motivo" title="Motivo de la entrada">
-                  <option value="inicial">Carga inicial (no registra entrada)</option>
-                  <option value="noreno">Entrada · no renovación</option>
-                  <option value="venta">Entrada · por venta (ya estaba en renta)</option>
-                  <option value="nuevo">Entrada · depto NUEVO al programa de renta</option>
+                  <option value="noreno">Entrada · no renovación (el inquilino se fue)</option>
+                  <option value="nuevo">Entrada · venta nueva (comprador lo pone a rentar) — universo +1</option>
+                  <option value="cambio">Entrada · cambio de estatus (el dueño lo habitaba, ahora lo renta) — universo +1</option>
+                  <option value="inicial">Corrección / carga inicial (no cuenta como entrada)</option>
                 </select>
                 <button class="inv-add-btn" onclick="addDeptoInventario()">Agregar</button>
               </div>
@@ -1938,7 +1938,7 @@ function renderHistorialCierres(){
     resumen.innerHTML=`<span>Cierres: <strong>${rows.length}</strong> (${nuevas.length} nuevas · ${rows.length-nuevas.length} renov.)</span>`+
       (rentaProm?`<span>Renta prom.: <strong>$${rentaProm.toLocaleString("es-MX")}</strong></span>`:"")+
       (pm2Prom?`<span>$/m² prom.: <strong>$${pm2Prom.toLocaleString("es-MX")}</strong></span>`:"")+
-      (rendProm?`<span>Rend. prom.: <strong>${rendProm}%</strong></span>`:"")+
+      (rendProm?`<span>Rend. bruto prom.: <strong>${rendProm}%</strong></span>`:"")+
       (diasProm?`<span>Días prom.: <strong>${diasProm}d</strong></span>`:"");
   }
 
@@ -3265,8 +3265,13 @@ function renderExecutivePulse(){
   // Días promedio en inventario (del acumulado mensual, ya calculado)
   const diasMes = eff ? (eff.dias||0) : 0;
   const diasSem = rDiasProm(r); // días prom. en lista de los cierres de la última semana
-  // Días prom. de los cierres del MES EN CURSO (por fecha de cierre, consistente con la mini tabla)
-  const _cierresMesD = cierresUnidadesMes(pid, curYm).filter(u=>+u.dias>0);
+  // Cierres del MES EN CURSO (por fecha de cierre, consistente con la mini tabla)
+  const _cierresMesAll = cierresUnidadesMes(pid, curYm);
+  const _cierresMesD = _cierresMesAll.filter(u=>+u.dias>0);
+  const _cmM2 = _cierresMesAll.filter(u=>u.tipo==="nueva" && +u.monto>0 && +u.m2>0);
+  const precioM2Mes = _cmM2.length ? Math.round(_cmM2.reduce((a,u)=>a+(+u.monto/+u.m2),0)/_cmM2.length) : 0;
+  const _cmRend = _cierresMesAll.filter(u=>u.tipo==="nueva" && +u.monto>0 && +u.precioVenta>0);
+  const rendAnualMes = _cmRend.length ? +(_cmRend.reduce((a,u)=>a+((+u.monto*12)/(+u.precioVenta)*100),0)/_cmRend.length).toFixed(1) : 0;
   const diasMesCierres = _cierresMesD.length ? Math.round(_cierresMesD.reduce((a,u)=>a+(+u.dias),0)/_cierresMesD.length) : 0;
   // Precio por m² de los cierres de la última semana (promedio de monto/m² con m²>0)
   const _cierresSem = (r && Array.isArray(r.unidades)) ? r.unidades.filter(u=>u.tipo==="nueva" && +u.monto>0 && +u.m2>0) : [];
@@ -3464,18 +3469,18 @@ function renderExecutivePulse(){
       </div><!-- /exec-rent-cols -->
       ${(hayPrecioM2||hayRendAnual)?`
       <div class="exec-metrics-duo">
-        ${hayPrecioM2?`<div class="exec-preciom2">
+        ${(hayPrecioM2||precioM2Mes>0)?`<div class="exec-preciom2">
           <span class="epm-icon">📐</span>
           <div class="epm-body">
-            <div class="epm-val">$${precioM2Sem.toLocaleString('es-MX')}<span class="epm-unit"> / m²</span></div>
-            <div class="epm-lbl">Precio por m² · cierres última semana <span class="epm-n">(${_cierresSem.length})</span></div>
+            <div class="epd-duo"><span class="epd-item"><span class="epm-val">${precioM2Sem?"$"+precioM2Sem.toLocaleString('es-MX'):"—"}</span><span class="epd-tag">semana</span></span><span class="epd-sep"></span><span class="epd-item"><span class="epm-val">${precioM2Mes?"$"+precioM2Mes.toLocaleString('es-MX'):"—"}</span><span class="epd-tag">${monthName(curYm).split(' ')[0].toLowerCase()}</span></span></div>
+            <div class="epm-lbl">Precio por m² de cierre <span class="epm-n">(sem ${_cierresSem.length} · mes ${_cmM2.length})</span></div>
           </div>
         </div>`:''}
-        ${hayRendAnual?`<div class="exec-preciom2 exec-rend">
+        ${(hayRendAnual||rendAnualMes>0)?`<div class="exec-preciom2 exec-rend">
           <span class="epm-icon">📈</span>
           <div class="epm-body">
-            <div class="epm-val" style="color:#1A7A4A">${rendAnualSem}<span class="epm-unit" style="color:#5BA07A">%</span></div>
-            <div class="epm-lbl">Rendimiento anual · cierres última semana <span class="epm-n">(${_cierresRend.length})</span></div>
+            <div class="epd-duo"><span class="epd-item"><span class="epm-val" style="color:#1A7A4A">${rendAnualSem?rendAnualSem+"%":"—"}</span><span class="epd-tag">semana</span></span><span class="epd-sep"></span><span class="epd-item"><span class="epm-val" style="color:#1A7A4A">${rendAnualMes?rendAnualMes+"%":"—"}</span><span class="epd-tag">${monthName(curYm).split(' ')[0].toLowerCase()}</span></span></div>
+            <div class="epm-lbl">Rendimiento BRUTO anual de cierres <span class="epm-n">(renta×12 ÷ precio venta · sem ${_cierresRend.length} · mes ${_cmRend.length})</span></div>
           </div>
         </div>`:''}
       </div>`:''}
@@ -3984,6 +3989,8 @@ function syncInventarioToFields(){
   r.disponible = lista.length;
   r.disponible_manual = true; // fija el valor derivado de la lista
   r.dispDDP = lista.filter(u=>u.origen==="ddp").length;
+  r.enproceso = lista.filter(u=>u.enProceso).length; // 🤝 en proceso, directo de la lista
+  const _ep=document.getElementById("r-enproceso"); if(_ep) _ep.value=r.enproceso||"";
   const st=antiguedadStats(pid);
   if(st) r.diasinv = st.prom;
   invAmueblado[pid] = lista.filter(u=>u.amueblado).length;
@@ -4036,7 +4043,7 @@ function addDeptoInventario(){
   const r=drafts[pid].rentas;
   if(motivo==="noreno"){ r.noreno=(+r.noreno||0)+1; const el=document.getElementById("r-noreno"); if(el) el.value=r.noreno; }
   else if(motivo==="venta"){ r.venta=(+r.venta||0)+1; const el=document.getElementById("r-venta"); if(el) el.value=r.venta; }
-  else if(motivo==="nuevo"){
+  else if(motivo==="nuevo"||motivo==="cambio"){
     // Depto NUEVO al programa: cuenta como entrada (venta) Y el universo "Con intención de renta" crece
     r.venta=(+r.venta||0)+1; const el=document.getElementById("r-venta"); if(el) el.value=r.venta;
     invConfig[pid]=(+invConfig[pid]||0)+1; persistInvConfig();
@@ -4049,7 +4056,7 @@ function addDeptoInventario(){
   // Limpiar el form
   ["inv-new-id","inv-new-m2","inv-new-renta","inv-new-venta"].forEach(i=>{const el=document.getElementById(i); if(el) el.value="";});
   document.getElementById("inv-new-amue").checked=false;
-  showToast("Depto "+id+" agregado ✓"+(motivo==="nuevo"?" · entrada registrada · universo de renta +1":(motivo!=="inicial"?" · entrada registrada":"")));
+  showToast("Depto "+id+" agregado ✓"+((motivo==="nuevo"||motivo==="cambio")?" · entrada registrada · universo de renta +1":(motivo!=="inicial"?" · entrada registrada":"")));
 }
 
 // ══════════════════════════════════════════════
@@ -4164,10 +4171,11 @@ function updateInvDepto(uid, field, val){
   const u=lista.find(x=>x.uid===uid);
   if(!u) return;
   if(field==="id"||field==="desde"||field==="origen") u[field]=val;
-  else if(field==="amueblado") u.amueblado=!!val;
+  else if(field==="amueblado"||field==="enProceso") u[field]=!!val;
   else u[field]=+val||0;
   persistInventario();
-  if(field==="amueblado"||field==="origen"||field==="desde") syncInventarioToFields();
+  if(field==="amueblado"||field==="origen"||field==="desde"||field==="enProceso") syncInventarioToFields();
+  if(field==="enProceso") renderInventarioLista();
   if(field==="desde") renderInventarioLista();
 }
 
@@ -4181,20 +4189,21 @@ function renderInventarioLista(){
   const lista=getInventarioDisp(pid);
   if(badge) badge.textContent=lista.length;
   if(!lista.length){
-    cont.innerHTML='<tr><td colspan="10" style="text-align:center;color:var(--text-3);font-style:italic;padding:16px">Sin deptos en la lista. Agrega los disponibles actuales con motivo "Carga inicial".</td></tr>';
+    cont.innerHTML='<tr><td colspan="11" style="text-align:center;color:var(--text-3);font-style:italic;padding:16px">Sin deptos en la lista. Agrega los disponibles actuales con motivo "Carga inicial".</td></tr>';
     return;
   }
   cont.innerHTML=lista.map(u=>{
     const dias=diasDesde(u.desde);
     const pm2=(+u.m2>0&&+u.precioRenta>0)?Math.round(u.precioRenta/u.m2):0;
     const diasCls=dias>=90?"color:#A8291A;font-weight:700":dias>=45?"color:#8A6010;font-weight:700":"color:var(--text-2)";
-    return `<tr>
+    return `<tr${u.enProceso?' style="background:#FFF8E8"':''}>
       <td><button class="inv-id-chip" onclick="abrirCierreModal('${u.uid}')" title="Clic para cerrar la renta de este depto">${(u.id||"—").replace(/</g,'&lt;')}</button></td>
       <td><input type="number" min="0" step="0.1" value="${u.m2||""}" oninput="updateInvDepto('${u.uid}','m2',this.value)" style="width:64px"></td>
       <td><input type="number" min="0" step="100" value="${u.precioRenta||""}" oninput="updateInvDepto('${u.uid}','precioRenta',this.value)" style="width:88px"></td>
       <td><input type="number" min="0" step="1000" value="${u.precioVenta||""}" oninput="updateInvDepto('${u.uid}','precioVenta',this.value)" style="width:100px"></td>
       <td style="font-family:'DM Mono',monospace;font-size:11.5px;color:var(--text-2);text-align:center">${pm2?("$"+pm2.toLocaleString("es-MX")):"—"}</td>
       <td style="text-align:center"><input type="checkbox" ${u.amueblado?"checked":""} onchange="updateInvDepto('${u.uid}','amueblado',this.checked)"></td>
+      <td style="text-align:center" title="En proceso de cierre"><input type="checkbox" ${u.enProceso?"checked":""} onchange="updateInvDepto('${u.uid}','enProceso',this.checked)"></td>
       <td><select onchange="updateInvDepto('${u.uid}','origen',this.value)" style="font-size:11px"><option value="ddp" ${u.origen==="ddp"?"selected":""}>DDP</option><option value="prop" ${u.origen!=="ddp"?"selected":""}>Propietario</option></select></td>
       <td><input type="date" value="${u.desde||""}" oninput="updateInvDepto('${u.uid}','desde',this.value)" style="width:120px;font-size:11px"></td>
       <td style="text-align:center;font-family:'DM Mono',monospace;font-size:12px;${diasCls}">${dias}d</td>
