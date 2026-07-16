@@ -1196,7 +1196,7 @@ window._fbLoadAll = async function(){
 
     <!-- Fila 2.7: Historial de cierres -->
     <div class="chart-card" style="margin-bottom:14px">
-      <div class="chart-card-title">📜 Historial de cierres</div>
+      <div class="chart-card-title">📜 Historial de cierres <button class="hc-pill" style="float:right" onclick="toggleHistEdit()" id="hc-edit-btn">✏️ Completar datos</button></div>
       <div class="chart-card-sub">Todos los cierres registrados, del más reciente al más antiguo. Los datos vienen automáticos de la lista de inventario al rentar.</div>
       <div class="hc-filtros" id="hc-filtros"></div>
       <div class="hc-resumen" id="hc-resumen"></div>
@@ -1887,14 +1887,39 @@ function rendPromedio(units){
 // HISTORIAL DE CIERRES — activo comercial acumulado
 // ══════════════════════════════════════════════
 let _histFiltro="all";
+let _histEdit=false;
+function toggleHistEdit(){
+  if(_histEdit){ _histEdit=false; renderHistorialCierres(); return; }
+  const nip=prompt("NIP de edición del historial (4 dígitos):");
+  if(nip!=="2026"){ if(nip!==null) showToast("NIP incorrecto"); return; }
+  _histEdit=true; renderHistorialCierres();
+  showToast("✏️ Modo edición activo — los cambios se guardan directo en la semana original");
+}
+// Edita la unidad EN SU REGISTRO ORIGINAL (db) y en el draft si es la misma semana — conexión perfecta
+function updateCierreHist(pid, recDate, idx, field, val){
+  const entry=(db[pid]||[]).find(e=>e.date===recDate);
+  if(!entry || !entry.rentas || !Array.isArray(entry.rentas.unidades) || !entry.rentas.unidades[idx]) return;
+  const aplicar=(u)=>{
+    if(field==="amueblado") u.amueblado=!!val;
+    else if(["cierre","inicio","fin","canal","broker","id"].includes(field)) u[field]=val;
+    else u[field]=+val||0;
+  };
+  aplicar(entry.rentas.unidades[idx]);
+  // Espejo en el draft si la PM tiene abierta esa misma semana
+  if(drafts[pid] && drafts[pid].date===recDate && drafts[pid].rentas && Array.isArray(drafts[pid].rentas.unidades) && drafts[pid].rentas.unidades[idx]){
+    aplicar(drafts[pid].rentas.unidades[idx]);
+  }
+  persist(); // sube el proyecto completo a Firebase (mecánica existente)
+  if(field==="cierre"||field==="monto"||field==="precioVenta"||field==="m2") renderHistorialCierres(); // refresca métricas derivadas
+}
 
 // Todos los cierres históricos de un proyecto, con fecha efectiva (cierre o fecha del registro)
 function cierresHistoricos(pid){
   const out=[];
   getHistory(pid).forEach(e=>{
     if(!e.rentas || !Array.isArray(e.rentas.unidades)) return;
-    e.rentas.unidades.forEach(u=>{
-      out.push({...u, fecha:(u.cierre||e.date), pid});
+    e.rentas.unidades.forEach((u,i)=>{
+      out.push({...u, fecha:(u.cierre||e.date), pid, _recDate:e.date, _idx:i});
     });
   });
   return out;
@@ -1908,6 +1933,8 @@ function renderHistorialCierres(){
   const resumen=document.getElementById("hc-resumen");
   if(!body) return;
 
+  const eb=document.getElementById("hc-edit-btn");
+  if(eb){ eb.textContent=_histEdit?"✓ Terminar edición":"✏️ Completar datos"; eb.classList.toggle("active",_histEdit); }
   // Pills de filtro (respetan el orden arrastrable)
   if(filtros){
     filtros.innerHTML=[`<button class="hc-pill ${_histFiltro==="all"?"active":""}" onclick="setHistFiltro('all')">Todos</button>`]
@@ -1942,25 +1969,27 @@ function renderHistorialCierres(){
       (diasProm?`<span>Días prom.: <strong>${diasProm}d</strong></span>`:"");
   }
 
+  const E=_histEdit;
+  const ref=(u)=>`'${u.pid}','${u._recDate}',${u._idx}`;
   body.innerHTML=rows.slice(0,300).map(u=>{
     const p=PROJECTS[u.pid];
     const pm2=(+u.m2>0&&+u.monto>0)?Math.round(u.monto/u.m2):0;
     const rend=(+u.precioVenta>0&&+u.monto>0)?((u.monto*12/u.precioVenta)*100).toFixed(1):null;
     const ci=CANAL_INFO[u.canal]||CANAL_INFO.otro;
-    return `<tr>
-      <td class="hc-num">${u.fecha||"—"}</td>
+    return `<tr${E?' style="background:#FFFDF4"':''}>
+      <td class="hc-num">${E?`<input type="date" value="${u.cierre||""}" style="width:118px;font-size:10.5px" onchange="updateCierreHist(${ref(u)},'cierre',this.value)">`:(u.fecha||"—")}</td>
       <td><span class="hc-proj-dot" style="background:${p.color}"></span>${p.short}</td>
-      <td class="hc-num" style="font-weight:700">${u.id||"—"}</td>
+      <td class="hc-num" style="font-weight:700">${E?`<input type="text" value="${(u.id||"").replace(/"/g,'&quot;')}" style="width:56px" oninput="updateCierreHist(${ref(u)},'id',this.value)">`:(u.id||"—")}</td>
       <td><span class="hc-tipo ${u.tipo==="nueva"?"nueva":"renov"}">${u.tipo==="nueva"?"Nueva":"Renov."}</span></td>
-      <td class="hc-num">${+u.m2>0?u.m2:"—"}</td>
-      <td class="hc-num">${+u.monto>0?"$"+(+u.monto).toLocaleString("es-MX"):"—"}</td>
+      <td class="hc-num">${E?`<input type="number" min="0" step="0.1" value="${u.m2||""}" style="width:60px" onchange="updateCierreHist(${ref(u)},'m2',this.value)">`:(+u.m2>0?u.m2:"—")}</td>
+      <td class="hc-num">${E?`<input type="number" min="0" step="100" value="${u.monto||""}" style="width:80px" onchange="updateCierreHist(${ref(u)},'monto',this.value)">`:(+u.monto>0?"$"+(+u.monto).toLocaleString("es-MX"):"—")}</td>
       <td class="hc-num">${pm2?"$"+pm2.toLocaleString("es-MX"):"—"}</td>
-      <td class="hc-num">${+u.precioVenta>0?"$"+(+u.precioVenta).toLocaleString("es-MX"):"—"}</td>
+      <td class="hc-num">${E?`<input type="number" min="0" step="1000" value="${u.precioVenta||""}" style="width:96px" onchange="updateCierreHist(${ref(u)},'precioVenta',this.value)">`:(+u.precioVenta>0?"$"+(+u.precioVenta).toLocaleString("es-MX"):"—")}</td>
       <td class="hc-num" style="${rend?"color:#1A7A4A;font-weight:700":""}">${rend?rend+"%":"—"}</td>
-      <td class="hc-num">${u.tipo==="nueva"&&+u.dias>0?u.dias+"d":"—"}</td>
-      <td style="color:${ci.color};font-weight:600">${ci.icon} ${ci.label.replace("Broker ","")}</td>
-      <td>${(u.broker||"—").replace(/</g,"&lt;")}</td>
-      <td style="text-align:center">${u.amueblado?"🛋️":"—"}</td>
+      <td class="hc-num">${E&&u.tipo==="nueva"?`<input type="number" min="0" step="1" value="${u.dias||""}" style="width:52px" onchange="updateCierreHist(${ref(u)},'dias',this.value)">`:(u.tipo==="nueva"&&+u.dias>0?u.dias+"d":"—")}</td>
+      <td style="color:${ci.color};font-weight:600">${E?`<select style="font-size:10.5px" onchange="updateCierreHist(${ref(u)},'canal',this.value)">${Object.keys(CANAL_INFO).map(k=>`<option value="${k}" ${u.canal===k?"selected":""}>${CANAL_INFO[k].label.replace("Broker ","")}</option>`).join("")}</select>`:ci.icon+" "+ci.label.replace("Broker ","")}</td>
+      <td>${E?`<input type="text" value="${(u.broker||"").replace(/"/g,'&quot;')}" style="width:92px" oninput="updateCierreHist(${ref(u)},'broker',this.value)">`:(u.broker||"—").replace(/</g,"&lt;")}</td>
+      <td style="text-align:center">${E?`<input type="checkbox" ${u.amueblado?"checked":""} onchange="updateCierreHist(${ref(u)},'amueblado',this.checked)">`:(u.amueblado?"🛋️":"—")}</td>
     </tr>`;
   }).join("") + (rows.length>300?`<tr><td colspan="13" class="hc-empty">Mostrando los 300 más recientes de ${rows.length}. El Excel exporta todos.</td></tr>`:"");
 }
@@ -5295,6 +5324,43 @@ function _validarCoherencia(pid, entry){
     });
   }
   return avisos;
+}
+
+
+// ══════════════════════════════════════════════
+// TRASPASO / RESPALDO TOTAL — exporta e importa la base completa (Firestore crudo)
+// ══════════════════════════════════════════════
+async function exportarRespaldoTotal(){
+  try{
+    showToast("Leyendo la base completa…");
+    const out={_meta:{fecha:new Date().toISOString(), panel:"Panel de Comunidades DDP", nota:"Respaldo íntegro de Firestore: colecciones proyectos y config. Restaurable con el botón Restaurar respaldo."}, proyectos:{}, config:{}};
+    const ps=await _fdb.collection("proyectos").get();
+    ps.forEach(d=>{ out.proyectos[d.id]=d.data(); });
+    const cs=await _fdb.collection("config").get();
+    cs.forEach(d=>{ out.config[d.id]=d.data(); });
+    const blob=new Blob([JSON.stringify(out,null,1)],{type:"application/json"});
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download="respaldo_total_panel_ddp_"+today()+".json";
+    a.click();
+    showToast("🧳 Respaldo total descargado ✓ Guárdalo en un lugar seguro");
+  }catch(e){ console.error(e); showToast("⚠️ No se pudo leer la nube para el respaldo"); }
+}
+function importarRespaldoTotal(){
+  const inp=document.createElement("input"); inp.type="file"; inp.accept=".json,application/json";
+  inp.onchange=async ev=>{
+    const f=ev.target.files[0]; if(!f) return;
+    let data; try{ data=JSON.parse(await f.text()); }catch(e){ showToast("Archivo JSON inválido"); return; }
+    if(!data.proyectos || !data.config){ showToast("El archivo no es un respaldo del panel"); return; }
+    const nP=Object.keys(data.proyectos).length, nC=Object.keys(data.config).length;
+    if(!confirm("Vas a escribir un respaldo COMPLETO en la base conectada:\n\n· "+nP+" proyectos con historial\n· "+nC+" documentos de configuración\n· Fecha del respaldo: "+(data._meta&&data._meta.fecha?data._meta.fecha.slice(0,10):"desconocida")+"\n\nEsto SOBRESCRIBE lo que exista. ¿Continuar?")) return;
+    try{
+      for(const pid of Object.keys(data.proyectos)){ await _fdb.collection("proyectos").doc(pid).set(data.proyectos[pid]); }
+      for(const cid of Object.keys(data.config)){ await _fdb.collection("config").doc(cid).set(data.config[cid]); }
+      showToast("✓ Respaldo restaurado por completo — recarga la página");
+    }catch(e){ console.error(e); showToast("⚠️ Error al escribir en la nube. Revisa la conexión/reglas."); }
+  };
+  inp.click();
 }
 
 function saveEntry(){
