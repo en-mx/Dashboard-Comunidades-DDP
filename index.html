@@ -1924,7 +1924,20 @@ function updateCierreHist(pid, recDate, idx, field, val){
     aplicar(drafts[pid].rentas.unidades[idx]);
   }
   persist(); // sube el proyecto completo a Firebase (mecánica existente)
-  if(field==="cierre"||field==="monto"||field==="precioVenta"||field==="m2") renderHistorialCierres(); // refresca métricas derivadas
+  // Campos que alimentan métricas derivadas (rendimiento bruto, $/m², promedios, comparativos): refrescar TODO el dashboard
+  const afectaMetricas = ["cierre","monto","precioVenta","m2","dias","canal","broker","amueblado","id"].includes(field);
+  if(afectaMetricas){
+    // Preservar el estado de edición y el filtro activos del historial durante el re-render
+    const _e=_histEdit, _f=_histFiltro;
+    renderDashboard();      // recalcula KPIs, rendimiento comparativo, semáforo, absorción del portafolio…
+    _histEdit=_e; _histFiltro=_f;
+    renderHistorialCierres(); // repinta el historial con el modo edición y filtro intactos
+    // Si el pantallazo del proyecto está abierto sobre esa misma semana, refrescarlo también
+    if(currentProject===pid && drafts[pid] && drafts[pid].date===recDate){
+      try{ renderExecutivePulse(); }catch(e){}
+      try{ renderRentasDashboard2(); }catch(e){}
+    }
+  }
 }
 
 // Todos los cierres históricos de un proyecto, con fecha efectiva (cierre o fecha del registro)
@@ -1993,7 +2006,7 @@ function renderHistorialCierres(){
     return `<tr${E?' style="background:#FFFDF4"':''}>
       <td class="hc-num">${E?`<input type="date" value="${u.cierre||""}" style="width:118px;font-size:10.5px" onchange="updateCierreHist(${ref(u)},'cierre',this.value)">`:(u.fecha||"—")}</td>
       <td><span class="hc-proj-dot" style="background:${p.color}"></span>${p.short}</td>
-      <td class="hc-num" style="font-weight:700">${E?`<input type="text" value="${(u.id||"").replace(/"/g,'&quot;')}" style="width:56px" oninput="updateCierreHist(${ref(u)},'id',this.value)">`:(u.id||"—")}</td>
+      <td class="hc-num" style="font-weight:700">${E?`<input type="text" value="${(u.id||"").replace(/"/g,'&quot;')}" style="width:56px" onchange="updateCierreHist(${ref(u)},'id',this.value)">`:(u.id||"—")}</td>
       <td><span class="hc-tipo ${u.tipo==="nueva"?"nueva":"renov"}">${u.tipo==="nueva"?"Nueva":"Renov."}</span></td>
       <td class="hc-num">${E?`<input type="number" min="0" step="0.1" value="${u.m2||""}" style="width:60px" onchange="updateCierreHist(${ref(u)},'m2',this.value)">`:(+u.m2>0?u.m2:"—")}</td>
       <td class="hc-num">${E?`<input type="number" min="0" step="100" value="${u.monto||""}" style="width:80px" onchange="updateCierreHist(${ref(u)},'monto',this.value)">`:(+u.monto>0?"$"+(+u.monto).toLocaleString("es-MX"):"—")}</td>
@@ -2002,7 +2015,7 @@ function renderHistorialCierres(){
       <td class="hc-num" style="${rend?"color:#1A7A4A;font-weight:700":""}">${rend?rend+"%":"—"}</td>
       <td class="hc-num">${E&&u.tipo==="nueva"?`<input type="number" min="0" step="1" value="${u.dias||""}" style="width:52px" onchange="updateCierreHist(${ref(u)},'dias',this.value)">`:(u.tipo==="nueva"&&+u.dias>0?u.dias+"d":"—")}</td>
       <td style="color:${ci.color};font-weight:600">${E?`<select style="font-size:10.5px" onchange="updateCierreHist(${ref(u)},'canal',this.value)">${Object.keys(CANAL_INFO).map(k=>`<option value="${k}" ${u.canal===k?"selected":""}>${CANAL_INFO[k].label.replace("Broker ","")}</option>`).join("")}</select>`:ci.icon+" "+ci.label.replace("Broker ","")}</td>
-      <td>${E?`<input type="text" value="${(u.broker||"").replace(/"/g,'&quot;')}" style="width:92px" oninput="updateCierreHist(${ref(u)},'broker',this.value)">`:(u.broker||"—").replace(/</g,"&lt;")}</td>
+      <td>${E?`<input type="text" value="${(u.broker||"").replace(/"/g,'&quot;')}" style="width:92px" onchange="updateCierreHist(${ref(u)},'broker',this.value)">`:(u.broker||"—").replace(/</g,"&lt;")}</td>
       <td style="text-align:center">${E?`<input type="checkbox" ${u.amueblado?"checked":""} onchange="updateCierreHist(${ref(u)},'amueblado',this.checked)">`:(u.amueblado?"🛋️":"—")}</td>
     </tr>`;
   }).join("") + (rows.length>300?`<tr><td colspan="13" class="hc-empty">Mostrando los 300 más recientes de ${rows.length}. El Excel exporta todos.</td></tr>`:"");
@@ -4208,6 +4221,7 @@ function retirarDeLista(uid){
   persistInventario();
   syncInventarioToFields();
   renderInventarioLista();
+  markDirty();
   showToast("Depto "+(u.id||"")+" retirado"+(saleDelPrograma?" · universo de renta −1":" (corrección, universo sin cambio)"));
 }
 
@@ -4343,6 +4357,7 @@ function addUnidadRenovacion(){
   renderUnidadesList();
   recalcDispAuto();
   renderRentasDashboard2();
+  markDirty();
 }
 
 // Lleva al usuario a la lista de disponibles y la resalta
@@ -4365,6 +4380,7 @@ function addUnidad(){
   renderUnidadesList();
   recalcDispAuto();
   renderRentasDashboard2();
+  markDirty();
 }
 
 // ↩️ CANCELAR RENTA — revierte un cierre: el depto regresa a la lista con su antigüedad
@@ -4397,6 +4413,7 @@ function removeUnidad(i){
   renderUnidadesList();
   recalcDispAuto();
   renderRentasDashboard2();
+  markDirty();
 }
 
 function updateUnidad(i, field, val){
