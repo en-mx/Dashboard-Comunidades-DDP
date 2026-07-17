@@ -3523,7 +3523,7 @@ function renderExecutivePulse(){
       </div>`:''}
       </div><!-- /erc-right -->
       </div><!-- /exec-rent-cols -->
-      ${(hayPrecioM2||hayRendAnual)?`
+      ${(hayPrecioM2||hayRendAnual||precioM2Mes>0||rendAnualMes>0)?`
       <div class="exec-metrics-duo">
         ${(hayPrecioM2||precioM2Mes>0)?`<div class="exec-preciom2">
           <span class="epm-icon">📐</span>
