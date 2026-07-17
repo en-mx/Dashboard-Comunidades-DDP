@@ -601,6 +601,7 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 
 /* ── LISTA REAL DE INVENTARIO ── */
 
+.input-auto{background:var(--surface-2) !important;color:var(--text-2) !important;cursor:not-allowed}
 .auto-tag{display:inline-block;background:#E8F5EE;color:#1A7A4A;border:1px solid #BFE5CF;font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:2px 6px;border-radius:5px;vertical-align:middle;margin-left:4px}
 .auc-row{display:flex;gap:9px;flex-wrap:wrap}
 .auc-primary{background:var(--text-1);color:var(--bg)}
@@ -3288,8 +3289,8 @@ function renderExecutivePulse(){
 
   const convMes = eff&&eff.citas>0?Math.round(eff.nuevas/eff.citas*100):0;
 
-  // Disponibles y en proceso de cierre (de la semana actual)
-  const enProcesoSem = r?(+r.enproceso||0):0;
+  // En proceso de cierre — ★ anclado a la lista en vivo (checkboxes 🤝), como los disponibles
+  const enProcesoSem = hayLista(pid) ? getInventarioDisp(pid).filter(u=>u.enProceso).length : (r?(+r.enproceso||0):0);
 
   // Días promedio en inventario (del acumulado mensual, ya calculado)
   const diasMes = eff ? (eff.dias||0) : 0;
@@ -4020,6 +4021,8 @@ function syncInventarioToFields(){
   r.dispDDP = lista.filter(u=>u.origen==="ddp").length;
   r.enproceso = lista.filter(u=>u.enProceso).length; // 🤝 en proceso, directo de la lista
   const _ep=document.getElementById("r-enproceso"); if(_ep) _ep.value=r.enproceso||"";
+  // Con lista, estos campos son 100% automáticos → solo lectura con distintivo
+  ["r-disponible","r-dispddp","r-dispprop","r-invamueblado","r-diasinv","r-enproceso"].forEach(id=>{const el=document.getElementById(id); if(el){el.readOnly=true; el.classList.add("input-auto"); el.title="Automático desde la lista de inventario — se calcula solo";}});
   const st=antiguedadStats(pid);
   if(st) r.diasinv = st.prom;
   invAmueblado[pid] = lista.filter(u=>u.amueblado).length;
@@ -4351,6 +4354,30 @@ function addUnidad(){
   renderRentasDashboard2();
 }
 
+// ↩️ CANCELAR RENTA — revierte un cierre: el depto regresa a la lista con su antigüedad
+// original (desde = fecha de cierre − días), las salidas bajan y NO se registra entrada.
+function cancelarRenta(i){
+  const pid=currentProject;
+  const r=drafts[pid].rentas;
+  const u=r&&Array.isArray(r.unidades)?r.unidades[i]:null;
+  if(!u || u.tipo!=="nueva") return;
+  if(!confirm("¿Cancelar la renta del depto "+(u.id||"")+" y regresarlo a disponibles?\n\n· El cierre se elimina (las salidas de la semana bajan)\n· El depto vuelve a la lista con su antigüedad ORIGINAL\n· NO cuenta como entrada (no infla la semana)")) return;
+  // Reconstruir la fecha "disponible desde" original: cierre − días en lista
+  let desde=u.cierre||today();
+  if(u.cierre && +u.dias>0){
+    const x=new Date(u.cierre+"T00:00:00"); x.setDate(x.getDate()-(+u.dias)); desde=x.toISOString().slice(0,10);
+  }
+  if(!inventarioDisp[pid]) inventarioDisp[pid]=[];
+  inventarioDisp[pid].push({uid:"u"+Date.now().toString(36), id:u.id||"", m2:+u.m2||0, precioRenta:+u.monto||0, precioVenta:+u.precioVenta||0, amueblado:!!u.amueblado, origen:"prop", desde, enProceso:false});
+  r.unidades.splice(i,1);
+  persistInventario();
+  try{ syncInventarioToFields(); }catch(e){}
+  try{ renderInventarioLista(); }catch(e){}
+  try{ renderUnidadesList(); }catch(e){}
+  markDirty();
+  showToast("↩️ Renta cancelada: "+(u.id||"—")+" regresó a la lista con su antigüedad. Revisa su origen (DDP/Propietario) y guarda el registro");
+}
+
 function removeUnidad(i){
   const r=drafts[currentProject].rentas;
   r.unidades.splice(i,1);
@@ -4408,7 +4435,7 @@ function renderUnidadesList(){
       </select>
       <input type="number" min="0" step="1" value="${u.dias||""}" placeholder="Días lista" oninput="updateUnidad(${i},'dias',this.value)" ${u.tipo==="renovacion"?"disabled style='opacity:.4'":""}>
       <input type="number" step="0.1" value="${u.incr||""}" placeholder="Incr. %" oninput="updateUnidad(${i},'incr',this.value)">
-      <button class="u-del" onclick="removeUnidad(${i})" title="Quitar">✕</button>
+      ${u.tipo==="nueva"?`<button class="u-del" style="color:#8A6010;border-color:#F0DFA8" onclick="cancelarRenta(${i})" title="Cancelar renta: el depto regresa a la lista sin contar como entrada">↩️</button>`:""}<button class="u-del" onclick="removeUnidad(${i})" title="Quitar (solo borra el registro; NO regresa el depto a la lista)">✕</button>
     </div>
     <div class="unidad-fechas-row">
       <div class="ufecha-field"><span class="ufecha-lbl">🤝 Fecha de cierre</span><input type="date" value="${u.cierre||""}" oninput="updateUnidad(${i},'cierre',this.value)"></div>
@@ -4462,6 +4489,8 @@ function loadRentasInputs(){
   set("r-totaltorre", getTotalTorre(currentProject));
   set("r-enproceso", (drafts[currentProject].rentas&&drafts[currentProject].rentas.enproceso)||"");
   set("r-diasinv", (drafts[currentProject].rentas&&drafts[currentProject].rentas.diasinv)||"");
+  // Campos gobernados por la lista: editables por default; el sync los bloquea si hay lista
+  ["r-disponible","r-dispddp","r-dispprop","r-invamueblado","r-diasinv","r-enproceso"].forEach(id=>{const el=document.getElementById(id); if(el){el.readOnly=false; el.classList.remove("input-auto"); el.title="";}});
   renderInventarioLista();
   renderAddUnitActions();
   const invNewDesde=document.getElementById("inv-new-desde"); if(invNewDesde && !invNewDesde.value) invNewDesde.value=today();
@@ -4792,7 +4821,7 @@ function renderRentasDashboard2(){
   const enRenta=total;                       // inventario DDP en renta
   const rentados=ocup;                        // = inv DDP − disponibles
   const propietario=aAmen.hab_propietario||0;
-  const enProceso=r?(+r.enproceso||0):0;
+  const enProceso = hayLista(pid) ? getInventarioDisp(pid).filter(u=>u.enProceso).length : (r?(+r.enproceso||0):0);
 
   // ── SECCIÓN 0: COMPOSICIÓN DE LA TORRE (embudo) ──
   if(torreTotal>0 || entregados>0){
