@@ -613,6 +613,11 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 
 
 
+/* ── GUARDADO RÁPIDO ── */
+#quick-save-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:8400;background:#1B1B1A;color:#fff;border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:14px;box-shadow:0 12px 36px rgba(0,0,0,.32)}
+.qsb-txt{font-size:12px;font-weight:700;color:#F2B8AE}
+.qsb-btn{padding:9px 18px;border:none;border-radius:9px;background:#1A7A4A;color:#fff;font-size:12.5px;font-weight:700;font-family:HelveticaNow,sans-serif;cursor:pointer}
+.qsb-btn:hover{background:#166B41}
 /* ── ASISTENTE SEMANAL ── */
 #wizard-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:8500;background:#1B1B1A;color:#fff;border-radius:16px;padding:12px 16px;display:flex;align-items:center;gap:18px;box-shadow:0 12px 40px rgba(0,0,0,.35);max-width:860px;width:calc(100% - 40px);flex-wrap:wrap}
 .wiz-info{flex:1;min-width:220px;display:flex;flex-direction:column;gap:2px}
@@ -1687,7 +1692,15 @@ function markDirty(){ if(currentProject){ _dirty[currentProject]=true; _updateDi
 function clearDirty(pid){ _dirty[pid]=false; _updateDirtyHint(); }
 function _updateDirtyHint(){
   const h=document.getElementById("save-hint");
-  if(h && currentProject && _dirty[currentProject]) h.innerHTML='<span style="color:#A8291A;font-weight:700">● Cambios sin guardar</span>';
+  const dirty = !!(currentProject && _dirty[currentProject]);
+  if(h && dirty) h.innerHTML='<span style="color:#A8291A;font-weight:700">● Cambios sin guardar</span>';
+  // Barra flotante de guardado rápido: visible con cambios pendientes, en la vista del proyecto, sin el asistente encima
+  const bar=document.getElementById("quick-save-bar");
+  if(bar){
+    const vp=document.getElementById("view-project");
+    const wiz=document.getElementById("wizard-bar");
+    bar.style.display = (dirty && vp && vp.classList.contains("active") && (!wiz || wiz.style.display==="none" || wiz.style.display==="")) ? "flex" : "none";
+  }
 }
 // Cualquier edición dentro de la vista del proyecto marca el borrador como sucio
 document.addEventListener("input", e=>{ const v=document.getElementById("view-project"); if(v && v.contains(e.target)) markDirty(); }, true);
@@ -5310,10 +5323,11 @@ function startWizard(){
   _wizSteps=_wizBuildSteps(currentProject);
   _wizIdx=0;
   document.getElementById("wizard-bar").style.display="flex";
+  _updateDirtyHint();
   _wizRender();
   _wizSteps[0].go();
 }
-function closeWizard(){ document.getElementById("wizard-bar").style.display="none"; }
+function closeWizard(){ document.getElementById("wizard-bar").style.display="none"; _updateDirtyHint(); }
 function wizGo(d){
   _wizIdx=Math.max(0, Math.min(_wizSteps.length-1, _wizIdx+d));
   _wizRender();
@@ -5610,5 +5624,11 @@ if(document.readyState==="loading"){
   </div>
 </div>
 
+
+<!-- Barra flotante de guardado rápido (aparece con cambios sin guardar) -->
+<div id="quick-save-bar" style="display:none">
+  <span class="qsb-txt">● Cambios sin guardar</span>
+  <button class="qsb-btn" onclick="saveEntry()">💾 Guardar registro</button>
+</div>
 </body>
 </html>
