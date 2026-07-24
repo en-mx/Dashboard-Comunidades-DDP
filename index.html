@@ -164,11 +164,14 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .acc-prev-t{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--text-3)}
 .acc-prev-i{font-size:10.5px;color:var(--text-2);margin-top:2px;line-height:1.4}
 .acc-prev-meta{color:#1A7A4A;font-weight:700}
-.acc-item{margin-bottom:9px}
-.acc-meta{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:4px 0 0 24px}
-.acc-ml{font-size:9.5px;color:var(--text-3);font-weight:700;text-transform:uppercase;letter-spacing:.03em}
-.acc-num{width:58px;padding:4px 7px;border:1px solid var(--border-md);border-radius:7px;font-size:11px;font-family:'DM Mono',monospace;background:var(--surface);color:var(--text-1);outline:none}
-.acc-sel{padding:4px 6px;border:1px solid var(--border-md);border-radius:7px;font-size:10.5px;font-family:HelveticaNow,Helvetica Neue,Arial,sans-serif;background:var(--surface);color:var(--text-1);outline:none;max-width:150px}
+.acc-th,.acc-tr{display:grid;grid-template-columns:17px minmax(0,1fr) 108px 66px;gap:6px;align-items:center}
+.acc-th{margin-bottom:4px}
+.acc-th span{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--text-3)}
+.acc-tr{margin-bottom:5px}
+.acc-imp{display:flex;gap:3px;min-width:0}
+.acc-num{width:44px;padding:4px 7px;border:1px solid var(--border-md);border-radius:7px;font-size:11px;font-family:'DM Mono',monospace;background:var(--surface);color:var(--text-1);outline:none}
+.acc-sel{padding:4px 4px;min-width:0;flex:1;border:1px solid var(--border-md);border-radius:7px;font-size:10.5px;font-family:HelveticaNow,Helvetica Neue,Arial,sans-serif;background:var(--surface);color:var(--text-1);outline:none;max-width:none}
+.acc-sel-p{width:100%}
 .subcat-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .subcat-label{font-size:12px;color:var(--text-2);flex:1}
 .subcat-dots{display:flex;gap:3px}
@@ -3912,10 +3915,11 @@ window.togglePillar = function togglePillar(key){
 // Cada acción: {t: qué haremos, m: incremento esperado, u: métrica, p: plazo}
 // Compatible hacia atrás: las acciones guardadas como texto simple se normalizan solas.
 const ACC_METRICAS = {
-  pilar: [["pts","puntos de calificación"],["%","% de satisfacción"]],
-  amenidades: [["usos","usos por semana"],["pts","puntos de satisfacción"],["%","% de ocupación"]]
+  pilar: [["pts","pts calif.","puntos de calificación"],["%","% satisf.","% de satisfacción"]],
+  amenidades: [["usos","usos/sem","usos por semana"],["pts","pts satisf.","puntos de satisfacción"],["%","% ocup.","% de ocupación"]]
 };
 const ACC_PLAZOS = ["2 semanas","4 semanas","6 semanas","2 meses","3 meses","6 meses"];
+const ACC_PLAZO_CORTO = {"2 semanas":"2 sem","4 semanas":"4 sem","6 semanas":"6 sem","2 meses":"2 mes","3 meses":"3 mes","6 meses":"6 mes"};
 function _accNorm(x){
   if(x && typeof x==="object") return {t:x.t||"", m:x.m||"", u:x.u||"", p:x.p||""};
   return {t:(x||""), m:"", u:"", p:""};
@@ -3956,20 +3960,17 @@ function renderAccionesPilar(key, q){
   const mets=(key==="amenidades"?ACC_METRICAS.amenidades:ACC_METRICAS.pilar);
   const inputs=[0,1,2].map(i=>{
     const o=a[i];
-    const opMet=mets.map(([v,l])=>`<option value="${v}" ${o.u===v?"selected":""}>${l}</option>`).join("");
-    const opPla=ACC_PLAZOS.map(p=>`<option value="${p}" ${o.p===p?"selected":""}>${p}</option>`).join("");
-    return `<div class="acc-item">
-      <div class="acc-row"><span class="acc-b">${i+1}</span><input type="text" class="acc-in" value="${(o.t||"").replace(/"/g,'&quot;')}" placeholder="Acción ${i+1}…" onchange="setAccion('${key}',${i},'t',this.value)"></div>
-      <div class="acc-meta">
-        <span class="acc-ml">Impacto esperado</span>
-        <input type="number" class="acc-num" step="0.1" value="${o.m}" placeholder="+0" onchange="setAccion('${key}',${i},'m',this.value)">
-        <select class="acc-sel" onchange="setAccion('${key}',${i},'u',this.value)"><option value="">métrica…</option>${opMet}</select>
-        <span class="acc-ml">en</span>
-        <select class="acc-sel" onchange="setAccion('${key}',${i},'p',this.value)"><option value="">plazo…</option>${opPla}</select>
-      </div>
+    const opMet=mets.map(([v,corto,largo])=>`<option value="${v}" title="${largo}" ${o.u===v?"selected":""}>${corto}</option>`).join("");
+    const opPla=ACC_PLAZOS.map(p=>`<option value="${p}" ${o.p===p?"selected":""}>${ACC_PLAZO_CORTO[p]||p}</option>`).join("");
+    return `<div class="acc-tr">
+      <span class="acc-b">${i+1}</span>
+      <input type="text" class="acc-in" value="${(o.t||"").replace(/"/g,'&quot;')}" placeholder="Acción ${i+1}…" onchange="setAccion('${key}',${i},'t',this.value)">
+      <span class="acc-imp"><input type="number" class="acc-num" step="0.1" value="${o.m}" placeholder="+0" onchange="setAccion('${key}',${i},'m',this.value)"><select class="acc-sel" onchange="setAccion('${key}',${i},'u',this.value)"><option value="">—</option>${opMet}</select></span>
+      <select class="acc-sel acc-sel-p" onchange="setAccion('${key}',${i},'p',this.value)"><option value="">—</option>${opPla}</select>
     </div>`;
   }).join("");
-  return `<div class="acc-box" id="acc-${key}"><div class="acc-q">${q||"¿Qué debemos hacer para subir esta calificación?"}</div>${inputs}${_accionesPrevias(key)}</div>`;
+  const head=`<div class="acc-th"><span></span><span>Acción</span><span>Impacto esperado</span><span>Plazo</span></div>`;
+  return `<div class="acc-box" id="acc-${key}"><div class="acc-q">${q||"¿Qué debemos hacer para subir esta calificación?"}</div>${head}${inputs}${_accionesPrevias(key)}</div>`;
 }
 function setScore(key,v){
   const cfg=pillarConfig[currentProject]||{vivencial:true,admin:true,comite:true};
