@@ -154,6 +154,15 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .score-slider::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--text-1);cursor:pointer;border:2px solid var(--surface)}
 .score-slider-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--text-3);font-family:'DM Mono',monospace}
 .subcats{display:flex;flex-direction:column;gap:6px}
+.acc-box{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border-md)}
+.acc-q{font-size:11px;font-weight:700;color:var(--text-2);margin-bottom:7px}
+.acc-row{display:flex;align-items:center;gap:7px;margin-bottom:5px}
+.acc-b{width:17px;height:17px;border-radius:50%;background:var(--surface-3);color:var(--text-2);font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.acc-in{flex:1;min-width:0;padding:6px 9px;border:1px solid var(--border-md);border-radius:8px;font-size:11.5px;font-family:HelveticaNow,Helvetica Neue,Arial,sans-serif;background:var(--surface);color:var(--text-1);outline:none}
+.acc-in:focus{border-color:var(--text-2)}
+.acc-prev{margin-top:8px;background:var(--surface-2);border-radius:8px;padding:6px 9px}
+.acc-prev-t{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--text-3)}
+.acc-prev-i{font-size:10.5px;color:var(--text-2);margin-top:2px;line-height:1.4}
 .subcat-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .subcat-label{font-size:12px;color:var(--text-2);flex:1}
 .subcat-dots{display:flex;gap:3px}
@@ -1450,6 +1459,7 @@ window._fbLoadAll = async function(){
 
         <!-- Masa crítica -->
         <div id="amen-masa-critica"></div>
+        <div id="amen-acciones"></div>
 
         <!-- Captura (colapsable) -->
         <div id="amen-capture" style="display:none">
@@ -3101,6 +3111,8 @@ function renderAmenMasaCritica(){
 // ── RENDER PRINCIPAL ──
 function renderAmenidades(){
   if(!amenEnabled[currentProject]) return;
+  const _aa=document.getElementById("amen-acciones");
+  if(_aa) _aa.innerHTML=`<div class="chart-card" style="margin-top:12px"><div class="chart-card-title">🎯 Plan de acción — amenidades</div>${renderAccionesPilar("amenidades")}</div>`;
   renderAmenMasaCritica();
   renderAmenChart();
   renderAmenSummary();
@@ -3434,13 +3446,13 @@ function renderExecutivePulse(){
         <span class="exec-card-title">👥 Salud de comunidad</span>
       </div>
       <div class="exec-hero-row">
-        <span class="exec-hero-num" style="color:${ov>=7?'#1A7A4A':ov>=5?'#8A6010':ov>0?'#A8291A':'#9A9A9C'}">${ov>0?ov.toFixed(1):"—"}</span>
+        <span class="exec-hero-num" onclick="irAAcciones()" title="Ver el plan de acción de los pilares" style="cursor:pointer;color:${ov>=7?'#1A7A4A':ov>=5?'#8A6010':ov>0?'#A8291A':'#9A9A9C'}">${ov>0?ov.toFixed(1):"—"}</span>
         <span class="exec-hero-max">/ 10</span>
         ${comDelta}
       </div>
       ${pillarBars}
       ${amenG?`
-      <div class="exec-amen-box">
+      <div class="exec-amen-box" onclick="irAAccionesAmen()" title="Ver acciones para subir uso y satisfacción" style="cursor:pointer">
         <div class="exec-amen-title">🏛️ Pulso de amenidades</div>
         <div class="exec-amen-stats">
           <div class="exec-amen-stat">
@@ -3857,11 +3869,7 @@ function renderScoreCards(){
         style="width:100%">
       <div class="score-slider-labels"><span>0</span><span>2.5</span><span>5</span><span>7.5</span><span>10</span></div>
     </div>`;
-    const subcats=pl.subcats.map(sub=>{
-      const val=(drafts[currentProject][pl.key]&&drafts[currentProject][pl.key][sub.key])||0;
-      const dots=[1,2,3,4,5].map(d=>`<span class="sdot${val>=d?" on":""}" onclick="setSubcat('${pl.key}','${sub.key}',${d})" id="sd-${pl.key}-${sub.key}-${d}"></span>`).join("");
-      return `<div class="subcat-row"><span class="subcat-label">${sub.label}</span><div class="subcat-dots">${dots}</div></div>`;
-    }).join("");
+    const subcats=renderAccionesPilar(pl.key);
     const naStyle = active ? "" : "opacity:.45;pointer-events:none;";
     const toggleLabel = active ? "✓ Activo" : "— No aplica";
     const toggleStyle = active
@@ -3894,6 +3902,33 @@ window.togglePillar = function togglePillar(key){
   savePillarConfig(currentProject);
 }
 
+// ══ PLAN DE ACCIÓN SEMANAL POR PILAR ══
+function getAcciones(pid, key){
+  if(!drafts[pid]) return ["","",""];
+  if(!drafts[pid].acciones) drafts[pid].acciones={};
+  if(!Array.isArray(drafts[pid].acciones[key])) drafts[pid].acciones[key]=["","",""];
+  while(drafts[pid].acciones[key].length<3) drafts[pid].acciones[key].push("");
+  return drafts[pid].acciones[key];
+}
+function setAccion(key, idx, val){
+  const pid=currentProject; if(!pid) return;
+  getAcciones(pid,key)[idx]=val;
+  markDirty();
+}
+function _accionesPrevias(key){
+  const pid=currentProject;
+  const d=drafts[pid]&&drafts[pid].date?drafts[pid].date:null;
+  // La semana anterior A LA QUE ESTÁ ABIERTA (no la penúltima global)
+  const prev=d?((db[pid]||[]).filter(e=>e.date<d).sort((a,b)=>b.date.localeCompare(a.date))[0]||null):getPrev(pid);
+  const arr=prev&&prev.acciones&&Array.isArray(prev.acciones[key])?prev.acciones[key].filter(x=>(x||"").trim()):[];
+  if(!arr.length) return "";
+  return `<div class="acc-prev"><span class="acc-prev-t">Semana anterior:</span>${arr.map(a=>`<div class="acc-prev-i">• ${a.replace(/</g,"&lt;")}</div>`).join("")}</div>`;
+}
+function renderAccionesPilar(key){
+  const a=getAcciones(currentProject,key);
+  const inputs=[0,1,2].map(i=>`<div class="acc-row"><span class="acc-b">${i+1}</span><input type="text" class="acc-in" value="${(a[i]||"").replace(/"/g,'&quot;')}" placeholder="Acción ${i+1}…" onchange="setAccion('${key}',${i},this.value)"></div>`).join("");
+  return `<div class="acc-box" id="acc-${key}"><div class="acc-q">¿Qué debemos hacer para subir esta calificación?</div>${inputs}${_accionesPrevias(key)}</div>`;
+}
 function setScore(key,v){
   const cfg=pillarConfig[currentProject]||{vivencial:true,admin:true,comite:true};
   if(!cfg[key]) return; // pilar inactivo
@@ -3940,6 +3975,15 @@ function rRenov(r){
 function rNoreno(r){ return r?(+r.noreno||0):0; }
 function rVenta(r){ return r?(+r.venta||0):0; }
 function rCitas(r){ return r?(+r.citas||0):0; }
+// Citas acumuladas del mes: suma los registros guardados de ese mes; si la semana abierta
+// pertenece al mes y aún no está guardada, la suma también (para ver el avance en vivo).
+function citasMes(pid, ym){
+  let tot=0, incluidas=new Set();
+  (db[pid]||[]).forEach(e=>{ if(e.date&&e.date.slice(0,7)===ym){ tot+=(+((e.rentas||{}).citas)||0); incluidas.add(e.date); } });
+  const d=drafts[pid];
+  if(d && d.date && d.date.slice(0,7)===ym && !incluidas.has(d.date)) tot+=(+((d.rentas||{}).citas)||0);
+  return tot;
+}
 
 // Días promedio en lista — solo de rentas nuevas (una renovación no estuvo en lista)
 function rDiasProm(r){
@@ -5019,8 +5063,8 @@ function renderRentasDashboard2(){
         </div>
         <div class="dist-card dist-visitas">
           <div class="dist-icon">👀</div>
-          <div class="dist-val">${citasSem}</div>
-          <div class="dist-lbl">Visitas esta semana</div>
+          <div class="dist-val">${citasSem}<span style="font-size:13px;color:var(--text-3);font-weight:600"> · ${citasMes(pid, (drafts[pid]&&drafts[pid].date?drafts[pid].date:today()).slice(0,7))} mes</span></div>
+          <div class="dist-lbl">Visitas · semana · mes</div>
           <div class="dist-visitas-dots">${(()=>{ const max=Math.min(citasSem,30); let dots=""; for(let k=0;k<max;k++) dots+='<span class="visita-dot"></span>'; return dots+(citasSem>30?'<span class="visita-more">+'+(citasSem-30)+'</span>':''); })()}</div>
         </div>
         <div class="dist-card dist-proceso">
@@ -5570,6 +5614,17 @@ function _updateEditBanner(){
     b.style.display="none";
   }
 }
+function _scrollPulse(sel, expandKey){
+  if(expandKey && sectionsCollapsed[currentProject] && sectionsCollapsed[currentProject][expandKey]) toggleBigSection(expandKey);
+  setTimeout(()=>{
+    const el=document.querySelector(sel); if(!el) return;
+    el.scrollIntoView({behavior:"smooth", block:"center"});
+    el.classList.remove("wiz-highlight"); void el.offsetWidth; el.classList.add("wiz-highlight");
+    setTimeout(()=>el.classList.remove("wiz-highlight"),2400);
+  },320);
+}
+function irAAcciones(){ _scrollPulse("#detail-score-row","comunidad"); }
+function irAAccionesAmen(){ _scrollPulse("#acc-amenidades","amenidades"); }
 function irAlInicio(){
   window.scrollTo({top:0, behavior:"smooth"});
   const ep=document.getElementById("exec-pulse");
