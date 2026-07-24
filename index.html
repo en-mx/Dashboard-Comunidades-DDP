@@ -5499,6 +5499,15 @@ function saveEntry(){
   if(!currentProject) return;
   const entry=JSON.parse(JSON.stringify(drafts[currentProject]));
   entry.date=entry.date||today();
+  // ★ GUARDIA ANTI-SEMANA-FANTASMA: si la fecha NO existe como registro y no venimos de "+ Registrar semana"
+  const _existe=(db[currentProject]||[]).some(e=>e.date===entry.date);
+  if(!_existe && !window._newWeek){
+    if(!_dirty[currentProject]){
+      showToast("Sin cambios que guardar — esto crearía una semana nueva vacía. Para capturar una semana usa \"+ Registrar semana\"");
+      return;
+    }
+    if(!confirm("Vas a crear un registro NUEVO del "+fmtDate(entry.date)+" — esa semana no existe todavía.\n\n¿Es intencional?\n\n· Aceptar = sí, crear la semana\n· Cancelar = no guardar (para semanas nuevas usa \"+ Registrar semana\")")) return;
+  }
   const _avisos=_validarCoherencia(currentProject, entry);
   if(_avisos.length){
     if(!confirm("⚠️ Revisa antes de guardar:\n\n· "+_avisos.join("\n· ")+"\n\n¿Guardar de todos modos?")) return;
@@ -5510,6 +5519,7 @@ function saveEntry(){
   persist();
   const wasEditing = !!window._editingDate;
   clearDirty(currentProject);
+  window._newWeek=false; // la bandera de semana nueva se consume al guardar
   delete window._editingDate;
   showToast(wasEditing ? "Registro actualizado ✓" : "Registro guardado ✓");
   // Asegurar que la vista de proyecto está activa antes de renderizar historial
