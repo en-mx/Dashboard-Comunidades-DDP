@@ -163,6 +163,12 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 .acc-prev{margin-top:8px;background:var(--surface-2);border-radius:8px;padding:6px 9px}
 .acc-prev-t{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--text-3)}
 .acc-prev-i{font-size:10.5px;color:var(--text-2);margin-top:2px;line-height:1.4}
+.acc-prev-meta{color:#1A7A4A;font-weight:700}
+.acc-item{margin-bottom:9px}
+.acc-meta{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:4px 0 0 24px}
+.acc-ml{font-size:9.5px;color:var(--text-3);font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+.acc-num{width:58px;padding:4px 7px;border:1px solid var(--border-md);border-radius:7px;font-size:11px;font-family:'DM Mono',monospace;background:var(--surface);color:var(--text-1);outline:none}
+.acc-sel{padding:4px 6px;border:1px solid var(--border-md);border-radius:7px;font-size:10.5px;font-family:HelveticaNow,Helvetica Neue,Arial,sans-serif;background:var(--surface);color:var(--text-1);outline:none;max-width:150px}
 .subcat-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .subcat-label{font-size:12px;color:var(--text-2);flex:1}
 .subcat-dots{display:flex;gap:3px}
@@ -3903,30 +3909,66 @@ window.togglePillar = function togglePillar(key){
 }
 
 // ══ PLAN DE ACCIÓN SEMANAL POR PILAR ══
-function getAcciones(pid, key){
-  if(!drafts[pid]) return ["","",""];
-  if(!drafts[pid].acciones) drafts[pid].acciones={};
-  if(!Array.isArray(drafts[pid].acciones[key])) drafts[pid].acciones[key]=["","",""];
-  while(drafts[pid].acciones[key].length<3) drafts[pid].acciones[key].push("");
-  return drafts[pid].acciones[key];
+// Cada acción: {t: qué haremos, m: incremento esperado, u: métrica, p: plazo}
+// Compatible hacia atrás: las acciones guardadas como texto simple se normalizan solas.
+const ACC_METRICAS = {
+  pilar: [["pts","puntos de calificación"],["%","% de satisfacción"]],
+  amenidades: [["usos","usos por semana"],["pts","puntos de satisfacción"],["%","% de ocupación"]]
+};
+const ACC_PLAZOS = ["2 semanas","4 semanas","6 semanas","2 meses","3 meses","6 meses"];
+function _accNorm(x){
+  if(x && typeof x==="object") return {t:x.t||"", m:x.m||"", u:x.u||"", p:x.p||""};
+  return {t:(x||""), m:"", u:"", p:""};
 }
-function setAccion(key, idx, val){
+function getAcciones(pid, key){
+  if(!drafts[pid]) return [_accNorm(""),_accNorm(""),_accNorm("")];
+  if(!drafts[pid].acciones) drafts[pid].acciones={};
+  let a=drafts[pid].acciones[key];
+  if(!Array.isArray(a)) a=[];
+  a=a.map(_accNorm);
+  while(a.length<3) a.push(_accNorm(""));
+  drafts[pid].acciones[key]=a;
+  return a;
+}
+function setAccion(key, idx, campo, val){
   const pid=currentProject; if(!pid) return;
-  getAcciones(pid,key)[idx]=val;
+  const a=getAcciones(pid,key);
+  a[idx][campo]=val;
   markDirty();
+}
+function _accResumen(o){
+  const partes=[];
+  if(o.m!=="" && o.m!==undefined && o.m!==null) partes.push((+o.m>0?"+":"")+o.m+(o.u?" "+o.u:""));
+  if(o.p) partes.push("en "+o.p);
+  return partes.length?` <span class="acc-prev-meta">(${partes.join(" · ")})</span>`:"";
 }
 function _accionesPrevias(key){
   const pid=currentProject;
   const d=drafts[pid]&&drafts[pid].date?drafts[pid].date:null;
   // La semana anterior A LA QUE ESTÁ ABIERTA (no la penúltima global)
   const prev=d?((db[pid]||[]).filter(e=>e.date<d).sort((a,b)=>b.date.localeCompare(a.date))[0]||null):getPrev(pid);
-  const arr=prev&&prev.acciones&&Array.isArray(prev.acciones[key])?prev.acciones[key].filter(x=>(x||"").trim()):[];
+  const arr=prev&&prev.acciones&&Array.isArray(prev.acciones[key])?prev.acciones[key].map(_accNorm).filter(x=>(x.t||"").trim()):[];
   if(!arr.length) return "";
-  return `<div class="acc-prev"><span class="acc-prev-t">Semana anterior:</span>${arr.map(a=>`<div class="acc-prev-i">• ${a.replace(/</g,"&lt;")}</div>`).join("")}</div>`;
+  return `<div class="acc-prev"><span class="acc-prev-t">Semana anterior:</span>${arr.map(a=>`<div class="acc-prev-i">• ${a.t.replace(/</g,"&lt;")}${_accResumen(a)}</div>`).join("")}</div>`;
 }
 function renderAccionesPilar(key, q){
   const a=getAcciones(currentProject,key);
-  const inputs=[0,1,2].map(i=>`<div class="acc-row"><span class="acc-b">${i+1}</span><input type="text" class="acc-in" value="${(a[i]||"").replace(/"/g,'&quot;')}" placeholder="Acción ${i+1}…" onchange="setAccion('${key}',${i},this.value)"></div>`).join("");
+  const mets=(key==="amenidades"?ACC_METRICAS.amenidades:ACC_METRICAS.pilar);
+  const inputs=[0,1,2].map(i=>{
+    const o=a[i];
+    const opMet=mets.map(([v,l])=>`<option value="${v}" ${o.u===v?"selected":""}>${l}</option>`).join("");
+    const opPla=ACC_PLAZOS.map(p=>`<option value="${p}" ${o.p===p?"selected":""}>${p}</option>`).join("");
+    return `<div class="acc-item">
+      <div class="acc-row"><span class="acc-b">${i+1}</span><input type="text" class="acc-in" value="${(o.t||"").replace(/"/g,'&quot;')}" placeholder="Acción ${i+1}…" onchange="setAccion('${key}',${i},'t',this.value)"></div>
+      <div class="acc-meta">
+        <span class="acc-ml">Impacto esperado</span>
+        <input type="number" class="acc-num" step="0.1" value="${o.m}" placeholder="+0" onchange="setAccion('${key}',${i},'m',this.value)">
+        <select class="acc-sel" onchange="setAccion('${key}',${i},'u',this.value)"><option value="">métrica…</option>${opMet}</select>
+        <span class="acc-ml">en</span>
+        <select class="acc-sel" onchange="setAccion('${key}',${i},'p',this.value)"><option value="">plazo…</option>${opPla}</select>
+      </div>
+    </div>`;
+  }).join("");
   return `<div class="acc-box" id="acc-${key}"><div class="acc-q">${q||"¿Qué debemos hacer para subir esta calificación?"}</div>${inputs}${_accionesPrevias(key)}</div>`;
 }
 function setScore(key,v){
