@@ -613,6 +613,18 @@ body{font-family:'HelveticaNow','Helvetica Neue',Arial,sans-serif;background:var
 
 
 
+/* ── BANNER DE EDICIÓN DE SEMANA ── */
+#edit-week-banner{position:fixed;top:64px;left:50%;transform:translateX(-50%);z-index:8200;background:#FFF3D6;border:1.5px solid #F0C860;color:#8A6010;border-radius:13px;padding:9px 14px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 26px rgba(138,96,16,.18);font-size:12.5px;font-weight:700;max-width:calc(100% - 32px)}
+.ewb-save{padding:8px 15px;border:none;border-radius:9px;background:#1A7A4A;color:#fff;font-size:12px;font-weight:700;font-family:HelveticaNow,sans-serif;cursor:pointer;white-space:nowrap}
+.ewb-save:hover{background:#166B41}
+@media(max-width:700px){#edit-week-banner{top:58px;font-size:11px;padding:8px 10px;gap:8px}}
+/* ── BOTÓN IR AL HISTORIAL ── */
+#jump-hist-btn{position:fixed;right:18px;bottom:18px;z-index:8300;background:var(--surface);border:1.5px solid var(--border-md);color:var(--text-1);border-radius:22px;padding:10px 16px;font-size:12px;font-weight:700;font-family:HelveticaNow,sans-serif;cursor:pointer;box-shadow:0 8px 26px rgba(0,0,0,.16)}
+#jump-hist-btn:hover{background:var(--text-1);color:var(--bg);border-color:var(--text-1)}
+#jump-top-btn{position:fixed;right:18px;bottom:64px;z-index:8300;background:var(--surface);border:1.5px solid var(--border-md);color:var(--text-1);border-radius:22px;padding:10px 16px;font-size:12px;font-weight:700;font-family:HelveticaNow,sans-serif;cursor:pointer;box-shadow:0 8px 26px rgba(0,0,0,.16)}
+#jump-top-btn:hover{background:var(--text-1);color:var(--bg);border-color:var(--text-1)}
+@media(max-width:700px){#jump-top-btn{right:10px;bottom:122px;padding:9px 13px}}
+@media(max-width:700px){#jump-hist-btn{right:10px;bottom:76px;padding:9px 13px}}
 /* ── GUARDADO RÁPIDO ── */
 #quick-save-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:8400;background:#1B1B1A;color:#fff;border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:14px;box-shadow:0 12px 36px rgba(0,0,0,.32)}
 .qsb-txt{font-size:12px;font-weight:700;color:#F2B8AE}
@@ -1244,6 +1256,12 @@ window._fbLoadAll = async function(){
 
   <!-- ══ PROJECT DETAIL ══ -->
   <div class="view" id="view-project">
+    <div id="edit-week-banner" style="display:none">
+      <span id="ewb-txt">✏️ Editando semana</span>
+      <button class="ewb-save" onclick="saveEntry()">💾 Guardar semana</button>
+    </div>
+    <button id="jump-top-btn" onclick="irAlInicio()" title="Ir al inicio — pantallazo del proyecto">⬆ Inicio</button>
+    <button id="jump-hist-btn" onclick="irAlHistorial()" title="Ir al registro de semanas de este proyecto">📜 Semanas</button>
     <div class="page-hdr">
       <div class="page-hdr-left">
         <button class="back-btn" onclick="showView('dashboard')">← Dashboard</button>
@@ -4595,6 +4613,7 @@ function loadRentasInputs(){
   ["r-disponible","r-dispddp","r-dispprop","r-invamueblado","r-diasinv","r-enproceso"].forEach(id=>{const el=document.getElementById(id); if(el){el.readOnly=false; el.classList.remove("input-auto"); el.title="";}});
   renderInventarioLista();
   renderAddUnitActions();
+  try{ _updateEditBanner(); }catch(e){}
   const invNewDesde=document.getElementById("inv-new-desde"); if(invNewDesde && !invNewDesde.value) invNewDesde.value=today();
   // Si hay lista y el draft es el registro vigente (no una semana histórica), autollenar campos desde la lista
   if(hayLista(currentProject)){
@@ -5529,9 +5548,42 @@ function saveEntry(){
   updateSidebarScores();
   document.getElementById("save-hint").textContent=(wasEditing?"Actualizado el ":"Guardado el ")+fmtDate(entry.date);
   renderProjCharts();
+  // ★ Refresco inmediato del proyecto completo: pantallazo, rentas y amenidades leen el registro recién guardado
+  try{ renderExecutivePulse(); }catch(e){}
+  try{ renderRentasDashboard2(); }catch(e){}
+  try{ renderAmenidades(); }catch(e){}
+  try{ _updateEditBanner(); }catch(e){}
   renderDashboard();
 }
 
+function _updateEditBanner(){
+  const b=document.getElementById("edit-week-banner");
+  if(!b) return;
+  const pid=currentProject;
+  const d=pid&&drafts[pid]?drafts[pid].date:null;
+  const existe=d&&(db[pid]||[]).some(e=>e.date===d);
+  if(existe){
+    const hist=(typeof _draftEsHistorico==="function")&&_draftEsHistorico(pid);
+    document.getElementById("ewb-txt").textContent="✏️ Editando la semana del "+fmtDate(d)+(hist?" (semana pasada — los cambios se guardan en ELLA)":"");
+    b.style.display="flex";
+  } else {
+    b.style.display="none";
+  }
+}
+function irAlInicio(){
+  window.scrollTo({top:0, behavior:"smooth"});
+  const ep=document.getElementById("exec-pulse");
+  if(ep){ ep.classList.remove("wiz-highlight"); void ep.offsetWidth; ep.classList.add("wiz-highlight"); setTimeout(()=>ep.classList.remove("wiz-highlight"),2000); }
+}
+function irAlHistorial(){
+  const el=document.getElementById("history-body");
+  const target=el ? (el.closest(".chart-card")||el.closest("section")||el.parentElement||el) : null;
+  if(!target) return;
+  target.scrollIntoView({behavior:"smooth", block:"start"});
+  target.classList.remove("wiz-highlight"); void target.offsetWidth;
+  target.classList.add("wiz-highlight");
+  setTimeout(()=>target.classList.remove("wiz-highlight"), 2400);
+}
 function renderHistory(pid){
   pid=pid||currentProject;
   const hist=getHistory(pid);
