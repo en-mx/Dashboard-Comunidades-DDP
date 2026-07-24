@@ -955,6 +955,23 @@ const _fdb = firebase.firestore();
 // Guardar un proyecto específico en su propio documento
 window._fbSaveProject = async function(pid, entries){
   try{
+    // ★ MERGE POR FECHA: leer lo remoto y conservar semanas que otra persona guardó
+    // (antes se sobrescribía el arreglo completo → la última en guardar borraba semanas ajenas)
+    try{
+      const snap=await _fdb.collection("proyectos").doc(pid).get();
+      if(snap.exists){
+        const remoto=JSON.parse(snap.data().entries||"[]");
+        const localDates=new Set(entries.map(e=>e.date));
+        const borradas=window._deletedDates&&window._deletedDates[pid]?window._deletedDates[pid]:new Set();
+        remoto.forEach(re=>{
+          if(!localDates.has(re.date) && !borradas.has(re.date)){
+            entries.push(re); // semana guardada por otra persona: se conserva
+            if(db[pid] && !db[pid].some(e=>e.date===re.date)) db[pid].push(re);
+          }
+        });
+        entries.sort((a,b)=>a.date.localeCompare(b.date));
+      }
+    }catch(me){ console.warn("merge remoto:", me); }
     await _fdb.collection("proyectos").doc(pid).set({
       entries: JSON.stringify(entries),
       updated: new Date().toISOString()
@@ -996,9 +1013,11 @@ window._fbSaveProjectOrder = async function(order){
 };
 
 // Guarda la lista real de inventario disponible (por proyecto, compartido)
-window._fbSaveInventario = async function(pid, lista){
+window._fbSaveInventario = async function(pid, lista, log){
   try{
-    await _fdb.collection("config").doc(pid).set({inventarioDisp: JSON.stringify(lista||[])}, {merge:true});
+    const payload={inventarioDisp: JSON.stringify(lista||[])};
+    if(log!==undefined) payload.invLog = JSON.stringify(log||[]);
+    await _fdb.collection("config").doc(pid).set(payload, {merge:true});
   } catch(e){ console.error("Firebase inventario save error:", e); }
 };
 
@@ -1602,6 +1621,7 @@ async function syncFromFirebase(){
         }
         if(cfg.inventarioDisp!==undefined && cfg.inventarioDisp!==null){
           try{ const li=(typeof cfg.inventarioDisp==="string")?JSON.parse(cfg.inventarioDisp):cfg.inventarioDisp; if(Array.isArray(li)){ inventarioDisp[pid]=li; _invFromFB[pid]=true; } }catch(e){}
+          try{ if(cfg.invLog!==undefined){ const lg=(typeof cfg.invLog==="string")?JSON.parse(cfg.invLog):cfg.invLog; if(Array.isArray(lg)) invLog[pid]=lg; } }catch(e){}
         }
         if(cfg.invAmueblado!==undefined && cfg.invAmueblado!==null){
           invAmueblado[pid] = cfg.invAmueblado;
@@ -1688,6 +1708,18 @@ function persist(){
 let currentProject = null;
 let drafts = {}; // borrador por proyecto, independiente
 let _dirty = {}; // cambios sin guardar por proyecto
+let invLog = {}; // ★ bitácora de movimientos de inventario por proyecto: {fecha, week, tipo, uid, id, motivo, uniDelta, snap}
+function logMov(tipo, u, extra){
+  const pid=currentProject; if(!pid) return;
+  if(!invLog[pid]) invLog[pid]=[];
+  invLog[pid].push(Object.assign({
+    fecha: today(),
+    week: (drafts[pid]&&drafts[pid].date)?drafts[pid].date:today(),
+    tipo, uid: u&&u.uid||"", id: u&&u.id||"",
+    snap: u?{id:u.id||"",m2:+u.m2||0,precioRenta:+u.precioRenta||+u.monto||0,precioVenta:+u.precioVenta||0,amueblado:!!u.amueblado,origen:u.origen||"prop",desde:u.desde||today(),enProceso:false}:null
+  }, extra||{}));
+  if(invLog[pid].length>400) invLog[pid]=invLog[pid].slice(-400);
+}
 function markDirty(){ if(currentProject){ _dirty[currentProject]=true; _updateDirtyHint(); } }
 function clearDirty(pid){ _dirty[pid]=false; _updateDirtyHint(); }
 function _updateDirtyHint(){
@@ -4010,6 +4042,9 @@ function getInventarioDisp(pid){ return Array.isArray(inventarioDisp[pid]) ? inv
 function hayLista(pid){ return getInventarioDisp(pid).length>0; }
 
 function persistInventario(){
+  if(window._fbSaveInventario && currentProject){ window._fbSaveInventario(currentProject, getInventarioDisp(currentProject), invLog[currentProject]||[]); try{ localStorage.setItem("dp_inv_log", JSON.stringify(invLog)); }catch(e){} return; }
+}
+function _persistInventarioLegacy(){
   try{ localStorage.setItem("dp_inventario_disp", JSON.stringify(inventarioDisp)); }catch(e){}
   if(window._fbSaveInventario && currentProject) window._fbSaveInventario(currentProject, getInventarioDisp(currentProject));
 }
@@ -4114,6 +4149,8 @@ function addDeptoInventario(){
   // Limpiar el form
   ["inv-new-id","inv-new-m2","inv-new-renta","inv-new-venta"].forEach(i=>{const el=document.getElementById(i); if(el) el.value="";});
   document.getElementById("inv-new-amue").checked=false;
+  logMov("entrada", lista[lista.length-1], {motivo, uniDelta:(motivo==="nuevo"||motivo==="cambio")?1:0});
+  persistInventario();
   showToast("Depto "+id+" agregado ✓"+((motivo==="nuevo"||motivo==="cambio")?" · entrada registrada · universo de renta +1":(motivo!=="inicial"?" · entrada registrada":"")));
 }
 
@@ -4129,7 +4166,7 @@ function abrirCierreModal(uid){
     if(!confirm("Estás viendo un registro de una semana pasada ("+drafts[pid].date+"). El cierre se registraría en ESA semana. ¿Continuar? (Para registrarlo en la semana actual, primero cambia la fecha del registro)")) return;
   }
   _cierreUid=uid;
-  const hoy=today();
+  const hoy=_draftEsHistorico(pid) ? drafts[pid].date : today();
   const fin=(d=>{const x=new Date(d+"T00:00:00");x.setFullYear(x.getFullYear()+1);return x.toISOString().slice(0,10);})(hoy);
   const pm2=(+u.m2>0&&+u.precioRenta>0)?Math.round(u.precioRenta/u.m2):0;
   document.getElementById("cm-title").textContent="🔑 Cerrar renta · Depto "+(u.id||"—");
@@ -4168,6 +4205,7 @@ function confirmarCierreModal(){
   const r=drafts[pid].rentas;
   if(!Array.isArray(r.unidades)) r.unidades=[];
   r.unidades.push({id:u.id||"", tipo:"nueva", dias, incr:0, cierre, inicio, fin, canal, broker, monto, m2:+u.m2||0, precioVenta:+u.precioVenta||0, amueblado:amue});
+  logMov("cierre", u, {});
   lista.splice(idx,1);
   persistInventario();
   cerrarCierreModal(); // cerrar el modal ANTES de los renders (a prueba de fallos)
@@ -4213,6 +4251,7 @@ function retirarDeLista(uid){
   if(!confirm("¿Retirar el depto "+(u.id||"")+" de la lista SIN registrar renta?")) return;
   // Regla de oro: ¿sale del programa de renta o es solo corrección de captura?
   const saleDelPrograma = confirm("¿El propietario retira este depto del PROGRAMA de renta?\n\n· Aceptar = Sí, sale del programa (baja \"Con intención de renta\")\n· Cancelar = Solo corrección de captura (el universo no cambia)");
+  logMov("retiro", u, {uniDelta: saleDelPrograma?-1:0});
   lista.splice(idx,1);
   if(saleDelPrograma){
     invConfig[pid]=Math.max(0,(+invConfig[pid]||0)-1); persistInvConfig();
@@ -4239,11 +4278,43 @@ function updateInvDepto(uid, field, val){
 }
 
 // ── RENDER de la tabla de inventario ──
+// Reconstruye la lista como existía al cierre de la semana W: deshace (en memoria) los
+// movimientos de la bitácora posteriores a W. Precisa desde el inicio de la bitácora (v81).
+function diasEntreFechas(a,b){ try{ return Math.max(0, Math.round((new Date(b+"T00:00:00")-new Date(a+"T00:00:00"))/86400000)); }catch(e){ return 0; } }
+function listaEnSemana(pid, w){
+  const lista=JSON.parse(JSON.stringify(getInventarioDisp(pid)));
+  const post=(invLog[pid]||[]).filter(m=>m.week>w);
+  post.slice().reverse().forEach(m=>{
+    if(m.tipo==="entrada"||m.tipo==="cancelacion"){
+      const i=lista.findIndex(u=>u.uid===m.uid); if(i>=0) lista.splice(i,1);
+    } else if(m.tipo==="cierre"||m.tipo==="retiro"){
+      if(m.snap && !lista.some(u=>u.uid===m.uid)) lista.push(Object.assign({uid:m.uid||""}, m.snap));
+    }
+  });
+  return {lista, movsPosteriores: post.length};
+}
+
 function renderInventarioLista(){
   const cont=document.getElementById("inv-lista-body");
   const badge=document.getElementById("inv-lista-count");
   if(!cont) return;
   if(typeof renderAddUnitActions==="function") renderAddUnitActions();
+  // ★ Semana histórica: mostrar la lista COMO EXISTÍA en esa fecha (solo lectura)
+  if(_draftEsHistorico(currentProject)){
+    const w=drafts[currentProject].date;
+    const rec=listaEnSemana(currentProject, w);
+    if(badge) badge.textContent=rec.lista.length;
+    const vivos=new Set(getInventarioDisp(currentProject).map(u=>u.uid));
+    cont.innerHTML=`<tr><td colspan="11" style="background:#FFF8E8;padding:9px 12px;font-size:11px;color:#8A6010">📜 <b>Lista histórica al ${fmtDate(w)}</b> — reconstruida con la bitácora (${rec.movsPosteriores} mov. posteriores deshechos en la vista). Puedes registrar aquí <b>entradas y salidas DE ESA semana</b>: quedan fechadas en ella vía bitácora. Los deptos que salieron en semanas posteriores no pueden volver a rentarse desde aquí. Precisa desde el inicio de la bitácora.</td></tr>`+
+      (rec.lista.length? rec.lista.map(u=>{
+        const pm2=(+u.m2>0&&+u.precioRenta>0)?Math.round(u.precioRenta/u.m2):0;
+        const accion = vivos.has(u.uid)
+          ? `<button class="inv-act inv-act-close" onclick="abrirCierreModal('${u.uid}')" title="Registrar la renta EN la semana del ${fmtDate(w)}">🔑 Rentar</button> <button class="inv-act inv-act-del" onclick="retirarDeLista('${u.uid}')" title="Retirar de la lista EN la semana del ${fmtDate(w)} (sin renta — pregunta si sale del programa o es corrección)">✕</button>`
+          : `<span style="font-size:10px;color:var(--text-3)" title="Este depto salió de la lista en una semana posterior">salió después</span>`;
+        return `<tr style="color:var(--text-2)"><td style="font-weight:700">${(u.id||"—")}</td><td>${u.m2||"—"}</td><td>${u.precioRenta?"$"+(+u.precioRenta).toLocaleString("es-MX"):"—"}</td><td>${u.precioVenta?"$"+(+u.precioVenta).toLocaleString("es-MX"):"—"}</td><td>${pm2?"$"+pm2.toLocaleString("es-MX"):"—"}</td><td style="text-align:center">${u.amueblado?"🛋️":"—"}</td><td style="text-align:center">${u.enProceso?"🤝":"—"}</td><td>${u.origen==="ddp"?"DDP":"Propietario"}</td><td>${u.desde||"—"}</td><td>${u.desde?diasEntreFechas(u.desde,w)+"d":"—"}</td><td>${accion}</td></tr>`;
+      }).join("") : `<tr><td colspan="11" style="text-align:center;color:var(--text-3);font-style:italic;padding:14px">Sin disponibles en esa semana</td></tr>`);
+    return;
+  }
   const pid=currentProject;
   const lista=getInventarioDisp(pid);
   if(badge) badge.textContent=lista.length;
@@ -4398,6 +4469,7 @@ function cancelarRenta(i){
   }
   if(!inventarioDisp[pid]) inventarioDisp[pid]=[];
   inventarioDisp[pid].push({uid:"u"+Date.now().toString(36), id:u.id||"", m2:+u.m2||0, precioRenta:+u.monto||0, precioVenta:+u.precioVenta||0, amueblado:!!u.amueblado, origen:"prop", desde, enProceso:false});
+  logMov("cancelacion", inventarioDisp[pid][inventarioDisp[pid].length-1], {});
   r.unidades.splice(i,1);
   persistInventario();
   try{ syncInventarioToFields(); }catch(e){}
@@ -5499,9 +5571,49 @@ function editEntry(pid, date){
 
 function deleteEntry(pid,date){
   if(!confirm("¿Eliminar el registro del "+fmtDate(date)+"?")) return;
+  // ★ Reversión de inventario: deshacer en la LISTA los movimientos que esa semana registró (bitácora)
+  const movs=(invLog[pid]||[]).filter(m=>m.week===date);
+  let revertidos=0;
+  if(movs.length){
+    if(!confirm("Esta semana registró "+movs.length+" movimiento(s) de inventario (entradas/cierres/retiros).\n\n¿Revertirlos también en la lista de disponibles? (recomendado)\n\n· Aceptar = la lista y el universo regresan a como estaban antes de esa semana\n· Cancelar = solo se borra el registro; la lista se queda como está")){
+      // Solo borrar registro, conservar lista
+    } else {
+      const lista=getInventarioDisp(pid);
+      // Revertir en orden inverso al que ocurrieron
+      movs.slice().reverse().forEach(m=>{
+        if(m.tipo==="entrada" || m.tipo==="cancelacion"){
+          // El depto ENTRÓ a la lista esa semana → quitarlo
+          const i=lista.findIndex(u=>u.uid===m.uid);
+          if(i>=0){ lista.splice(i,1); revertidos++; }
+          if(m.uniDelta) invConfig[pid]=Math.max(0,(+invConfig[pid]||0)-m.uniDelta);
+        } else if(m.tipo==="cierre" || m.tipo==="retiro"){
+          // El depto SALIÓ de la lista esa semana → regresarlo con su snapshot
+          if(m.snap && !lista.some(u=>u.uid===m.uid)){
+            lista.push(Object.assign({uid:m.uid||("u"+Date.now().toString(36))}, m.snap));
+            revertidos++;
+          }
+          if(m.uniDelta) invConfig[pid]=Math.max(0,(+invConfig[pid]||0)-m.uniDelta); // retiro −1 → +1 de vuelta
+        }
+      });
+      invLog[pid]=(invLog[pid]||[]).filter(m=>m.week!==date);
+      const curPid=currentProject; currentProject=pid;
+      persistInventario(); persistInvConfig();
+      currentProject=curPid;
+    }
+  } else if(((db[pid]||[]).find(e=>e.date===date)||{}).rentas && (((db[pid]||[]).find(e=>e.date===date)||{}).rentas.unidades||[]).length){
+    alert("Aviso: esta semana es anterior a la bitácora de movimientos (v81).\nSi registró entradas o cierres, revisa la lista de disponibles manualmente después de borrar.");
+  }
+  if(!window._deletedDates) window._deletedDates={};
+  if(!window._deletedDates[pid]) window._deletedDates[pid]=new Set();
+  window._deletedDates[pid].add(date);
   db[pid]=(db[pid]||[]).filter(e=>e.date!==date);
-  persist(); renderHistory(); updateSidebarScores(); showToast("Eliminado");
-  if(currentProject===pid) renderProjCharts();
+  persist(); renderHistory(); updateSidebarScores();
+  if(currentProject===pid){
+    try{ syncInventarioToFields(); }catch(e){}
+    try{ renderInventarioLista(); }catch(e){}
+    try{ renderProjCharts(); }catch(e){}
+  }
+  showToast("Registro eliminado"+(revertidos?" · "+revertidos+" movimiento(s) de lista revertidos ✓":""));
 }
 
 // MODAL
