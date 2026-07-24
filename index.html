@@ -3112,7 +3112,7 @@ function renderAmenMasaCritica(){
 function renderAmenidades(){
   if(!amenEnabled[currentProject]) return;
   const _aa=document.getElementById("amen-acciones");
-  if(_aa) _aa.innerHTML=`<div class="chart-card" style="margin-top:12px"><div class="chart-card-title">🎯 Plan de acción — amenidades</div>${renderAccionesPilar("amenidades")}</div>`;
+  if(_aa) _aa.innerHTML=`<div class="chart-card" style="margin-top:12px"><div class="chart-card-title">🎯 Plan de acción — amenidades</div>${renderAccionesPilar("amenidades","3 acciones para elevar el impacto en las amenidades")}</div>`;
   renderAmenMasaCritica();
   renderAmenChart();
   renderAmenSummary();
@@ -3924,10 +3924,10 @@ function _accionesPrevias(key){
   if(!arr.length) return "";
   return `<div class="acc-prev"><span class="acc-prev-t">Semana anterior:</span>${arr.map(a=>`<div class="acc-prev-i">• ${a.replace(/</g,"&lt;")}</div>`).join("")}</div>`;
 }
-function renderAccionesPilar(key){
+function renderAccionesPilar(key, q){
   const a=getAcciones(currentProject,key);
   const inputs=[0,1,2].map(i=>`<div class="acc-row"><span class="acc-b">${i+1}</span><input type="text" class="acc-in" value="${(a[i]||"").replace(/"/g,'&quot;')}" placeholder="Acción ${i+1}…" onchange="setAccion('${key}',${i},this.value)"></div>`).join("");
-  return `<div class="acc-box" id="acc-${key}"><div class="acc-q">¿Qué debemos hacer para subir esta calificación?</div>${inputs}${_accionesPrevias(key)}</div>`;
+  return `<div class="acc-box" id="acc-${key}"><div class="acc-q">${q||"¿Qué debemos hacer para subir esta calificación?"}</div>${inputs}${_accionesPrevias(key)}</div>`;
 }
 function setScore(key,v){
   const cfg=pillarConfig[currentProject]||{vivencial:true,admin:true,comite:true};
